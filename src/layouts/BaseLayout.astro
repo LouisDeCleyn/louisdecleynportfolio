@@ -1,0 +1,46 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Personal portfolio showcasing design work" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-white text-black">
+    <header class="sticky top-0 bg-white border-b border-gray-200 z-50">
+      <nav class="max-w-4xl mx-auto px-8 py-6">
+        <div class="flex justify-between items-center">
+          <a href="/" class="text-lg font-normal text-black hover:opacity-70 transition-opacity">Louis Decleyn</a>
+          <ul class="flex space-x-8">
+            <li><a href="/" class="text-sm text-gray-500 hover:text-black transition-colors">Home</a></li>
+            <li><a href="/projects" class="text-sm text-gray-500 hover:text-black transition-colors">Projects</a></li>
+            <li><a href="/about" class="text-sm text-gray-500 hover:text-black transition-colors">About</a></li>
+            <li><a href="/contact" class="text-sm text-gray-500 hover:text-black transition-colors">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    
+    <main class="max-w-4xl mx-auto px-[3vw] py-[3vw]">
+      <slot />
+    </main>
+    
+    <footer class="border-t border-gray-200 mt-24">
+      <div class="max-w-4xl mx-auto px-8 py-16 text-center border-l border-r border-gray-200">
+        <p class="text-xs text-gray-500">&copy; 2025 Louis Decleyn. Work in progress.</p>
+      </div>
+    </footer>
+  </body>
+</html>

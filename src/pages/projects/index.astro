@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Projects - Your Portfolio">
+  <!-- Page Header -->
+  <section class="mb-12">
+    <h1 class="text-3xl font-bold mb-4">All Projects</h1>
+    <p class="text-xl text-gray-600 max-w-3xl">
+      A collection of design work spanning physical products, digital experiences, and strategic initiatives. 
+      Each project represents a unique challenge and learning opportunity.
+    </p>
+  </section>
+
+  <!-- Filter Options (for future enhancement) -->
+  <section class="mb-8">
+    <div class="flex gap-4">
+      <button class="px-4 py-2 bg-gray-900 text-white rounded-lg">All</button>
+      <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Physical Products</button>
+      <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">UI/UX</button>
+      <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Strategy</button>
+    </div>
+  </section>
+
+  <!-- Projects Grid -->
+  <section class="grid md:grid-cols-2 gap-12">
+    <!-- Project 1 -->
+    <article class="group">
+      <a href="/projects/project-1" class="block">
+        <div class="h-64 bg-gray-100 rounded-lg mb-4 group-hover:bg-gray-200 transition-colors"></div>
+        <h2 class="text-xl font-semibold mb-2 group-hover:text-blue-600">Project Title 1</h2>
+        <p class="text-gray-600 mb-2">Physical Product Design</p>
+        <p class="text-gray-700">
+          Detailed description of the project, the problem it solved, and the impact it had. 
+          This gives visitors a good sense of the work before they dive deeper.
+        </p>
+      </a>
+    </article>
+
+    <!-- Project 2 -->
+    <article class="group">
+      <a href="/projects/project-2" class="block">
+        <div class="h-64 bg-gray-100 rounded-lg mb-4 group-hover:bg-gray-200 transition-colors"></div>
+        <h2 class="text-xl font-semibold mb-2 group-hover:text-blue-600">Project Title 2</h2>
+        <p class="text-gray-600 mb-2">UI/UX Design</p>
+        <p class="text-gray-700">
+          Detailed description of the project, the problem it solved, and the impact it had. 
+          This gives visitors a good sense of the work before they dive deeper.
+        </p>
+      </a>
+    </article>
+
+    <!-- Project 3 -->
+    <article class="group">
+      <a href="/projects/project-3" class="block">
+        <div class="h-64 bg-gray-100 rounded-lg mb-4 group-hover:bg-gray-200 transition-colors"></div>
+        <h2 class="text-xl font-semibold mb-2 group-hover:text-blue-600">Project Title 3</h2>
+        <p class="text-gray-600 mb-2">Strategic Initiative</p>
+        <p class="text-gray-700">
+          Detailed description of the project, the problem it solved, and the impact it had. 
+          This gives visitors a good sense of the work before they dive deeper.
+        </p>
+      </a>
+    </article>
+
+    <!-- Project 4 -->
+    <article class="group">
+      <a href="/projects/project-4" class="block">
+        <div class="h-64 bg-gray-100 rounded-lg mb-4 group-hover:bg-gray-200 transition-colors"></div>
+        <h2 class="text-xl font-semibold mb-2 group-hover:text-blue-600">Project Title 4</h2>
+        <p class="text-gray-600 mb-2">Physical Product Design</p>
+        <p class="text-gray-700">
+          Detailed description of the project, the problem it solved, and the impact it had. 
+          This gives visitors a good sense of the work before they dive deeper.
+        </p>
+      </a>
+    </article>
+  </section>
+</BaseLayout>

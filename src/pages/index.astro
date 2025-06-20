@@ -1,16 +1,124 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Louis Decleyn - Designer">
+  <!-- Projects Gallery - Opens Immediately -->
+  <section class="mb-24">
+    <!-- Simple Grid with Increased Spacing -->
+    <div class="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 gap-12">
+      <!-- Project 1 - Physical Product -->
+      <article class="group">
+        <a href="/projects/project-1" class="block">
+          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
+            <span class="text-gray-400 text-sm font-medium">[Product Photo]</span>
+          </div>
+          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Sustainable Water Bottle</h2>
+          <p class="text-gray-500 text-sm">Physical Product Design</p>
+        </a>
+      </article>
+
+      <!-- Project 2 - UI/UX -->
+      <article class="group">
+        <a href="/projects/project-2" class="block">
+          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
+            <span class="text-gray-400 text-sm font-medium">[UI Screenshots]</span>
+          </div>
+          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Healthcare App Redesign</h2>
+          <p class="text-gray-500 text-sm">UI/UX Design</p>
+        </a>
+      </article>
+
+      <!-- Project 3 - Strategy -->
+      <article class="group">
+        <a href="/projects/project-3" class="block">
+          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
+            <span class="text-gray-400 text-sm font-medium">[Workshop Photos]</span>
+          </div>
+          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Innovation Workshop Series</h2>
+          <p class="text-gray-500 text-sm">Strategic Initiative</p>
+        </a>
+      </article>
+
+      <!-- Project 4 - Digital Product -->
+      <article class="group">
+        <a href="/projects/project-4" class="block">
+          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
+            <span class="text-gray-400 text-sm font-medium">[App Interface]</span>
+          </div>
+          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Learning Platform Design</h2>
+          <p class="text-gray-500 text-sm">Product Strategy</p>
+        </a>
+      </article>
+
+      <!-- Project 5 - Process Design -->
+      <article class="group">
+        <a href="/projects/project-5" class="block">
+          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
+            <span class="text-gray-400 text-sm font-medium">[Process Diagram]</span>
+          </div>
+          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Design Thinking Workshop</h2>
+          <p class="text-gray-500 text-sm">Process Design</p>
+        </a>
+      </article>
+
+      <!-- Project 6 - Brand Identity -->
+      <article class="group">
+        <a href="/projects/project-6" class="block">
+          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
+            <span class="text-gray-400 text-sm font-medium">[Brand Assets]</span>
+          </div>
+          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Startup Brand Identity</h2>
+          <p class="text-gray-500 text-sm">Visual Design</p>
+        </a>
+      </article>
+    </div>
+
+    <!-- View All Projects Link -->
+    <div class="text-center mt-12">
+      <a href="/projects" class="text-gray-500 hover:text-black text-sm transition-colors">
+        View all projects →
+      </a>
+    </div>
+  </section>
+
+  <!-- Brief About Section -->
+  <section class="border-t border-gray-200 pt-24 mt-32">
+    <div class="max-w-5xl mx-auto">
+      <div class="grid lg:grid-cols-3 gap-20 items-start">
+        <!-- About Text -->
+        <div class="lg:col-span-2">
+          <h2 class="text-xl font-normal mb-10 text-black">About</h2>
+          <div class="space-y-8">
+            <p class="text-gray-700 leading-relaxed">
+              I'm a designer who works across physical products, digital experiences, and strategic initiatives. 
+              My approach starts with understanding the real problem before jumping to solutions.
+            </p>
+            
+            <p class="text-gray-700 leading-relaxed">
+              Whether I'm prototyping a new product, designing a user interface, or facilitating workshops, 
+              I believe good design happens when you combine human insight with creative problem-solving.
+            </p>
+            
+            <p class="text-gray-700 leading-relaxed">
+              Currently based in [Your Location], working on projects that sit at the intersection of 
+              design, technology, and human behavior.
+            </p>
+          </div>
+          
+          <div class="mt-10">
+            <a href="/about" class="text-gray-500 hover:text-black text-sm transition-colors">
+              More about my background →
+            </a>
+          </div>
+        </div>
+        
+        <!-- Profile Image -->
+        <div>
+          <div class="aspect-[3/4] bg-gray-100 mb-4 border border-gray-200"></div>
+          <p class="text-xs text-gray-500">Louis working on a project</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
