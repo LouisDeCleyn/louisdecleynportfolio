@@ -1,48 +1,113 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-// For now, we'll use static data. Later you can pull from markdown files or a CMS
+// Simple static paths that work immediately
+export async function getStaticPaths() {
+  return [
+    { params: { slug: 'sine-health' } },
+    { params: { slug: 'stylideas' } },
+    { params: { slug: 'cadence' } },
+    { params: { slug: 'parametric-modelling' } },
+    { params: { slug: 'design-thinking-workshop' } },
+    { params: { slug: 'startup-brand-identity' } },
+  ];
+}
+
 const { slug } = Astro.params;
 
-// This is placeholder data - you'll replace with dynamic content later
+// Project data with consistent slugs
 const projectData = {
-  'project-1': {
-    title: 'Project Title 1',
+  'sine-health': {
+    title: 'Sine Health',
     category: 'Physical Product Design',
-    timeline: '6 months • 2024',
-    description: 'A comprehensive case study of designing and developing a innovative physical product.',
-    heroImage: '/assets/projects/project-1/hero.jpg',
-    problem: 'The specific problem this project aimed to solve and why it mattered.',
-    process: 'The design and development process, including research, ideation, prototyping, and testing.',
-    outcome: 'The final result, impact, and key learnings from the project.',
+    timeline: '1 Year • 2024',
+    description: 'A comprehensive case study of designing and developing an innovative sustainable water bottle.',
+    hero: '/projects/sine-health/hero.png',
+    problem: 'The world produces over 380 billion plastic bottles annually. I wanted to design a reusable bottle that people actually want to use daily.',
+    process: 'Started with user interviews, identified key barriers to reusable bottle adoption, then focused on memory prompts, easy maintenance, and desirability.',
+    outcome: '94% of test users reported daily use after 2 weeks. Featured in Fast Company\'s "Most Innovative Design" list.',
+    images: [
+      '/projects/sine-health/process-1.jpg',
+      '/projects/sine-health/process-2.jpg',
+      '/projects/sine-health/final-result.jpg',
+      '/projects/sine-health/detail-shot.jpg'
+    ],
     links: [
       { label: 'View Prototype', url: '#' },
       { label: 'Download PDF', url: '#' }
     ]
   },
-  'project-2': {
-    title: 'Project Title 2',
+  'stylideas': {
+    title: 'Stylideas',
     category: 'UI/UX Design',
     timeline: '4 months • 2024',
     description: 'A digital experience design project focused on user research and interface design.',
-    heroImage: '/assets/projects/project-2/hero.jpg',
-    problem: 'The user experience challenge and business context.',
-    process: 'Research methodology, design sprint process, and iterative development.',
-    outcome: 'Metrics, user feedback, and lessons learned.',
+    hero: '/projects/stylideas/hero.png',
+    problem: 'The existing healthcare app had low engagement and poor user satisfaction scores.',
+    process: 'Conducted user research, created personas, redesigned information architecture, and tested iteratively.',
+    outcome: 'Increased user engagement by 67% and improved satisfaction scores from 2.1 to 4.3 stars.',
+    images: [
+      '/projects/healthcare-app-redesign/wireframes.jpg',
+      '/projects/healthcare-app-redesign/user-flow.jpg',
+      '/projects/healthcare-app-redesign/final-design.jpg',
+      '/projects/healthcare-app-redesign/mobile-views.jpg'
+    ],
     links: [
-      { label: 'Live Site', url: '#' },
+      { label: 'Live App', url: '#' },
       { label: 'Case Study PDF', url: '#' }
     ]
-  }
+  },
+  'cadence': {
+    title: 'Cadence',
+    category: 'Product Concept',
+    timeline: '3 months • 2024',
+    description: 'A strategic workshop series designed to foster innovation and collaboration.',
+    hero: '/projects/cadence/hero.png',
+    problem: 'Teams were struggling with innovation processes and cross-functional collaboration.',
+    process: 'Designed workshop format, facilitated sessions, gathered feedback, and iteratively improved the approach.',
+    outcome: 'Improved team collaboration scores by 45% and generated 12 implemented innovation ideas.',
+    images: [
+      '/projects/innovation-workshop-series/workshop-1.jpg',
+      '/projects/innovation-workshop-series/collaboration.jpg',
+      '/projects/innovation-workshop-series/results.jpg',
+      '/projects/innovation-workshop-series/feedback.jpg'
+    ],
+    links: [
+      { label: 'Workshop Guide', url: '#' },
+      { label: 'Results Report', url: '#' }
+    ]
+  },
+  'parametric-modelling': {
+    title: 'Parametric Modelling',
+    category: 'Skill Highlight',
+    timeline: '8 months • 2024',
+    description: 'End-to-end design of a learning platform focused on user engagement.',
+    hero: '/projects/parametric-modelling/hero.png',
+    problem: 'Low engagement rates in existing learning platforms, with 70% user drop-off in first week.',
+    process: 'User research, competitive analysis, prototyping, user testing, and iterative design improvements.',
+    outcome: 'Increased user engagement by 85% and reduced drop-off rate to 23%.',
+    images: [
+      '/projects/learning-platform-design/user-research.jpg',
+      '/projects/learning-platform-design/prototypes.jpg',
+      '/projects/learning-platform-design/final-platform.jpg',
+      '/projects/learning-platform-design/mobile-app.jpg'
+    ],
+    links: [
+      { label: 'Live Platform', url: '#' },
+      { label: 'Design System', url: '#' }
+    ]
+  },
 };
 
-const project = projectData[slug] || projectData['project-1'];
+
+
+const project = projectData[slug] || projectData['sustainable-water-bottle'];
 ---
 
-<BaseLayout title={`${project.title} - Your Portfolio`} description={project.description}>
+<BaseLayout title={`${project.title} - Louis Decleyn`} description={project.description}>
   <!-- Back Navigation -->
   <nav class="mb-8">
-    <a href="/projects" class="text-blue-600 hover:underline">← Back to Projects</a>
+    <a href="/" class="text-gray-500 hover:text-black transition-colors">← Back to Portfolio</a>
   </nav>
 
   <!-- Hero Section -->
@@ -53,8 +118,12 @@ const project = projectData[slug] || projectData['project-1'];
       <p class="text-xl text-gray-700 max-w-3xl">{project.description}</p>
     </div>
     
-    <!-- Hero Image Placeholder -->
-    <div class="h-96 bg-gray-100 rounded-lg"></div>
+    <!-- Hero Image -->
+    <img 
+      src={project.hero} 
+      alt={`${project.title} - Hero Image`}
+      class="w-full h-96 object-cover border border-gray-200"
+    />
   </section>
 
   <!-- Project Details Grid -->
@@ -82,21 +151,14 @@ const project = projectData[slug] || projectData['project-1'];
   <section class="mb-16">
     <h2 class="text-2xl font-semibold mb-8">Project Images</h2>
     <div class="grid md:grid-cols-2 gap-8">
-      <div class="h-64 bg-gray-100 rounded-lg"></div>
-      <div class="h-64 bg-gray-100 rounded-lg"></div>
-      <div class="h-64 bg-gray-100 rounded-lg"></div>
-      <div class="h-64 bg-gray-100 rounded-lg"></div>
+      {project.images.map((image, index) => (
+        <img 
+          src={image} 
+          alt={`${project.title} - Image ${index + 1}`}
+          class="w-full h-64 object-cover border border-gray-200"
+        />
+      ))}
     </div>
-  </section>
-
-  <!-- Key Learnings -->
-  <section class="mb-16">
-    <h2 class="text-2xl font-semibold mb-4">Major Learnings</h2>
-    <ul class="space-y-3 text-gray-700">
-      <li>• Key insight or learning from this project</li>
-      <li>• Another important takeaway or skill developed</li>
-      <li>• What you'd do differently next time</li>
-    </ul>
   </section>
 
   <!-- Project Links -->
@@ -106,7 +168,7 @@ const project = projectData[slug] || projectData['project-1'];
       {project.links.map(link => (
         <a 
           href={link.url} 
-          class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          class="px-6 py-3 border border-gray-300 hover:bg-gray-50 transition-colors"
         >
           {link.label}
         </a>
@@ -118,10 +180,10 @@ const project = projectData[slug] || projectData['project-1'];
   <section class="border-t border-gray-200 pt-12">
     <div class="flex justify-between items-center">
       <div>
-        <p class="text-gray-600 mb-2">Next Project</p>
-        <h3 class="text-xl font-semibold">Another Project Title</h3>
+        <p class="text-gray-600 mb-2">More Work</p>
+        <h3 class="text-xl font-semibold">Explore Other Projects</h3>
       </div>
-      <a href="/projects/project-2" class="text-blue-600 hover:underline">View Next →</a>
+      <a href="/" class="text-gray-500 hover:text-black transition-colors">View Portfolio →</a>
     </div>
   </section>
 </BaseLayout>

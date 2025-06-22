@@ -1,84 +1,65 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Import the same project data from your [slug].astro file
+const projectData = {
+  'sine-health': {
+    title: 'Sine Health',
+    category: 'Physical Product Design',
+    description: 'A comprehensive case study of designing and developing an innovative sustainable water bottle.',
+    hero: '/projects/sine-health/hero.png'
+  },
+  'stylideas': {
+    title: 'Stylideas',
+    category: 'Physical Product Design',
+    description: 'A digital experience design project focused on user research and interface design.',
+    hero: '/projects/stylideas/hero.png'
+  },
+  'cadence': {
+    title: 'Cadence',
+    category: 'Product Concept',
+    description: 'A strategic workshop series designed to foster innovation and collaboration.',
+    hero: '/projects/cadence/hero.png'
+  },
+  'parametric-modelling': {
+    title: 'Parametric Modelling',
+    category: 'Skill Highlight',
+    description: 'End-to-end design of a learning platform focused on user engagement.',
+    hero: '/projects/parametric-modelling/hero.png'
+  }
+};
+
+// Convert project data to array for easier mapping
+const projects = Object.entries(projectData).map(([slug, data]) => ({
+  slug,
+  ...data
+}));
 ---
 
 <BaseLayout title="Louis Decleyn - Designer">
   <!-- Projects Gallery - Opens Immediately -->
-  <section class="mb-24">
-    <!-- Simple Grid with Increased Spacing -->
-    <div class="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 gap-12">
-      <!-- Project 1 - Physical Product -->
-      <article class="group">
-        <a href="/projects/project-1" class="block">
-          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
-            <span class="text-gray-400 text-sm font-medium">[Product Photo]</span>
-          </div>
-          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Sustainable Water Bottle</h2>
-          <p class="text-gray-500 text-sm">Physical Product Design</p>
-        </a>
-      </article>
-
-      <!-- Project 2 - UI/UX -->
-      <article class="group">
-        <a href="/projects/project-2" class="block">
-          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
-            <span class="text-gray-400 text-sm font-medium">[UI Screenshots]</span>
-          </div>
-          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Healthcare App Redesign</h2>
-          <p class="text-gray-500 text-sm">UI/UX Design</p>
-        </a>
-      </article>
-
-      <!-- Project 3 - Strategy -->
-      <article class="group">
-        <a href="/projects/project-3" class="block">
-          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
-            <span class="text-gray-400 text-sm font-medium">[Workshop Photos]</span>
-          </div>
-          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Innovation Workshop Series</h2>
-          <p class="text-gray-500 text-sm">Strategic Initiative</p>
-        </a>
-      </article>
-
-      <!-- Project 4 - Digital Product -->
-      <article class="group">
-        <a href="/projects/project-4" class="block">
-          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
-            <span class="text-gray-400 text-sm font-medium">[App Interface]</span>
-          </div>
-          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Learning Platform Design</h2>
-          <p class="text-gray-500 text-sm">Product Strategy</p>
-        </a>
-      </article>
-
-      <!-- Project 5 - Process Design -->
-      <article class="group">
-        <a href="/projects/project-5" class="block">
-          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
-            <span class="text-gray-400 text-sm font-medium">[Process Diagram]</span>
-          </div>
-          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Design Thinking Workshop</h2>
-          <p class="text-gray-500 text-sm">Process Design</p>
-        </a>
-      </article>
-
-      <!-- Project 6 - Brand Identity -->
-      <article class="group">
-        <a href="/projects/project-6" class="block">
-          <div class="aspect-square border-2 border-gray-200 mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
-            <span class="text-gray-400 text-sm font-medium">[Brand Assets]</span>
-          </div>
-          <h2 class="text-base font-normal mb-2 text-black group-hover:opacity-70 transition-opacity">Startup Brand Identity</h2>
-          <p class="text-gray-500 text-sm">Visual Design</p>
-        </a>
-      </article>
-    </div>
-
-    <!-- View All Projects Link -->
-    <div class="text-center mt-12">
-      <a href="/projects" class="text-gray-500 hover:text-black text-sm transition-colors">
-        View all projects →
-      </a>
+  <section class="projects-section">
+    <!-- Dynamic Grid - Shows Only Existing Projects -->
+    <div class="project-grid">
+      {projects.map((project) => (
+        <article class="group">
+          <a href={`/projects/${project.slug}`} class="block">
+            {project.hero ? (
+              <img 
+                src={project.hero} 
+                alt={project.title}
+                class="aspect-square w-full object-cover border-4 border-[#DEDEDE] mb-4 sm:mb-5 md:mb-6 group-hover:border-gray-400 transition-all duration-200"
+              />
+            ) : (
+              <div class="aspect-square border-2 border-gray-200 mb-4 sm:mb-5 md:mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
+                <span class="text-gray-400 text-sm font-medium">[{project.category}]</span>
+              </div>
+            )}
+            <h2 class="text-sm sm:text-base font-normal mb-1 sm:mb-2 text-black group-hover:opacity-70 transition-opacity">{project.title}</h2>
+            <p class="text-gray-500 text-xs sm:text-sm">{project.category}</p>
+          </a>
+        </article>
+      ))}
     </div>
   </section>
 
