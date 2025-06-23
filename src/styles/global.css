@@ -27,15 +27,24 @@ nav a {
   color: black !important;
 }
 
-/* Remove navigation dots */
+/* Mobile-first navigation */
 .nav-links {
   list-style: none !important;
   display: flex;
-  gap: 2rem;
+  gap: 1rem; /* Smaller gap on mobile */
 }
 
 .nav-links li {
   list-style: none !important;
+}
+
+/* UPDATED: Mobile-first project grid */
+.project-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr; /* 1 column on mobile */
+  width: 100%;
+  max-width: 100%;
 }
 
 /* ADD THIS: Reset all link styling */
@@ -85,21 +94,88 @@ a:focus {
   }
 }
 
-/* Project grid spacing */
-.project-grid {
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+/* Mobile-first navigation */
+.nav-links {
+  list-style: none !important;
+  display: flex;
+  gap: 1rem; /* Smaller gap on mobile */
 }
 
+.nav-links li {
+  list-style: none !important;
+}
+
+/* ADD THIS to your global.css - Mobile menu styles */
+.mobile-menu {
+  border-top: 1px solid #e5e5e5;
+}
+
+.mobile-menu-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.mobile-menu-button:hover {
+  color: #000;
+}
+
+.mobile-menu ul {
+  list-style: none !important;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-menu a {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.mobile-menu a:last-child {
+  border-bottom: none;
+}
+
+/* Hide mobile menu button on desktop */
 @media (min-width: 768px) {
-  .project-grid {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 2.5rem;
+  .mobile-menu-button {
+    display: none !important;
+  }
+  
+  .mobile-menu {
+    display: none !important;
   }
 }
 
+/* UPDATED: Mobile-first project grid */
+.project-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr; /* 1 column on mobile */
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) {
+  .nav-links {
+    gap: 2rem;
+  }
+  
+  .project-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Desktop: 3 columns */
 @media (min-width: 1024px) {
+  .nav-links {
+    gap: 3rem;
+  }
+  
   .project-grid {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 3rem;

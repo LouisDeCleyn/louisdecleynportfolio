@@ -28,7 +28,7 @@ const { title, description = "Personal portfolio showcasing design work" } = Ast
     <header class="sticky-nav border-b border-gray-200">
       <nav class="max-w-6xl mx-auto px-[5vw] py-8">
         <div class="flex justify-between items-center">
-          <a href="/" class="brand-name hover:opacity-70 transition-opacity">Louis Decleyn</a>
+          <a href="/" class="text-xl font-medium text-black hover:opacity-70 transition-opacity">Louis Decleyn</a>
           <ul class="nav-links">
             <li><a href="/" class="text-base text-gray-600 hover:text-black transition-colors duration-200 font-normal">Home</a></li>
             <li><a href="/about" class="text-base text-gray-600 hover:text-black transition-colors duration-200 font-normal">About</a></li>
@@ -47,5 +47,33 @@ const { title, description = "Personal portfolio showcasing design work" } = Ast
         <p class="text-xs text-gray-500">&copy; 2025 Louis Decleyn. Work in progress.</p>
       </div>
     </footer>
+    
+    <!-- Mobile Menu JavaScript -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const menuIcon = document.querySelector('.menu-icon');
+        const closeIcon = document.querySelector('.close-icon');
+        
+        if (mobileMenuButton && mobileMenu) {
+          mobileMenuButton.addEventListener('click', function() {
+            const isOpen = !mobileMenu.classList.contains('hidden');
+            
+            if (isOpen) {
+              // Close menu
+              mobileMenu.classList.add('hidden');
+              menuIcon.classList.remove('hidden');
+              closeIcon.classList.add('hidden');
+            } else {
+              // Open menu
+              mobileMenu.classList.remove('hidden');
+              menuIcon.classList.add('hidden');
+              closeIcon.classList.remove('hidden');
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>
