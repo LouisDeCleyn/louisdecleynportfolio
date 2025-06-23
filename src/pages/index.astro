@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import aboutPhoto from '../assets/about-photo.jpg';
 
 // Import the same project data from your [slug].astro file
 const projectData = {
@@ -63,43 +65,46 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
     </div>
   </section>
 
-  <!-- Brief About Section -->
-  <section class="border-t border-gray-200 pt-24 mt-32">
-    <div class="max-w-5xl mx-auto">
-      <div class="grid lg:grid-cols-3 gap-20 items-start">
-        <!-- About Text -->
-        <div class="lg:col-span-2">
-          <h2 class="text-xl font-normal mb-10 text-black">About</h2>
-          <div class="space-y-8">
-            <p class="text-gray-700 leading-relaxed">
-              I'm a designer who works across physical products, digital experiences, and strategic initiatives. 
-              My approach starts with understanding the real problem before jumping to solutions.
-            </p>
-            
-            <p class="text-gray-700 leading-relaxed">
-              Whether I'm prototyping a new product, designing a user interface, or facilitating workshops, 
-              I believe good design happens when you combine human insight with creative problem-solving.
-            </p>
-            
-            <p class="text-gray-700 leading-relaxed">
-              Currently based in [Your Location], working on projects that sit at the intersection of 
-              design, technology, and human behavior.
-            </p>
-          </div>
-          
-          <div class="mt-10">
-            <a href="/about" class="text-gray-500 hover:text-black text-sm transition-colors">
-              More about my background →
-            </a>
-          </div>
-        </div>
-        
-        <!-- Profile Image -->
-        <div>
-          <div class="aspect-[3/4] bg-gray-100 mb-4 border border-gray-200"></div>
-          <p class="text-xs text-gray-500">Louis working on a project</p>
-        </div>
+
+<!-- Brief About Section -->
+<section class="about-section">
+  <div class="about-container">
+    <div class="about-grid">
+      
+      <div class="about-photo">
+        <Image 
+          src={aboutPhoto}
+          alt="Louis working on a project"
+          class="about-image"
+          width={3000}
+          height={2000}
+        />
       </div>
+      
+      <div class="about-text">
+        <h2 class="about-title">About Me</h2>
+        
+        <p>
+          I'm a designer who works across physical products, digital experiences, and strategic initiatives. 
+          My approach starts with understanding the real problem before jumping to solutions.
+        </p>
+        
+        <p>
+          Whether I'm prototyping a new product, designing a user interface, or facilitating workshops, 
+          I believe good design happens when you combine human insight with creative problem-solving.
+        </p>
+        
+        <p>
+          Currently based in [Your Location], working on projects that sit at the intersection of 
+          design, technology, and human behavior.
+        </p>
+        
+        <a href="/about" class="about-link">
+          More about my background →
+        </a>
+      </div>
+      
     </div>
-  </section>
+  </div>
+</section>
 </BaseLayout>

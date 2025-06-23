@@ -1,4 +1,5 @@
 ---
+// src/pages/projects/[slug].astro
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 // Simple static paths that work immediately
@@ -19,7 +20,7 @@ const projectData = {
     title: 'Sine Health',
     category: 'Physical Product Design',
     timeline: '1 Year • 2024',
-    description: 'A comprehensive case study of designing and developing an innovative sustainable water bottle.',
+    description: 'A comprehensive case study of designing and developing an innovative sustainable water bottle that addresses the global plastic waste crisis through thoughtful product design.',
     hero: '/projects/sine-health/hero.png',
     problem: 'The world produces over 380 billion plastic bottles annually. I wanted to design a reusable bottle that people actually want to use daily.',
     process: 'Started with user interviews, identified key barriers to reusable bottle adoption, then focused on memory prompts, easy maintenance, and desirability.',
@@ -39,16 +40,16 @@ const projectData = {
     title: 'Stylideas',
     category: 'UI/UX Design',
     timeline: '4 months • 2024',
-    description: 'A digital experience design project focused on user research and interface design.',
+    description: 'A digital experience design project focused on user research and interface design to improve healthcare app engagement and user satisfaction.',
     hero: '/projects/stylideas/hero.png',
     problem: 'The existing healthcare app had low engagement and poor user satisfaction scores.',
     process: 'Conducted user research, created personas, redesigned information architecture, and tested iteratively.',
     outcome: 'Increased user engagement by 67% and improved satisfaction scores from 2.1 to 4.3 stars.',
     images: [
-      '/projects/healthcare-app-redesign/wireframes.jpg',
-      '/projects/healthcare-app-redesign/user-flow.jpg',
-      '/projects/healthcare-app-redesign/final-design.jpg',
-      '/projects/healthcare-app-redesign/mobile-views.jpg'
+      '/projects/stylideas/wireframes.jpg',
+      '/projects/stylideas/user-flow.jpg',
+      '/projects/stylideas/final-design.jpg',
+      '/projects/stylideas/mobile-views.jpg'
     ],
     links: [
       { label: 'Live App', url: '#' },
@@ -59,16 +60,16 @@ const projectData = {
     title: 'Cadence',
     category: 'Product Concept',
     timeline: '3 months • 2024',
-    description: 'A strategic workshop series designed to foster innovation and collaboration.',
+    description: 'A strategic workshop series designed to foster innovation and collaboration across cross-functional teams in enterprise environments.',
     hero: '/projects/cadence/hero.png',
     problem: 'Teams were struggling with innovation processes and cross-functional collaboration.',
     process: 'Designed workshop format, facilitated sessions, gathered feedback, and iteratively improved the approach.',
     outcome: 'Improved team collaboration scores by 45% and generated 12 implemented innovation ideas.',
     images: [
-      '/projects/innovation-workshop-series/workshop-1.jpg',
-      '/projects/innovation-workshop-series/collaboration.jpg',
-      '/projects/innovation-workshop-series/results.jpg',
-      '/projects/innovation-workshop-series/feedback.jpg'
+      '/projects/cadence/workshop-1.jpg',
+      '/projects/cadence/collaboration.jpg',
+      '/projects/cadence/results.jpg',
+      '/projects/cadence/feedback.jpg'
     ],
     links: [
       { label: 'Workshop Guide', url: '#' },
@@ -79,16 +80,16 @@ const projectData = {
     title: 'Parametric Modelling',
     category: 'Skill Highlight',
     timeline: '8 months • 2024',
-    description: 'End-to-end design of a learning platform focused on user engagement.',
+    description: 'End-to-end design of a learning platform focused on user engagement, utilizing parametric design principles and advanced modeling techniques.',
     hero: '/projects/parametric-modelling/hero.png',
     problem: 'Low engagement rates in existing learning platforms, with 70% user drop-off in first week.',
     process: 'User research, competitive analysis, prototyping, user testing, and iterative design improvements.',
     outcome: 'Increased user engagement by 85% and reduced drop-off rate to 23%.',
     images: [
-      '/projects/learning-platform-design/user-research.jpg',
-      '/projects/learning-platform-design/prototypes.jpg',
-      '/projects/learning-platform-design/final-platform.jpg',
-      '/projects/learning-platform-design/mobile-app.jpg'
+      '/projects/parametric-modelling/user-research.jpg',
+      '/projects/parametric-modelling/prototypes.jpg',
+      '/projects/parametric-modelling/final-platform.jpg',
+      '/projects/parametric-modelling/mobile-app.jpg'
     ],
     links: [
       { label: 'Live Platform', url: '#' },
@@ -97,91 +98,271 @@ const projectData = {
   },
 };
 
-
-
-const project = projectData[slug] || projectData['sustainable-water-bottle'];
+const project = projectData[slug] || projectData['sine-health'];
 ---
 
 <BaseLayout title={`${project.title} - Louis Decleyn`} description={project.description}>
-  <!-- Back Navigation -->
-  <nav class="mb-8">
-    <a href="/" class="text-gray-500 hover:text-black transition-colors">← Back to Portfolio</a>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="mb-16">
-    <div class="mb-6">
-      <p class="text-gray-600 mb-2">{project.category} • {project.timeline}</p>
-      <h1 class="text-4xl font-bold mb-4">{project.title}</h1>
-      <p class="text-xl text-gray-700 max-w-3xl">{project.description}</p>
-    </div>
-    
-    <!-- Hero Image -->
-    <img 
-      src={project.hero} 
-      alt={`${project.title} - Hero Image`}
-      class="w-full h-96 object-cover border border-gray-200"
-    />
-  </section>
-
-  <!-- Project Details Grid -->
-  <div class="grid lg:grid-cols-3 gap-12 mb-16">
-    <!-- Problem -->
-    <section>
-      <h2 class="text-2xl font-semibold mb-4">Problem</h2>
-      <p class="text-gray-700">{project.problem}</p>
-    </section>
-
-    <!-- Process -->
-    <section>
-      <h2 class="text-2xl font-semibold mb-4">Process</h2>
-      <p class="text-gray-700">{project.process}</p>
-    </section>
-
-    <!-- Outcome -->
-    <section>
-      <h2 class="text-2xl font-semibold mb-4">Outcome</h2>
-      <p class="text-gray-700">{project.outcome}</p>
-    </section>
-  </div>
-
-  <!-- Project Images Section -->
-  <section class="mb-16">
-    <h2 class="text-2xl font-semibold mb-8">Project Images</h2>
-    <div class="grid md:grid-cols-2 gap-8">
-      {project.images.map((image, index) => (
-        <img 
-          src={image} 
-          alt={`${project.title} - Image ${index + 1}`}
-          class="w-full h-64 object-cover border border-gray-200"
-        />
-      ))}
-    </div>
-  </section>
-
-  <!-- Project Links -->
-  <section class="mb-16">
-    <h2 class="text-2xl font-semibold mb-4">Links & Resources</h2>
-    <div class="flex gap-4">
-      {project.links.map(link => (
-        <a 
-          href={link.url} 
-          class="px-6 py-3 border border-gray-300 hover:bg-gray-50 transition-colors"
-        >
-          {link.label}
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <!-- Next Project -->
-  <section class="border-t border-gray-200 pt-12">
-    <div class="flex justify-between items-center">
-      <div>
-        <p class="text-gray-600 mb-2">More Work</p>
-        <h3 class="text-xl font-semibold">Explore Other Projects</h3>
+  <main>
+    <!-- Full-Screen Hero Image -->
+    <section class="hero-section">
+      <img 
+        src={project.hero} 
+        alt={`${project.title} - Hero Image`}
+        class="hero-image"
+        loading="eager"
+      />
+      
+      <!-- Optional: Project category overlay -->
+      <div class="hero-badge">
+        <div class="hero-badge-content">
+          <span class="hero-badge-text">{project.category}</span>
+        </div>
       </div>
-      <a href="/" class="text-gray-500 hover:text-black transition-colors">View Portfolio →</a>
-    </div>
-  </section>
+    </section>
+
+    <!-- Project Info Section -->
+    <section class="content-section py-20 mb-16">
+      <div class="grid lg:grid-cols-3 gap-12">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-8">
+          <div>
+            <h1 class="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              {project.title}
+            </h1>
+            <p class="text-xl text-gray-600 leading-relaxed">
+              {project.description}
+            </p>
+          </div>
+        </div>
+        
+        <!-- Project Details Sidebar -->
+        <div class="space-y-8">
+          <!-- Timeline -->
+          <div>
+            <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
+              Timeline
+            </h3>
+            <p class="text-lg font-medium">{project.timeline}</p>
+          </div>
+          
+          <!-- Category -->
+          <div>
+            <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
+              Category
+            </h3>
+            <p class="text-lg font-medium">{project.category}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Photo Grid -->
+    <section class="photo-grid-section">
+      <div class="photo-grid">
+        {project.images.map((imageSrc, index) => (
+          <div class="photo-grid-item" key={index}>
+            <div class="photo-container">
+              <img 
+                src={imageSrc}
+                alt={`${project.title} - Process Image ${index + 1}`}
+                class="photo-image"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Project Links -->
+    {project.links && project.links.length > 0 && (
+      <section class="content-section mb-24">
+        <h2 class="text-2xl font-semibold mb-6">Links & Resources</h2>
+        <div class="flex flex-wrap gap-4">
+          {project.links.map((link) => (
+            <a 
+              href={link.url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors group"
+            >
+              <span>{link.label}</span>
+              <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+              </svg>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Project Details Grid -->
+    <section class="content-section mb-24">
+      <div class="grid lg:grid-cols-3 gap-12">
+        <!-- Problem -->
+        <div>
+          <h2 class="text-2xl font-semibold mb-6">Problem</h2>
+          <p class="text-gray-700 leading-relaxed">{project.problem}</p>
+        </div>
+
+        <!-- Process -->
+        <div>
+          <h2 class="text-2xl font-semibold mb-6">Process</h2>
+          <p class="text-gray-700 leading-relaxed">{project.process}</p>
+        </div>
+
+        <!-- Outcome -->
+        <div>
+          <h2 class="text-2xl font-semibold mb-6">Outcome</h2>
+          <p class="text-gray-700 leading-relaxed">{project.outcome}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation -->
+    <section class="content-section py-20 border-t border-gray-200">
+      <div class="flex justify-between items-center">
+        <a 
+          href="/" 
+          class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors group"
+        >
+          <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        
+        <!-- Optional: Next/Previous project navigation -->
+        <div class="text-right">
+          <p class="text-gray-600 mb-2">More Work</p>
+          <a href="/" class="text-gray-500 hover:text-black transition-colors">
+            View Portfolio →
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
 </BaseLayout>
+
+<style>
+  /* Photo Grid Styling */
+  .photo-grid-section {
+    max-width: 1400px; /* Much wider for photos */
+    margin: 0 auto;
+    padding: 0 1.5rem; /* Smaller side padding */
+    margin-bottom: 8rem; /* More space after photo grid */
+  }
+
+  /* Make photo grid even wider on large screens */
+  @media (min-width: 1200px) {
+    .photo-grid-section {
+      max-width: 1600px;
+      padding: 0 2rem;
+    }
+  }
+
+  /* Content sections styling */
+  .content-section {
+    max-width: 896px; /* max-w-4xl */
+    margin: 0 auto;
+    padding-left: 3rem; /* px-12 */
+    padding-right: 3rem; /* px-12 */
+  }
+
+  /* Add extra spacing between major sections */
+  section + section {
+    margin-top: 2rem;
+  }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem; /* gap-6 */
+  }
+
+  /* Responsive grid columns */
+  @media (min-width: 640px) {
+    .photo-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .photo-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .photo-grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  .photo-grid-item {
+    cursor: pointer;
+  }
+
+  .photo-container {
+    position: relative;
+    width: 60%;
+    height: 32rem; /* h-64 */
+    margin: 0 auto;
+    overflow: hidden;
+    background-color: #f3f4f6; /* bg-gray-100 */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+  }
+
+  .photo-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .photo-grid-item:hover .photo-image {
+    transform: scale(1.1);
+  }
+
+  /* Hero styling - Full screen edge to edge, starting from top */
+  .hero-section {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    margin-left: 50%;
+    margin-top: -5rem; /* Negative margin to offset the pt-20 padding */
+    transform: translateX(-50%);
+    overflow: hidden;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    color: white;
+  }
+
+  .hero-badge-content {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .hero-badge-text {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+  }
+</style>
