@@ -102,158 +102,273 @@ const project = projectData[slug] || projectData['sine-health'];
 ---
 
 <BaseLayout title={`${project.title} - Louis Decleyn`} description={project.description}>
-  <main>
-    <!-- Full-Screen Hero Image -->
-    <section class="hero-section">
-      <img 
-        src={project.hero} 
-        alt={`${project.title} - Hero Image`}
-        class="hero-image"
-        loading="eager"
-      />
-      
-      <!-- Optional: Project category overlay -->
-      <div class="hero-badge">
-        <div class="hero-badge-content">
-          <span class="hero-badge-text">{project.category}</span>
-        </div>
+  <!-- Full-Screen Hero Image -->
+  <section class="hero-section">
+    <img 
+      src={project.hero} 
+      alt={`${project.title} - Hero Image`}
+      class="hero-image"
+      loading="eager"
+    />
+    
+    <!-- Project category overlay -->
+    <div class="hero-badge">
+      <div class="hero-badge-content">
+        <span class="hero-badge-text">{project.category}</span>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Project Info Section -->
-    <section class="content-section py-20 mb-16">
-      <div class="grid lg:grid-cols-3 gap-12">
-        <!-- Main Content -->
-        <div class="lg:col-span-2 space-y-8">
-          <div>
-            <h1 class="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              {project.title}
-            </h1>
-            <p class="text-xl text-gray-600 leading-relaxed">
-              {project.description}
-            </p>
-          </div>
+  <!-- Spacer to ensure content starts below hero -->
+  <div class="hero-spacer"></div>
+
+  <!-- Project Info Section -->
+  <section class="content-section">
+    <div class="content-grid">
+      <!-- Main Content -->
+      <div class="content-main">
+        <h1 class="project-title">{project.title}</h1>
+        <p class="project-description">{project.description}</p>
+      </div>
+      
+      <!-- Project Details Sidebar -->
+      <div class="content-sidebar">
+        <!-- Timeline -->
+        <div class="detail-block">
+          <h3 class="detail-label">Timeline</h3>
+          <p class="detail-value">{project.timeline}</p>
         </div>
         
-        <!-- Project Details Sidebar -->
-        <div class="space-y-8">
-          <!-- Timeline -->
-          <div>
-            <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
-              Timeline
-            </h3>
-            <p class="text-lg font-medium">{project.timeline}</p>
-          </div>
-          
-          <!-- Category -->
-          <div>
-            <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
-              Category
-            </h3>
-            <p class="text-lg font-medium">{project.category}</p>
-          </div>
+        <!-- Category -->
+        <div class="detail-block">
+          <h3 class="detail-label">Category</h3>
+          <p class="detail-value">{project.category}</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Photo Grid -->
-    <section class="photo-grid-section">
-      <div class="photo-grid">
-        {project.images.map((imageSrc, index) => (
-          <div class="photo-grid-item" key={index}>
-            <div class="photo-container">
-              <img 
-                src={imageSrc}
-                alt={`${project.title} - Process Image ${index + 1}`}
-                class="photo-image"
-                loading="lazy"
-              />
-            </div>
+  <!-- Photo Grid -->
+  <section class="photo-grid-section">
+    <div class="photo-grid">
+      {project.images.map((imageSrc, index) => (
+        <div class="photo-grid-item" key={index}>
+          <div class="photo-container">
+            <img 
+              src={imageSrc}
+              alt={`${project.title} - Process Image ${index + 1}`}
+              class="photo-image"
+              loading="lazy"
+            />
           </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Project Details Grid -->
+  <section class="content-section">
+    <div class="details-grid">
+      <!-- Problem -->
+      <div class="detail-column">
+        <h2 class="section-title">Problem</h2>
+        <p class="detail-text">{project.problem}</p>
+      </div>
+
+      <!-- Process -->
+      <div class="detail-column">
+        <h2 class="section-title">Process</h2>
+        <p class="detail-text">{project.process}</p>
+      </div>
+
+      <!-- Outcome -->
+      <div class="detail-column">
+        <h2 class="section-title">Outcome</h2>
+        <p class="detail-text">{project.outcome}</p>
+      </div>
+    </div>
+  </section>
+
+    <!-- Project Links -->
+  {project.links && project.links.length > 0 && (
+    <section class="content-section">
+      <h2 class="section-title">Links & Resources</h2>
+      <div class="links-container">
+        {project.links.map((link) => (
+          <a 
+            href={link.url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="link-button"
+          >
+            <span>{link.label}</span>
+            <svg class="link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+          </a>
         ))}
       </div>
     </section>
+  )}
 
-    <!-- Project Links -->
-    {project.links && project.links.length > 0 && (
-      <section class="content-section mb-24">
-        <h2 class="text-2xl font-semibold mb-6">Links & Resources</h2>
-        <div class="flex flex-wrap gap-4">
-          {project.links.map((link) => (
-            <a 
-              href={link.url} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors group"
-            >
-              <span>{link.label}</span>
-              <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-              </svg>
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
-
-    <!-- Project Details Grid -->
-    <section class="content-section mb-24">
-      <div class="grid lg:grid-cols-3 gap-12">
-        <!-- Problem -->
-        <div>
-          <h2 class="text-2xl font-semibold mb-6">Problem</h2>
-          <p class="text-gray-700 leading-relaxed">{project.problem}</p>
-        </div>
-
-        <!-- Process -->
-        <div>
-          <h2 class="text-2xl font-semibold mb-6">Process</h2>
-          <p class="text-gray-700 leading-relaxed">{project.process}</p>
-        </div>
-
-        <!-- Outcome -->
-        <div>
-          <h2 class="text-2xl font-semibold mb-6">Outcome</h2>
-          <p class="text-gray-700 leading-relaxed">{project.outcome}</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Navigation -->
-    <section class="content-section py-20 border-t border-gray-200">
-      <div class="flex justify-between items-center">
-        <a 
-          href="/" 
-          class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors group"
-        >
-          <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-          </svg>
-          Back to Portfolio
-        </a>
-        
-        <!-- Optional: Next/Previous project navigation -->
-        <div class="text-right">
-          <p class="text-gray-600 mb-2">More Work</p>
-          <a href="/" class="text-gray-500 hover:text-black transition-colors">
-            View Portfolio →
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
+  <!-- Navigation -->
+  <section class="content-section navigation-section">
+    <div class="navigation-container">
+      <a href="/" class="nav-link back-link">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Portfolio
+      </a>
+      
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  /* Photo Grid Styling */
-  .photo-grid-section {
-    max-width: 1400px; /* Much wider for photos */
-    margin: 0 auto;
-    padding: 0 1.5rem; /* Smaller side padding */
-    margin-bottom: 8rem; /* More space after photo grid */
+  /* Global resets for edge-to-edge hero */
+  body, html {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
   }
 
-  /* Make photo grid even wider on large screens */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Full-Screen Hero Section */
+  .hero-section {
+    position: absolute;
+    top: 0rem; /* Offset BaseLayout's pt-20 padding */
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    margin-left: -50vw;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    color: white;
+    z-index: 2;
+  }
+
+  .hero-badge-content {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    backdrop-filter: blur(8px);
+  }
+
+  .hero-badge-text {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  /* Spacer to push content below hero */
+  .hero-spacer {
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Content Section Styling */
+  .content-section {
+    max-width: 896px; /* Same as your current width */
+    margin: 0 auto;
+    padding: 0 3rem;
+    margin-bottom: 6rem;
+    position: relative;
+    z-index: 10;
+    background: white;
+  }
+
+  .content-section:first-of-type {
+    padding-top: 5rem;
+  }
+
+  /* Content Grid */
+  .content-grid {
+    display: grid;
+    gap: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    .content-grid {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .content-main {
+    space-y: 2rem;
+  }
+
+  /* Project title - removed redundant font-weight (handled globally) */
+  .project-title {
+    font-size: 2rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .project-title {
+      font-size: 2rem;
+    }
+  }
+
+  .project-description {
+    font-size: 0.875remrem;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+
+  .content-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .detail-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Detail labels - removed redundant font-weight (handled globally) */
+  .detail-label {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .detail-value {
+    font-size: 0.875remrem;
+    color: #6b7280;
+  }
+
+  /* Photo Grid Section */
+  .photo-grid-section {
+    max-width: 1400px; /* Wider for photos */
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    margin-bottom: 8rem;
+    position: relative;
+    z-index: 10;
+  }
+
   @media (min-width: 1200px) {
     .photo-grid-section {
       max-width: 1600px;
@@ -261,42 +376,10 @@ const project = projectData[slug] || projectData['sine-health'];
     }
   }
 
-  /* Content sections styling */
-  .content-section {
-    max-width: 896px; /* max-w-4xl */
-    margin: 0 auto;
-    padding-left: 3rem; /* px-12 */
-    padding-right: 3rem; /* px-12 */
-  }
-
-  /* Add extra spacing between major sections */
-  section + section {
-    margin-top: 2rem;
-  }
-
   .photo-grid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    gap: 1.5rem; /* gap-6 */
-  }
-
-  /* Responsive grid columns */
-  @media (min-width: 640px) {
-    .photo-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 768px) {
-    .photo-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .photo-grid {
-      grid-template-columns: repeat(1, 1fr);
-    }
+    gap: 1.5rem;
   }
 
   .photo-grid-item {
@@ -305,12 +388,13 @@ const project = projectData[slug] || projectData['sine-health'];
 
   .photo-container {
     position: relative;
-    width: 60%;
-    height: 32rem; /* h-64 */
+    width: 80%;
+    height: 44rem;
     margin: 0 auto;
     overflow: hidden;
-    background-color: #f3f4f6; /* bg-gray-100 */
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+    border-radius: 0;
+    background-color: #f3f4f6;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 
   .photo-image {
@@ -327,42 +411,112 @@ const project = projectData[slug] || projectData['sine-health'];
     transform: scale(1.1);
   }
 
-  /* Hero styling - Full screen edge to edge, starting from top */
-  .hero-section {
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-    margin-left: 50%;
-    margin-top: -5rem; /* Negative margin to offset the pt-20 padding */
-    transform: translateX(-50%);
-    overflow: hidden;
+  /* Section titles - removed redundant font-weight (handled globally) */
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #111827;
   }
 
-  .hero-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
+  /* Links Section */
+  .links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
-  .hero-badge {
-    position: absolute;
-    bottom: 2rem;
-    left: 2rem;
-    color: white;
-  }
-
-  .hero-badge-content {
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 1rem 1.5rem;
+  .link-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #d1d5db;
     border-radius: 0.5rem;
-    backdrop-filter: blur(4px);
+    background: white;
+    color: #374151;
+    text-decoration: none;
+    transition: all 0.2s ease;
   }
 
-  .hero-badge-text {
+  .link-button:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+  }
+
+  .link-icon {
+    width: 1rem;
+    height: 1rem;
+    margin-left: 0.5rem;
+    transition: transform 0.2s ease;
+  }
+
+  .link-button:hover .link-icon {
+    transform: translateX(0.25rem);
+  }
+
+  /* Details Grid */
+  .details-grid {
+    display: grid;
+    gap: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    .details-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .detail-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-text {
+    color: #374151;
+    line-height: 1.6;
+  }
+
+  /* Navigation Section */
+  .navigation-section {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 3rem;
+  }
+
+  .navigation-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    color: #6b7280;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .nav-link:hover {
+    color: #111827;
+  }
+
+  .back-link .nav-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+    transition: transform 0.2s ease;
+  }
+
+  .back-link:hover .nav-icon {
+    transform: translateX(-0.25rem);
+  }
+
+  .nav-next {
+    text-align: right;
+  }
+
+  .nav-label {
+    color: #6b7280;
+    margin-bottom: 0.5rem;
     font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    opacity: 0.8;
   }
 </style>
