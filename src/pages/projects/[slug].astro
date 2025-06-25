@@ -19,78 +19,67 @@ const projectData = {
   'sine-health': {
     title: 'Sine Health',
     category: 'Physical Product Design',
-    timeline: '1 Year • 2024',
-    description: 'A comprehensive case study of designing and developing an innovative sustainable water bottle that addresses the global plastic waste crisis through thoughtful product design.',
+    timeline: 'Ongoing • 2024',
+    description: 'Originally developed as my Final Major Project at Brunel University, Sine Health is now an early-stage startup developing a novel wearable for biofeedback and resilience training.',
     hero: '/projects/sine-health/hero.png',
-    problem: 'The world produces over 380 billion plastic bottles annually. I wanted to design a reusable bottle that people actually want to use daily.',
-    process: 'Started with user interviews, identified key barriers to reusable bottle adoption, then focused on memory prompts, easy maintenance, and desirability.',
-    outcome: '94% of test users reported daily use after 2 weeks. Featured in Fast Company\'s "Most Innovative Design" list.',
+    problem: 'Existing solutions take up audio or visual sensory channels limiting how it can be used.',
+    process: 'Mentored and assisted through University, developed prototypes and working models to conduct early tests with users.',
+    outcome: 'Research backed product concept used to raise initial funding. Currently developing MVP.',
     images: [
       '/projects/sine-health/image-1.png',
       '/projects/sine-health/image-2.png',
       '/projects/sine-health/image-3.jpg'
     ],
     links: [
-      { label: 'View Prototype', url: '#' },
-      { label: 'Download PDF', url: '#' }
+      { label: 'View Online', url: 'https://sinehealth.co.uk/' },
     ]
   },
   'stylideas': {
     title: 'Stylideas',
-    category: 'UI/UX Design',
-    timeline: '4 months • 2024',
-    description: 'A digital experience design project focused on user research and interface design to improve healthcare app engagement and user satisfaction.',
+    category: 'Physical Product Design',
+    timeline: '1 Year • 2022',
+    description: 'During my year placement with Stylideas I assissted with the conception and product development of the Clear View portable heated mirror.',
     hero: '/projects/stylideas/hero.png',
-    problem: 'The existing healthcare app had low engagement and poor user satisfaction scores.',
-    process: 'Conducted user research, created personas, redesigned information architecture, and tested iteratively.',
-    outcome: 'Increased user engagement by 67% and improved satisfaction scores from 2.1 to 4.3 stars.',
+    problem: 'Develop innovative mirror concept, capitalising on amazon mirror trends.',
+    process: 'Conducted user research, developed and tested working prototypes.',
+    outcome: 'Clear View mirror is now sold across many major retailors such as QVC and Boots, .',
     images: [
       '/projects/stylideas/image-1.jpg',
       '/projects/stylideas/image-2.jpeg',
       '/projects/stylideas/image-3.png'
     ],
     links: [
-      { label: 'Live App', url: '#' },
-      { label: 'Case Study PDF', url: '#' }
+      { label: 'View Online', url: 'https://stylpro.co.uk/products/stylpro-anti-fog-heated-bathroom-mirror' },
     ]
   },
   'cadence': {
     title: 'Cadence',
     category: 'Product Concept',
-    timeline: '3 months • 2024',
-    description: 'A strategic workshop series designed to foster innovation and collaboration across cross-functional teams in enterprise environments.',
+    timeline: '1 months • 2025',
+    description: 'A concept and early prototype for a timer utilising gradients of light to seamlessly divide up time for both athletics and pomodoro work techniques.',
     hero: '/projects/cadence/hero.png',
-    problem: 'Teams were struggling with innovation processes and cross-functional collaboration.',
-    process: 'Designed workshop format, facilitated sessions, gathered feedback, and iteratively improved the approach.',
-    outcome: 'Improved team collaboration scores by 45% and generated 12 implemented innovation ideas.',
     images: [
       '/projects/cadence/image-1.png',
       '/projects/cadence/image-2.png',
       '/projects/cadence/image-3.png',
-      '/projects/cadence/image-4.jpg'
     ],
     links: [
-      { label: 'Workshop Guide', url: '#' },
-      { label: 'Results Report', url: '#' }
+
     ]
   },
   'parametric-modelling': {
     title: 'Parametric Modelling',
     category: 'Skill Highlight',
-    timeline: '8 months • 2024',
-    description: 'End-to-end design of a learning platform focused on user engagement, utilizing parametric design principles and advanced modeling techniques.',
+    timeline: 'Ongoing • 2025',
+    description: 'Ongoing learning of parametric modelling techniques, alongside applying findings to create visually interesting product designs.',
     hero: '/projects/parametric-modelling/hero.png',
-    problem: 'Low engagement rates in existing learning platforms, with 70% user drop-off in first week.',
-    process: 'User research, competitive analysis, prototyping, user testing, and iterative design improvements.',
-    outcome: 'Increased user engagement by 85% and reduced drop-off rate to 23%.',
     images: [
       '/projects/parametric-modelling/image-1.png',
       '/projects/parametric-modelling/image-2.png',
       '/projects/parametric-modelling/image-3.png'
     ],
     links: [
-      { label: 'Live Platform', url: '#' },
-      { label: 'Design System', url: '#' }
+
     ]
   },
 };
@@ -163,28 +152,36 @@ const project = projectData[slug] || projectData['sine-health'];
     </div>
   </section>
 
-  <!-- Project Details Grid -->
+ <!-- Project Details Grid - Only show if any of the fields exist -->
+{(project.problem || project.process || project.outcome) && (
   <section class="content-section">
     <div class="details-grid">
-      <!-- Problem -->
-      <div class="detail-column">
-        <h2 class="section-title">Problem</h2>
-        <p class="detail-text">{project.problem}</p>
-      </div>
+      <!-- Problem - Only show if exists -->
+      {project.problem && (
+        <div class="detail-column">
+          <h2 class="section-title">Problem</h2>
+          <p class="detail-text">{project.problem}</p>
+        </div>
+      )}
 
-      <!-- Process -->
-      <div class="detail-column">
-        <h2 class="section-title">Process</h2>
-        <p class="detail-text">{project.process}</p>
-      </div>
+      <!-- Process - Only show if exists -->
+      {project.process && (
+        <div class="detail-column">
+          <h2 class="section-title">Process</h2>
+          <p class="detail-text">{project.process}</p>
+        </div>
+      )}
 
-      <!-- Outcome -->
-      <div class="detail-column">
-        <h2 class="section-title">Outcome</h2>
-        <p class="detail-text">{project.outcome}</p>
-      </div>
+      <!-- Outcome - Only show if exists -->
+      {project.outcome && (
+        <div class="detail-column">
+          <h2 class="section-title">Outcome</h2>
+          <p class="detail-text">{project.outcome}</p>
+        </div>
+      )}
     </div>
   </section>
+)}
 
     <!-- Project Links -->
   {project.links && project.links.length > 0 && (
@@ -376,7 +373,7 @@ const project = projectData[slug] || projectData['sine-health'];
   .photo-grid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    gap: 1.5rem;
+    gap: 3rem;
   }
 
   .photo-grid-item {
@@ -386,7 +383,7 @@ const project = projectData[slug] || projectData['sine-health'];
   .photo-container {
     position: relative;
     width: 80%;
-    height: 44rem;
+    aspect-ratio: 16 / 9;    /* ← Maintains 4:3 ratio at all sizes */
     margin: 0 auto;
     overflow: hidden;
     border-radius: 0;
