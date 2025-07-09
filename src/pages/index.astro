@@ -28,7 +28,14 @@ const projectData = {
     category: 'Skill Highlight',
     description: 'End-to-end design of a learning platform focused on user engagement.',
     hero: '/projects/parametric-modelling/hero.png'
+  },
+  'hearth': {
+    title: 'Hearth',
+    category: 'Brand Design',
+    description: 'End-to-end design of a learning platform focused on user engagement.',
+    hero: '/projects/hearth/hero.png'
   }
+
 };
 
 // Convert project data to array for easier mapping
@@ -38,7 +45,7 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
 }));
 ---
 
-<BaseLayout title="Louis Decleyn - Designer">
+<BaseLayout title="Louis DeCleyn - Designer">
   <!-- Projects Gallery - Opens Immediately -->
   <section class="projects-section">
     <!-- Dynamic Grid - Shows Only Existing Projects -->
@@ -50,7 +57,7 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
               <img 
                 src={project.hero} 
                 alt={project.title}
-                class="aspect-square w-full object-cover border-4 border-[#DEDEDE] mb-4 sm:mb-5 md:mb-6 group-hover:border-gray-400 transition-all duration-200"
+                class="project-hero-image aspect-square w-full object-cover border-2 border-[#DEDEDE] mb-4 sm:mb-5 md:mb-6 group-hover:border-gray-400 transition-all duration-200"
               />
             ) : (
               <div class="aspect-square border-2 border-gray-200 mb-4 sm:mb-5 md:mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
@@ -108,3 +115,22 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
   </div>
 </section>
 </BaseLayout>
+
+
+<style>
+  /* Remove the transform from the block element */
+  .block {
+    transition: none;
+  }
+
+  /* Apply the hover effect only to the image */
+  .project-hero-image {
+    transition: all 0.4s ease;
+  }
+
+  .block:hover .project-hero-image {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+  }
+</style>

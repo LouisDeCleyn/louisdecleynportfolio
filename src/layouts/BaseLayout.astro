@@ -24,26 +24,27 @@ const { title, description = "Personal portfolio showcasing design work" } = Ast
     
     <title>{title}</title>
   </head>
-  <body class="bg-white text-black">
+  <body class="text-black grid-bg">
     <header class="sticky-nav border-b border-gray-200">
       <nav class="max-w-6xl mx-auto px-[5vw] py-8">
         <div class="flex justify-between items-center">
-          <a href="/" class="text-xl font-medium text-black hover:opacity-70 transition-opacity">Louis Decleyn</a>
+          <a href="/" class="brand-gradient brand-name hover:opacity-70 transition-opacity">Louis Decleyn</a>
           <ul class="nav-links">
             <li><a href="/" class="text-base text-gray-600 hover:text-black transition-colors duration-200 font-normal">Home</a></li>
             <li><a href="/about" class="text-base text-gray-600 hover:text-black transition-colors duration-200 font-normal">About</a></li>
             <li><a href="/contact" class="text-base text-gray-600 hover:text-black transition-colors duration-200 font-normal">Contact</a></li>
+            <li><a href="/blog" class="text-base text-gray-600 hover:text-black transition-colors duration-200 font-normal">Blog</a></li>
           </ul>
         </div>
       </nav>
     </header>
     
-    <main class="max-w-6xl mx-auto px-[5vw] py-[3vw]">
+    <main class="max-w-6xl mx-auto px-[5vw] pt-[3vw]">
       <slot />
     </main>
     
-    <footer class="border-t border-gray-200 mt-24">
-      <div class="max-w-6xl mx-auto px-[5vw] py-16 text-center">
+    <footer class="border-t-0 border-gray-200 ">
+      <div class="max-w-6xl mx-auto text-center">
         <p class="text-xs text-gray-500">&copy; 2025 Louis Decleyn. Work in progress.</p>
       </div>
     </footer>

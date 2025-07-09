@@ -8,7 +8,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <!-- Photo Container -->
     <div class="photo-container">
       <img src="/images/about/profile-main.jpg" alt="Louis Decleyn in his design studio" class="main-photo" />
-      <p class="photo-caption">Always happy while sketching</p>
     </div>
     
     <!-- About Me Text -->
@@ -70,7 +69,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="timeline-item">
           <div class="timeline-date">March 2025 - July 2025</div>
           <h3 class="timeline-role">Innovate Design</h3>
-          <p class="timeline-description">Delivered product design across 50+ client projects. Turned early ideas into viable solutions, created pitch visuals, explored AI tools, and supported IP filings.</p>
+          <p class="timeline-description">Delivered product design services across 35+ client projects. Turned early ideas into viable solutions, created pitch visuals, explored AI tools, and supported IP filings.</p>
         </div>
         
         <div class="timeline-item">
@@ -85,7 +84,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <p class="timeline-description">Led early design research and produced launch visuals, packaging, and strategy insights.</p>
         </div>
 
-                <div class="timeline-item">
+        <div class="timeline-item">
           <div class="timeline-date">2022 - 2023</div>
           <h3 class="timeline-role">Stylideas: Placement</h3>
           <p class="timeline-description">Designed consumer products end-to-end, from sketch to shelf.</p>
@@ -98,11 +97,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="photo-grid-section">
     <h2 class="section-title">More About Me</h2>
     <div class="photo-grid">
-      <img src="/images/about/image-1.JPG" alt="Louis working on a design project" class="grid-photo" />
-      <img src="/images/about/image-2.jpg" alt="Louis sketching ideas" class="grid-photo" />
-      <img src="/images/about/image-3.JPG" alt="Louis traveling for inspiration" class="grid-photo" />
-      <img src="/images/about/image-4.jpg" alt="Louis exploring new places" class="grid-photo" />
-      <img src="/images/about/image-5.JPG" alt="Louis pursuing personal interests" class="grid-photo" />
+      <div class="photo-item">
+        <img src="/images/about/image-1.JPG" alt="Louis working on a design project" class="grid-photo" />
+        <div class="photo-overlay">
+          <p class="photo-description">Collecting feedback on Prototypes at Olympia London</p>
+        </div>
+      </div>
+      
+      <div class="photo-item">
+        <img src="/images/about/image-2.jpg" alt="Louis sketching ideas" class="grid-photo" />
+        <div class="photo-overlay">
+          <p class="photo-description">Sketching out new ideas and concepts</p>
+        </div>
+      </div>
+      
+      <div class="photo-item">
+        <img src="/images/about/image-3.JPG" alt="Louis traveling for inspiration" class="grid-photo" />
+        <div class="photo-overlay">
+          <p class="photo-description">Competed in the 2022 BUCs Boxing</p>
+        </div>
+      </div>
+      
+      <div class="photo-item">
+        <img src="/images/about/image-4.jpg" alt="Louis exploring new places" class="grid-photo" />
+        <div class="photo-overlay">
+          <p class="photo-description">Participating in UI/UX co-design workshop</p>
+        </div>
+      </div>
+      
+      <div class="photo-item">
+        <img src="/images/about/image-5.png" alt="Louis pursuing personal interests" class="grid-photo" />
+        <div class="photo-overlay">
+          <p class="photo-description">Attending the 2025 Brunel University Alumni Awards</p>
+        </div>
+      </div>
     </div>
     <p class="grid-caption">
       Photos of me working, traveling, and exploring various interests
@@ -238,15 +266,49 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-bottom: 1rem;
   }
 
-  .grid-photo {
+  /* Photo item containers */
+  .photo-item {
+    position: relative;
+    overflow: hidden;
     width: 100%;
     aspect-ratio: 1;
-    object-fit: cover;
-    transition: transform 0.2s ease;
   }
 
-  .grid-photo:hover {
-    transform: scale(1.02);
+  .grid-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    display: block;
+  }
+
+  .photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+  }
+
+  .photo-item:hover .photo-overlay {
+    opacity: 0.8;
+  }
+
+
+  .photo-description {
+    color: white;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.4;
   }
 
   .grid-caption {
@@ -257,10 +319,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   /* Call to Action */
   .cta-section {
-    background-color: #f9fafb;
-    border-radius: 0.5rem;
-    padding: 2rem;
+    margin-top: 5rem;
+    margin-bottom: 4rem;
     text-align: center;
+    background-color: rgb(249, 250, 251);
+    padding: 3rem;
+    border: 2px solid #f3f4f6;
   }
 
   .cta-title {
@@ -270,7 +334,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .cta-text {
-    color:rgb(5, 5, 5);
+    color: rgb(5, 5, 5);
     margin-bottom: 1.5rem;
     max-width: 42rem;
     margin-left: auto;
@@ -307,6 +371,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   @media (max-width: 768px) {
     .photo-grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .photo-description {
+      font-size: 0.75rem;
+    }
+    
+    .photo-overlay {
+      padding: 0.5rem;
     }
   }
 </style>

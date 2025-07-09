@@ -22,9 +22,18 @@ nav a {
 
 /* Bold name in navigation */
 .brand-name {
-  font-weight: 700 !important;  /* Bold */
+  font-weight: 600 !important;  /* Bold */
   font-size: 1.25rem !important; /* text-xl equivalent */
-  color: black !important;
+  color: rgb(133, 133, 133) !important;
+}
+
+.brand-gradient {
+  color: #000000;
+  background: linear-gradient(30deg, #000000 0%, #6f7279 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
 }
 
 /* Mobile-first navigation */
@@ -214,6 +223,13 @@ a:focus {
   border-top: 1px solid #e5e7eb;
   padding-top: 6rem;
   margin-top: 8rem;
+  background-color: white;
+  margin-left: -5vw;  /* Extend to page edges */
+  margin-right: -5vw;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  padding-bottom: 8rem;
+  margin-bottom: 0;
 }
 
 .about-container {
@@ -316,3 +332,35 @@ a:focus {
 * {
   box-sizing: border-box;
 } */ 
+
+
+html {
+  background-color: #fafaf9;
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-attachment: fixed;
+}
+
+footer {
+  margin-top: 0 !important;
+  background-color: #fafaf9;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Make main content grow to fill available space */
+main {
+  flex: 1;
+}
