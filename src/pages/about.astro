@@ -15,7 +15,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h1 class="main-title">About Me</h1>
       <div class="prose">
         <p class="intro-text">
-          Adaptable industrial designer with a strong bias toward action and problem-solving. Proven track record across product development, strategic research, and operations. Founded and led a wearable tech venture, gaining real-world experience in branding, user testing, business planning, and pitching.
+          Adaptable designer with a strong bias toward action and problem-solving. Proven track record across product development, strategic research, and operations. Founded and led a wearable tech venture, gaining real-world experience in branding, user testing, business planning, and pitching.
         </p>
       </div>
     </div>
@@ -23,40 +23,78 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <!-- Skills & Experience Section - Two Columns -->
   <section class="skills-experience">
-    <!-- Skills Column -->
+    <!-- Enhanced Skills Column -->
     <div class="skills-column">
       <h2 class="section-title">Skills & Expertise</h2>
       <div class="skills-content">
+        
+        <!-- Software Skills with Logos -->
+        <div class="skill-group">
+          <h3 class="skill-category">Software</h3>
+          <div class="software-grid">
+            <div class="software-item">
+              <img src="/images/software/solidworks-icon.svg" alt="SolidWorks" class="software-logo" />
+              <span class="software-name">SolidWorks</span>
+            </div>
+            <div class="software-item">
+              <img src="/images/software/rhino-icon.svg" alt="Rhino" class="software-logo" />
+              <span class="software-name">Rhino</span>
+            </div>
+            <div class="software-item">
+              <img src="/images/software/grasshopper-icon.svg" alt="Grasshopper" class="software-logo" />
+              <span class="software-name">Grasshopper</span>
+            </div>
+            <div class="software-item">
+              <img src="/images/software/keyshot-icon.svg" alt="KeyShot" class="software-logo" />
+              <span class="software-name">KeyShot</span>
+            </div>
+            <div class="software-item">
+              <img src="/images/software/photoshop-icon.svg" alt="Photoshop" class="software-logo" />
+              <span class="software-name">Photoshop</span>
+            </div>
+            <div class="software-item">
+              <img src="/images/software/illustrator-icon.svg" alt="Illustrator" class="software-logo" />
+              <span class="software-name">Illustrator</span>
+            </div>
+            <div class="software-item">
+              <img src="/images/software/indesign-icon.svg" alt="InDesign" class="software-logo" />
+              <span class="software-name">InDesign</span>
+            </div>
+            <div class="software-item">
+              <img src="/images/software/xd-icon.svg" alt="Adobe XD" class="software-logo" />
+              <span class="software-name">Adobe XD</span>
+            </div>
+            <div class="software-item">
+              <img src="/images/software/visualstudiocode-icon.svg" alt="Visual Studio Code" class="software-logo" />
+              <span class="software-name">Visual Studio Code</span>
+            </div>
+            <div class="software-item">
+              <img src="/images/software/figma-icon.svg" alt="Figma" class="software-logo" />
+              <span class="software-name">Figma</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Design Skills -->
         <div class="skill-group">
           <h3 class="skill-category">Design</h3>
           <ul class="skill-list">
-            <li>User Research</li>
-            <li>Product Design</li>
-            <li>UI/UX Design</li>
-            <li>Prototyping</li>
-            <li>Design Systems</li>
+            <li>Human-Centered Design & User Research</li>
+            <li>Product Design & Industrial Design</li>
+            <li>UI/UX Design & Interaction Design</li>
+            <li>Rapid Prototyping</li>
+            <li>Electronics Integration & Arduino-based Prototyping</li>
           </ul>
         </div>
         
+        <!-- Soft Skills -->
         <div class="skill-group">
-          <h3 class="skill-category">Technical</h3>
+          <h3 class="skill-category">Soft Skills</h3>
           <ul class="skill-list">
-            <li>CAD: Solidworks, Rhino</li>
-            <li>Adobe Creative Suit</li>
-            <li>Technical Drawing</li>
-            <li>HTML/CSS</li>
-            <li>Prototyping</li>
-          </ul>
-        </div>
-        
-        <div class="skill-group">
-          <h3 class="skill-category">Strategy</h3>
-          <ul class="skill-list">
-            <li>Design Strategy</li>
-            <li>User Testing</li>
-            <li>Workshop Facilitation</li>
-            <li>Cross-functional Collaboration</li>
             <li>Project Management</li>
+            <li>Cross-Functional Teamwork</li>
+            <li>Agile & Iterative Development Processes</li>
+            <li>Communication & Stakeholder Engagement</li>
           </ul>
         </div>
       </div>
@@ -80,14 +118,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         
         <div class="timeline-item">
           <div class="timeline-date">2023 - 2024</div>
-          <h3 class="timeline-role">Stylideas: Freelance</h3>
-          <p class="timeline-description">Led early design research and produced launch visuals, packaging, and strategy insights.</p>
+          <h3 class="timeline-role">Freelance Designer</h3>
+          <p class="timeline-description">Developed product visualisation and marketing assets for B2C and lifestyle-focused launches.
+Delivered brand-aligned illustrations, packaging designs, and digital touchpoints.</p>
         </div>
 
         <div class="timeline-item">
           <div class="timeline-date">2022 - 2023</div>
-          <h3 class="timeline-role">Stylideas: Placement</h3>
-          <p class="timeline-description">Designed consumer products end-to-end, from sketch to shelf.</p>
+          <h3 class="timeline-role">Stylideas</h3>
+          <p class="timeline-description">Designed consumer products end-to-end, from sketch to shelf. 
+          Led early design research and produced launch visuals, packaging, and strategy insights</p>
         </div>
       </div>
     </div>
@@ -206,13 +246,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .skills-content {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
   .skill-category {
     font-size: 1.125rem;
     font-weight: 500;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    color: #111827;
   }
 
   .skill-list {
@@ -222,7 +263,42 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .skill-list li {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0;
+  }
+
+  /* Enhanced Software Grid Styles */
+  .software-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .software-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+
+  .software-item:hover {
+    transform: translateY(-2px);
+  }
+
+  .software-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+  }
+
+  .software-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    color: #374151;
+    line-height: 1.2;
   }
 
   /* Timeline Styles */
@@ -301,7 +377,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     opacity: 0.8;
   }
 
-
   .photo-description {
     color: white;
     text-align: center;
@@ -366,11 +441,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .photo-grid {
       grid-template-columns: repeat(3, 1fr);
     }
+
+    .software-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
   }
 
   @media (max-width: 768px) {
     .photo-grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .software-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
     }
     
     .photo-description {
@@ -379,6 +464,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     
     .photo-overlay {
       padding: 0.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .software-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .software-logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    .software-name {
+      font-size: 0.6875rem;
     }
   }
 </style>
