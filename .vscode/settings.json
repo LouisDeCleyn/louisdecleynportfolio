@@ -1,0 +1,18 @@
+{
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false,
+  "tailwindCSS.includeLanguages": {
+    "astro": "html"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["class:list\\s*=\\s*\\{([^}]*)\\}", "(?:'|\"|`)([^'\"`,;]*)(?:'|\"|`)"],
+    ["class\\s*=\\s*{([^}]*)}", "\"([^\"]*)\"|'([^']*)'|`([^`]*)`"]
+  ],
+  "files.associations": {
+    "*.astro": "astro"
+  },
+  "emmet.includeLanguages": {
+    "astro": "html"
+  }
+}

@@ -2,35 +2,62 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="About - Your Portfolio">
-  <!-- Main About Section - Photo Left, Text Right -->
-  <section class="about-hero">
-    <!-- Photo Container -->
-    <div class="photo-container">
-      <img src="/images/about/profile-main.jpg" alt="Louis Decleyn in his design studio" class="main-photo" />
-    </div>
-    
-    <!-- About Me Text -->
-    <div class="about-text">
-      <h1 class="main-title">About Me</h1>
-      <div class="prose">
-        <p class="intro-text">
-          Adaptable designer with a strong bias toward action and problem-solving. Proven track record across product development, strategic research, and operations. Founded and led a wearable tech venture, gaining real-world experience in branding, user testing, business planning, and pitching.
-        </p>
-      </div>
-    </div>
-  </section>
+<BaseLayout title="About - Louis Decleyn">
+  <!-- Standardized Page Header -->
+  <div class="page-container">
+    <section class="page-header">
+      <h1 class="page-title">About Me</h1>
+      <p class="page-subtitle">
+        Adaptable designer with a strong bias toward action and problem-solving. Proven track record across product development, strategic research, and operations.
+      </p>
+    </section>
 
-  <!-- Skills & Experience Section - Two Columns -->
-  <section class="skills-experience">
-    <!-- Enhanced Skills Column -->
-    <div class="skills-column">
-      <h2 class="section-title">Skills & Expertise</h2>
-      <div class="skills-content">
-        
-        <!-- Software Skills with Logos -->
+    <!-- Main About Section - Photo Left, Experience Right -->
+    <section class="about-hero-section">
+      <!-- Photo Container -->
+      <div class="about-photo-container">
+        <img src="/images/about/profile-main.jpg" alt="Louis Decleyn in his design studio" class="main-photo" />
+      </div>
+      
+      <!-- Experience Timeline -->
+      <div class="about-experience-content">
+        <h2 class="section-title-large mb-8">Experience</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-date">March 2025 - July 2025</div>
+            <h3 class="timeline-role">Innovate Design</h3>
+            <p class="timeline-description">Delivered product design services across 35+ client projects. Turned early ideas into viable solutions, created pitch visuals, explored AI tools, and supported IP filings.</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-date">November 2024 - January 2025</div>
+            <h3 class="timeline-role">Lindus Health</h3>
+            <p class="timeline-description">Improved internal processes, built tools to speed up workflows, and supported go-to-market efforts.</p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-date">2023 - 2024</div>
+            <h3 class="timeline-role">Freelance Designer</h3>
+            <p class="timeline-description">Developed product visualisation and marketing assets for B2C and lifestyle-focused launches. Delivered brand-aligned illustrations, packaging designs, and digital touchpoints.</p>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-date">2022 - 2023</div>
+            <h3 class="timeline-role">Stylideas</h3>
+            <p class="timeline-description">Designed consumer products end-to-end, from sketch to shelf. Led early design research and produced launch visuals, packaging, and strategy insights</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills-section">
+      <h2 class="section-title-large">Skills & Expertise</h2>
+      
+      <div class="skills-grid">
+        <!-- Software Skills -->
         <div class="skill-group">
-          <h3 class="skill-category">Software</h3>
+          <h3 class="section-title-small">Software</h3>
           <div class="software-grid">
             <div class="software-item">
               <img src="/images/software/solidworks-icon.svg" alt="SolidWorks" class="software-logo" />
@@ -77,7 +104,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         
         <!-- Design Skills -->
         <div class="skill-group">
-          <h3 class="skill-category">Design</h3>
+          <h3 class="section-title-small">Design</h3>
           <ul class="skill-list">
             <li>Human-Centered Design & User Research</li>
             <li>Product Design & Industrial Design</li>
@@ -89,7 +116,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         
         <!-- Soft Skills -->
         <div class="skill-group">
-          <h3 class="skill-category">Soft Skills</h3>
+          <h3 class="section-title-small">Soft Skills</h3>
           <ul class="skill-list">
             <li>Project Management</li>
             <li>Cross-Functional Teamwork</li>
@@ -98,388 +125,63 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </ul>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Experience Timeline Column -->
-    <div class="experience-column">
-      <h2 class="section-title">Experience</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-date">March 2025 - July 2025</div>
-          <h3 class="timeline-role">Innovate Design</h3>
-          <p class="timeline-description">Delivered product design services across 35+ client projects. Turned early ideas into viable solutions, created pitch visuals, explored AI tools, and supported IP filings.</p>
+    <!-- Photo Grid Section -->
+    <section class="photo-grid-section">
+      <h2 class="section-title-large">More About Me</h2>
+      <div class="about-photo-grid">
+        <div class="photo-item">
+          <img src="/images/about/image-1.JPG" alt="Louis working on a design project" class="grid-photo" />
+          <div class="photo-overlay">
+            <p class="photo-description">Collecting feedback on Prototypes at Olympia London</p>
+          </div>
         </div>
         
-        <div class="timeline-item">
-          <div class="timeline-date">November 2024 - January 2025</div>
-          <h3 class="timeline-role">Lindus Health</h3>
-          <p class="timeline-description">Improved internal processes, built tools to speed up workflows, and supported go-to-market efforts.</p>
+        <div class="photo-item">
+          <img src="/images/about/image-2.jpg" alt="Louis sketching ideas" class="grid-photo" />
+          <div class="photo-overlay">
+            <p class="photo-description">Sketching out new ideas and concepts</p>
+          </div>
         </div>
         
-        <div class="timeline-item">
-          <div class="timeline-date">2023 - 2024</div>
-          <h3 class="timeline-role">Freelance Designer</h3>
-          <p class="timeline-description">Developed product visualisation and marketing assets for B2C and lifestyle-focused launches.
-Delivered brand-aligned illustrations, packaging designs, and digital touchpoints.</p>
+        <div class="photo-item">
+          <img src="/images/about/image-3.JPG" alt="Louis traveling for inspiration" class="grid-photo" />
+          <div class="photo-overlay">
+            <p class="photo-description">Competed in the 2022 BUCs Boxing</p>
+          </div>
         </div>
+        
+        <div class="photo-item">
+          <img src="/images/about/image-4.jpg" alt="Louis exploring new places" class="grid-photo" />
+          <div class="photo-overlay">
+            <p class="photo-description">Participating in UI/UX co-design workshop</p>
+          </div>
+        </div>
+        
+        <div class="photo-item">
+          <img src="/images/about/image-5.png" alt="Louis pursuing personal interests" class="grid-photo" />
+          <div class="photo-overlay">
+            <p class="photo-description">Attending the 2025 Brunel University Alumni Awards</p>
+          </div>
+        </div>
+      </div>
+      <p class="text-sm text-gray-500 text-center mt-4">
+        Photos of me working, traveling, and exploring various interests
+      </p>
+    </section>
 
-        <div class="timeline-item">
-          <div class="timeline-date">2022 - 2023</div>
-          <h3 class="timeline-role">Stylideas</h3>
-          <p class="timeline-description">Designed consumer products end-to-end, from sketch to shelf. 
-          Led early design research and produced launch visuals, packaging, and strategy insights</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- Call to Action -->
+    <section class="cta-section">
+      <h2 class="section-title-large">Let's Work Together</h2>
+      <p class="text-base text-gray-700 mb-6 max-w-2xl mx-auto">
+        I'm always interested in new challenges and collaborations. Whether you have 
+        a specific project in mind or just want to chat about design, feel free to reach out.
+      </p>
+      <a href="/contact" class="cta-button">
+        Get In Touch
+      </a>
+    </section>
 
-  <!-- Photo Grid Section -->
-  <section class="photo-grid-section">
-    <h2 class="section-title">More About Me</h2>
-    <div class="photo-grid">
-      <div class="photo-item">
-        <img src="/images/about/image-1.JPG" alt="Louis working on a design project" class="grid-photo" />
-        <div class="photo-overlay">
-          <p class="photo-description">Collecting feedback on Prototypes at Olympia London</p>
-        </div>
-      </div>
-      
-      <div class="photo-item">
-        <img src="/images/about/image-2.jpg" alt="Louis sketching ideas" class="grid-photo" />
-        <div class="photo-overlay">
-          <p class="photo-description">Sketching out new ideas and concepts</p>
-        </div>
-      </div>
-      
-      <div class="photo-item">
-        <img src="/images/about/image-3.JPG" alt="Louis traveling for inspiration" class="grid-photo" />
-        <div class="photo-overlay">
-          <p class="photo-description">Competed in the 2022 BUCs Boxing</p>
-        </div>
-      </div>
-      
-      <div class="photo-item">
-        <img src="/images/about/image-4.jpg" alt="Louis exploring new places" class="grid-photo" />
-        <div class="photo-overlay">
-          <p class="photo-description">Participating in UI/UX co-design workshop</p>
-        </div>
-      </div>
-      
-      <div class="photo-item">
-        <img src="/images/about/image-5.png" alt="Louis pursuing personal interests" class="grid-photo" />
-        <div class="photo-overlay">
-          <p class="photo-description">Attending the 2025 Brunel University Alumni Awards</p>
-        </div>
-      </div>
-    </div>
-    <p class="grid-caption">
-      Photos of me working, traveling, and exploring various interests
-    </p>
-  </section>
-
-  <!-- Call to Action -->
-  <section class="cta-section">
-    <h2 class="cta-title">Let's Work Together</h2>
-    <p class="cta-text">
-      I'm always interested in new challenges and collaborations. Whether you have 
-      a specific project in mind or just want to chat about design, feel free to reach out.
-    </p>
-    <a href="/contact" class="cta-button">
-      Get In Touch
-    </a>
-  </section>
+  </div>
 </BaseLayout>
-
-<style>
-  /* Main About Section - Photo Left, Text Right */
-  .about-hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    margin-bottom: 4rem;
-    margin-top: 4rem;
-  }
-
-  .main-photo {
-    width: 100%;
-    height: 24rem;
-    object-fit: cover;
-  }
-
-  .photo-caption {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-top: 0.5rem;
-  }
-
-  .main-title {
-    font-size: 1.875rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-  }
-
-  .intro-text {
-    font-size: 1.125rem;
-    color: #374151;
-    margin-bottom: 1rem;
-  }
-
-  .body-text {
-    color: #374151;
-    margin-bottom: 1rem;
-  }
-
-  /* Skills & Experience Section - Two Columns */
-  .skills-experience {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    margin-bottom: 4rem;
-  }
-
-  .section-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 2rem;
-  }
-
-  .skills-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .skill-category {
-    font-size: 1.125rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
-    color: #111827;
-  }
-
-  .skill-list {
-    color: #374151;
-    list-style: none;
-    padding: 0;
-  }
-
-  .skill-list li {
-    margin-bottom: 0.5rem;
-    padding: 0.25rem 0;
-  }
-
-  /* Enhanced Software Grid Styles */
-  .software-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .software-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.2s ease;
-  }
-
-  .software-item:hover {
-    transform: translateY(-2px);
-  }
-
-  .software-logo {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    margin-bottom: 0.5rem;
-  }
-
-  .software-name {
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-align: center;
-    color: #374151;
-    line-height: 1.2;
-  }
-
-  /* Timeline Styles */
-  .timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .timeline-item {
-    border-left: 2px solid #e5e7eb;
-    padding-left: 1.5rem;
-    position: relative;
-  }
-
-  .timeline-date {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-bottom: 0.25rem;
-  }
-
-  .timeline-role {
-    font-size: 1.125rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-  }
-
-  .timeline-description {
-    color: #374151;
-  }
-
-  /* Photo Grid Section */
-  .photo-grid-section {
-    margin-bottom: 4rem;
-  }
-
-  .photo-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  /* Photo item containers */
-  .photo-item {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    aspect-ratio: 1;
-  }
-
-  .grid-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-    display: block;
-  }
-
-  .photo-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    padding: 1rem;
-  }
-
-  .photo-item:hover .photo-overlay {
-    opacity: 0.8;
-  }
-
-  .photo-description {
-    color: white;
-    text-align: center;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin: 0;
-    line-height: 1.4;
-  }
-
-  .grid-caption {
-    font-size: 0.875rem;
-    color: #6b7280;
-    text-align: center;
-  }
-
-  /* Call to Action */
-  .cta-section {
-    margin-top: 5rem;
-    margin-bottom: 4rem;
-    text-align: center;
-    background-color: rgb(249, 250, 251);
-    padding: 3rem;
-    border: 2px solid #f3f4f6;
-  }
-
-  .cta-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
-
-  .cta-text {
-    color: rgb(5, 5, 5);
-    margin-bottom: 1.5rem;
-    max-width: 42rem;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .cta-button {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background-color: #111827;
-    color: white !important;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    transition: background-color 0.2s;
-  }
-
-  .cta-button:hover {
-    background-color: #1f2937;
-  }
-
-  /* Responsive Design */
-  @media (max-width: 1024px) {
-    .about-hero,
-    .skills-experience {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .photo-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .software-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .photo-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .software-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.25rem;
-    }
-    
-    .photo-description {
-      font-size: 0.75rem;
-    }
-    
-    .photo-overlay {
-      padding: 0.5rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .software-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
-
-    .software-logo {
-      width: 40px;
-      height: 40px;
-    }
-
-    .software-name {
-      font-size: 0.6875rem;
-    }
-  }
-</style>

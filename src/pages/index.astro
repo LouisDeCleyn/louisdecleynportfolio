@@ -35,7 +35,6 @@ const projectData = {
     description: 'End-to-end design of a learning platform focused on user engagement.',
     hero: '/projects/hearth/hero.png'
   }
-
 };
 
 // Convert project data to array for easier mapping
@@ -46,92 +45,72 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
 ---
 
 <BaseLayout title="Louis DeCleyn - Designer">
-  <!-- Projects Gallery - Opens Immediately -->
-  <section class="projects-section">
-    <!-- Dynamic Grid - Shows Only Existing Projects -->
+  <!-- Projects Gallery -->
+  <section class="pt-16 mb-24">
     <div class="project-grid">
       {projects.map((project) => (
-        <article class="group">
-          <a href={`/projects/${project.slug}`} class="block">
+        <article>
+          <a href={`/projects/${project.slug}`} class="project-card group">
             {project.hero ? (
               <img 
                 src={project.hero} 
                 alt={project.title}
-                class="project-hero-image aspect-square w-full object-cover border-1 border-[#DEDEDE] mb-4 sm:mb-5 md:mb-6 group-hover:border-gray-400 transition-all duration-200"
+                class="project-image project-image-hover"
               />
             ) : (
-              <div class="aspect-square border-1 border-gray-100 mb-4 sm:mb-5 md:mb-6 group-hover:border-gray-400 transition-all duration-200 flex items-center justify-center bg-gray-50">
+              <div class="project-image flex items-center justify-center bg-gray-50">
                 <span class="text-gray-400 text-sm font-medium">[{project.category}]</span>
               </div>
             )}
-            <h2 class="text-xs sm:text-sm font-normal mb-1 sm:mb-2 text-black group-hover:opacity-70 transition-opacity">{project.title}</h2>
-            <p class="text-gray-300 text-[0.8rem]">{project.category}</p>
+            <h2 class="project-title">{project.title}</h2>
+            <p class="project-category">{project.category}</p>
           </a>
         </article>
       ))}
     </div>
   </section>
 
-
-<!-- Brief About Section -->
-<section class="about-section">
-  <div class="about-container">
-    <div class="about-grid">
-      
-      <div class="about-photo">
-        <Image 
-          src={aboutPhoto}
-          alt="Louis working on a project"
-          class="about-image"
-          width={3000}
-          height={2000}
-        />
+  <!-- About Section -->
+  <section class="about-section">
+    <div class="content-container">
+      <div class="about-grid">
+        
+        <div class="order-1">
+          <Image 
+            src={aboutPhoto}
+            alt="Louis working on a project"
+            class="about-image"
+            width={3000}
+            height={2000}
+          />
+          <p class="text-xs text-gray-500 mt-3 text-center md:text-left">
+            Working on a project
+          </p>
+        </div>
+        
+        <div class="order-2">
+          <h2 class="about-title">About Me</h2>
+          
+          <p class="about-text about-text-large">
+            Hello, I'm Louis, a multidisciplinary designer with an entrepreneurial mindset and a deep interest in human behaviour.
+          </p>
+          
+          <p class="about-text">
+            My work lives at the intersection of physical, digital, and visual design, shaped by curiosity and a drive to build things that matter.
+            Often, I've found myself in early-stage or fast-moving environments where momentum matters. I've been lucky to learn from experienced founders and designers, building a network around the shared goal of turning ideas into reality.
+          </p>
+          
+          <p class="about-text">
+            I'm drawn to projects where I can take ownership, bring big ideas to life, and grow alongside ambitious teams.
+            Working on something exciting and someone who can think like a designer and execute like a founder? I'd love to hear from you.
+          </p>
+          
+          <a href="/about" class="about-link">
+            More about my background →
+          </a>
+        </div>
+        
       </div>
-      
-      <div class="about-text">
-        <h2 class="about-title">About Me</h2>
-        
-        <p>
-          Hello, I’m Louis, a multidisciplinary designer with an entrepreneurial mindset and a deep interest in human behaviour.
-        </p>
-        
-        <p>
-          My work lives at the intersection of physical, digital, and visual design, shaped by curiosity and a drive to build things that matter.
-
-Often, I’ve found myself in early-stage or fast-moving environments where momentum matters. I’ve been lucky to learn from experienced founders and designers, building a network around the shared goal of turning ideas into reality.
-        </p>
-        
-        <p>
-          I’m drawn to projects where I can take ownership, bring big ideas to life, and grow alongside ambitious teams.
-
-Working on something exciting and someone who can think like a designer and execute like a founder? I’d love to hear from you.
-        </p>
-        
-        <a href="/about" class="about-link">
-          More about my background →
-        </a>
-      </div>
-      
     </div>
-  </div>
-</section>
+  </section>
 </BaseLayout>
-
-
-<style>
-  /* Remove the transform from the block element */
-  .block {
-    transition: none;
-  }
-
-  /* Apply the hover effect only to the image */
-  .project-hero-image {
-    transition: all 0.4s ease;
-  }
-
-  .block:hover .project-hero-image {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s ease;
-  }
-</style>
