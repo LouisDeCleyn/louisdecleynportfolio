@@ -3,7 +3,7 @@ export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
-      // Your custom design tokens
+      // Your existing custom design tokens
       colors: {
         // Brand colors
         brand: {
@@ -45,11 +45,38 @@ export default {
       backdropBlur: {
         xs: '2px',
       },
+      // Enhanced animation system for scroll reveals
       animation: {
+        // Existing animations
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.4s ease-out',
+        
+        // New scroll reveal animations
+        'reveal-up': 'revealUp 0.6s ease-out forwards',
+        'reveal-up-delay-1': 'revealUp 0.6s ease-out 0.1s forwards',
+        'reveal-up-delay-2': 'revealUp 0.6s ease-out 0.2s forwards',
+        'reveal-up-delay-3': 'revealUp 0.6s ease-out 0.3s forwards',
+        'reveal-up-delay-4': 'revealUp 0.6s ease-out 0.4s forwards',
+        'reveal-up-delay-5': 'revealUp 0.6s ease-out 0.5s forwards',
+        
+        'reveal-left': 'revealLeft 0.7s ease-out forwards',
+        'reveal-right': 'revealRight 0.7s ease-out forwards',
+        'reveal-fade': 'revealFade 0.8s ease-out forwards',
+        
+        // Staggered grid animations
+        'reveal-stagger-1': 'revealUp 0.6s ease-out 0.05s forwards',
+        'reveal-stagger-2': 'revealUp 0.6s ease-out 0.1s forwards',
+        'reveal-stagger-3': 'revealUp 0.6s ease-out 0.15s forwards',
+        'reveal-stagger-4': 'revealUp 0.6s ease-out 0.2s forwards',
+        'reveal-stagger-5': 'revealUp 0.6s ease-out 0.25s forwards',
+        'reveal-stagger-6': 'revealUp 0.6s ease-out 0.3s forwards',
+        'reveal-stagger-7': 'revealUp 0.6s ease-out 0.35s forwards',
+        'reveal-stagger-8': 'revealUp 0.6s ease-out 0.4s forwards',
+        'reveal-stagger-9': 'revealUp 0.6s ease-out 0.45s forwards',
+        'reveal-stagger-10': 'revealUp 0.6s ease-out 0.5s forwards',
       },
       keyframes: {
+        // Existing keyframes
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
@@ -57,6 +84,46 @@ export default {
         slideUp: {
           '0%': { transform: 'translateY(8px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        
+        // New scroll reveal keyframes
+        revealUp: {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateY(24px)',
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateY(0)',
+          },
+        },
+        revealLeft: {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateX(-32px)',
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateX(0)',
+          },
+        },
+        revealRight: {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateX(32px)',
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateX(0)',
+          },
+        },
+        revealFade: {
+          '0%': { 
+            opacity: '0',
+          },
+          '100%': { 
+            opacity: '1',
+          },
         },
       },
       screens: {

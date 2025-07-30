@@ -3,9 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="About - Louis Decleyn">
-  <!-- Standardized Page Header -->
+  <!-- Standardized Page Header with Reveal -->
   <div class="page-container">
-    <section class="page-header">
+    <section class="page-header reveal-up">
       <h1 class="page-title">About Me</h1>
       <p class="page-subtitle">
         Adaptable designer with a strong bias toward action and problem-solving. Proven track record across product development, strategic research, and operations.
@@ -14,34 +14,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <!-- Main About Section - Photo Left, Experience Right -->
     <section class="about-hero-section">
-      <!-- Photo Container -->
-      <div class="about-photo-container">
+      <!-- Photo Container with Left Reveal -->
+      <div class="about-photo-container reveal-left">
         <img src="/images/about/profile-main.jpg" alt="Louis Decleyn in his design studio" class="main-photo" />
       </div>
       
-      <!-- Experience Timeline -->
-      <div class="about-experience-content">
-        <h2 class="section-title-large mb-8">Experience</h2>
+      <!-- Experience Timeline with Right Reveal -->
+      <div class="about-experience-content reveal-right">
+        <h2 class="section-title-large reveal-up mb-8">Experience</h2>
         <div class="timeline">
-          <div class="timeline-item">
+          <div class="timeline-item reveal-delay-1">
             <div class="timeline-date">March 2025 - July 2025</div>
             <h3 class="timeline-role">Innovate Design</h3>
             <p class="timeline-description">Delivered product design services across 35+ client projects. Turned early ideas into viable solutions, created pitch visuals, explored AI tools, and supported IP filings.</p>
           </div>
           
-          <div class="timeline-item">
+          <div class="timeline-item reveal-delay-2">
             <div class="timeline-date">November 2024 - January 2025</div>
             <h3 class="timeline-role">Lindus Health</h3>
             <p class="timeline-description">Improved internal processes, built tools to speed up workflows, and supported go-to-market efforts.</p>
           </div>
           
-          <div class="timeline-item">
+          <div class="timeline-item reveal-delay-3">
             <div class="timeline-date">2023 - 2024</div>
             <h3 class="timeline-role">Freelance Designer</h3>
             <p class="timeline-description">Developed product visualisation and marketing assets for B2C and lifestyle-focused launches. Delivered brand-aligned illustrations, packaging designs, and digital touchpoints.</p>
           </div>
 
-          <div class="timeline-item">
+          <div class="timeline-item reveal-delay-4">
             <div class="timeline-date">2022 - 2023</div>
             <h3 class="timeline-role">Stylideas</h3>
             <p class="timeline-description">Designed consumer products end-to-end, from sketch to shelf. Led early design research and produced launch visuals, packaging, and strategy insights</p>
@@ -50,60 +50,60 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </section>
 
-    <!-- Skills Section -->
+    <!-- Skills Section with Staggered Reveals -->
     <section class="skills-section">
-      <h2 class="section-title-large">Skills & Expertise</h2>
+      <h2 class="section-title-large reveal-up">Skills & Expertise</h2>
       
       <div class="skills-grid">
-        <!-- Software Skills -->
-        <div class="skill-group">
+        <!-- Software Skills with Staggered Icon Reveals -->
+        <div class="skill-group reveal-delay-1">
           <h3 class="section-title-small">Software</h3>
           <div class="software-grid">
-            <div class="software-item">
+            <div class="software-item reveal-stagger-1">
               <img src="/images/software/solidworks-icon.svg" alt="SolidWorks" class="software-logo" />
               <span class="software-name">SolidWorks</span>
             </div>
-            <div class="software-item">
+            <div class="software-item reveal-stagger-2">
               <img src="/images/software/rhino-icon.svg" alt="Rhino" class="software-logo" />
               <span class="software-name">Rhino</span>
             </div>
-            <div class="software-item">
+            <div class="software-item reveal-stagger-3">
               <img src="/images/software/grasshopper-icon.svg" alt="Grasshopper" class="software-logo" />
               <span class="software-name">Grasshopper</span>
             </div>
-            <div class="software-item">
+            <div class="software-item reveal-stagger-4">
               <img src="/images/software/keyshot-icon.svg" alt="KeyShot" class="software-logo" />
               <span class="software-name">KeyShot</span>
             </div>
-            <div class="software-item">
+            <div class="software-item reveal-stagger-5">
               <img src="/images/software/photoshop-icon.svg" alt="Photoshop" class="software-logo" />
               <span class="software-name">Photoshop</span>
             </div>
-            <div class="software-item">
+            <div class="software-item reveal-stagger-6">
               <img src="/images/software/illustrator-icon.svg" alt="Illustrator" class="software-logo" />
               <span class="software-name">Illustrator</span>
             </div>
-            <div class="software-item">
+            <div class="software-item reveal-stagger-7">
               <img src="/images/software/indesign-icon.svg" alt="InDesign" class="software-logo" />
               <span class="software-name">InDesign</span>
             </div>
-            <div class="software-item">
+            <div class="software-item reveal-stagger-8">
               <img src="/images/software/xd-icon.svg" alt="Adobe XD" class="software-logo" />
               <span class="software-name">Adobe XD</span>
             </div>
-            <div class="software-item">
+            <div class="software-item reveal-stagger-9">
               <img src="/images/software/visualstudiocode-icon.svg" alt="Visual Studio Code" class="software-logo" />
               <span class="software-name">Visual Studio Code</span>
             </div>
-            <div class="software-item">
+            <div class="software-item reveal-stagger-10">
               <img src="/images/software/figma-icon.svg" alt="Figma" class="software-logo" />
               <span class="software-name">Figma</span>
             </div>
           </div>
         </div>
         
-        <!-- Design Skills -->
-        <div class="skill-group">
+        <!-- Design Skills with Reveal -->
+        <div class="skill-group reveal-delay-2">
           <h3 class="section-title-small">Design</h3>
           <ul class="skill-list">
             <li>Human-Centered Design & User Research</li>
@@ -114,8 +114,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </ul>
         </div>
         
-        <!-- Soft Skills -->
-        <div class="skill-group">
+        <!-- Soft Skills with Reveal -->
+        <div class="skill-group reveal-delay-3">
           <h3 class="section-title-small">Soft Skills</h3>
           <ul class="skill-list">
             <li>Project Management</li>
@@ -127,52 +127,52 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </section>
 
-    <!-- Photo Grid Section -->
+    <!-- Photo Grid Section with Masonry-Style Reveals -->
     <section class="photo-grid-section">
-      <h2 class="section-title-large">More About Me</h2>
+      <h2 class="section-title-large reveal-up">More About Me</h2>
       <div class="about-photo-grid">
-        <div class="photo-item">
+        <div class="photo-item reveal-stagger-1">
           <img src="/images/about/image-1.JPG" alt="Louis working on a design project" class="grid-photo" />
           <div class="photo-overlay">
             <p class="photo-description">Collecting feedback on Prototypes at Olympia London</p>
           </div>
         </div>
         
-        <div class="photo-item">
+        <div class="photo-item reveal-stagger-2">
           <img src="/images/about/image-2.jpg" alt="Louis sketching ideas" class="grid-photo" />
           <div class="photo-overlay">
             <p class="photo-description">Sketching out new ideas and concepts</p>
           </div>
         </div>
         
-        <div class="photo-item">
+        <div class="photo-item reveal-stagger-3">
           <img src="/images/about/image-3.JPG" alt="Louis traveling for inspiration" class="grid-photo" />
           <div class="photo-overlay">
             <p class="photo-description">Competed in the 2022 BUCs Boxing</p>
           </div>
         </div>
         
-        <div class="photo-item">
+        <div class="photo-item reveal-stagger-4">
           <img src="/images/about/image-4.jpg" alt="Louis exploring new places" class="grid-photo" />
           <div class="photo-overlay">
             <p class="photo-description">Participating in UI/UX co-design workshop</p>
           </div>
         </div>
         
-        <div class="photo-item">
+        <div class="photo-item reveal-stagger-5">
           <img src="/images/about/image-5.png" alt="Louis pursuing personal interests" class="grid-photo" />
           <div class="photo-overlay">
             <p class="photo-description">Attending the 2025 Brunel University Alumni Awards</p>
           </div>
         </div>
       </div>
-      <p class="text-sm text-gray-500 text-center mt-4">
+      <p class="text-sm text-gray-500 text-center mt-4 reveal-up">
         Photos of me working, traveling, and exploring various interests
       </p>
     </section>
 
-    <!-- Call to Action -->
-    <section class="cta-section">
+    <!-- Call to Action with Final Reveal -->
+    <section class="cta-section reveal-up">
       <h2 class="section-title-large">Let's Work Together</h2>
       <p class="text-base text-gray-700 mb-6 max-w-2xl mx-auto">
         I'm always interested in new challenges and collaborations. Whether you have 
@@ -184,4 +184,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </section>
 
   </div>
+
+  <!-- Load External Script -->
+  <script is:inline src="/scripts/reveal.js"></script>
 </BaseLayout>

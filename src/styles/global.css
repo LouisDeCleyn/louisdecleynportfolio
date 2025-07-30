@@ -34,11 +34,164 @@
   a:hover {
     @apply text-inherit no-underline;
   }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
 /* Component Layer - Reusable patterns */
 @layer components {
-  /* Navigation Components */
+  /* ========================================
+   SCROLL REVEAL SYSTEM - DATA ATTRIBUTES
+   ======================================== */
+
+/* Elements with data-reveal attributes start hidden */
+[data-reveal] {
+  /* Initial state is handled by JavaScript to prevent FOUC */
+}
+
+/* Smooth transitions for all reveal elements */
+[data-reveal] {
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-duration: 0.7s;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+}
+
+/* Optional: Add subtle hover effects that work with reveals */
+[data-reveal]:hover {
+  /* Enhance existing hover effects after reveal */
+}
+
+/* Performance optimization for reveal elements */
+[data-reveal] {
+  /* GPU acceleration hint */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Clean up GPU layers after animation completes */
+[data-reveal][style*="opacity: 1"] {
+  will-change: auto;
+}
+
+/* ========================================
+   ENHANCED COMPONENT STYLES
+   ======================================== */
+
+/* Project cards with reveal-friendly hover effects */
+.project-card {
+  @apply block;
+}
+
+.project-card-enhanced {
+  @apply block transition-all duration-300 ease-out;
+}
+
+.project-card-enhanced:hover {
+  @apply -translate-y-1;
+}
+
+/* About section enhancements for reveals */
+.about-section {
+  @apply border-t border-gray-200 pt-24 mt-32 bg-white;
+  @apply -mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-12 2xl:-mx-16;
+  @apply px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pb-32 mb-0;
+}
+
+/* Enhanced social cards for contact page */
+.social-card {
+  @apply flex flex-col items-center p-8 bg-white border-2 border-gray-100 rounded;
+  @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-xl;
+  @apply relative overflow-hidden;
+}
+
+.social-card::before {
+  content: '';
+  @apply absolute top-0 left-0 right-0 h-0.5 bg-current transform scale-x-0 transition-transform duration-300;
+}
+
+.social-card:hover::before {
+  @apply scale-x-100;
+}
+
+/* Timeline items with better spacing for reveals */
+.timeline-item {
+  @apply border-l-2 border-gray-200 pl-6 relative mb-8;
+}
+
+.timeline-item::before {
+  content: '';
+  @apply absolute -left-2 top-0 w-4 h-4 bg-white border-2 border-gray-200 rounded-full;
+}
+
+/* Software items with enhanced hover for stagger reveals */
+.software-item {
+  @apply flex flex-col items-center transition-all duration-200;
+}
+
+.software-item:hover {
+  @apply -translate-y-1 scale-105;
+}
+
+.software-logo {
+  @apply w-12 h-12 object-contain mb-2 transition-transform duration-200;
+}
+
+/* Photo grid with reveal-optimized styling */
+.photo-item {
+  @apply relative overflow-hidden w-full aspect-square;
+  @apply transition-all duration-300 hover:scale-105;
+}
+
+.grid-photo {
+  @apply w-full h-full object-cover transition-transform duration-300;
+}
+
+.photo-overlay {
+  @apply absolute inset-0 bg-black/70 flex items-center justify-center;
+  @apply opacity-0 hover:opacity-100 transition-opacity duration-300 p-4;
+}
+
+/* ========================================
+   DEBUGGING UTILITIES (Remove in production)
+   ======================================== */
+
+/* Uncomment for debugging reveal elements */
+/*
+[data-reveal] {
+  outline: 1px dashed rgba(255, 0, 0, 0.3) !important;
+}
+
+[data-reveal="stagger"] {
+  outline-color: rgba(0, 255, 0, 0.3) !important;
+}
+
+[data-reveal][style*="opacity: 1"] {
+  outline-color: rgba(0, 0, 255, 0.3) !important;
+}
+*/
+
+  /* === EXISTING NAVIGATION COMPONENTS === */
   .nav-brand {
     @apply text-xl text-black;
     background: linear-gradient(30deg, #000000 0%, #6f7279 100%);
@@ -65,7 +218,7 @@
     @apply text-base text-gray-600 hover:text-black transition-colors duration-200 font-normal;
   }
 
-  /* Project Grid Components */
+  /* === ENHANCED PROJECT GRID COMPONENTS === */
   .project-grid {
     @apply grid gap-6 md:gap-8 lg:gap-12;
     @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
@@ -73,6 +226,11 @@
 
   .project-card {
     @apply block;
+  }
+
+  /* Enhanced project cards with reveal animations */
+  .project-card-animated {
+    @apply block reveal-up;
   }
 
   .project-image {
@@ -93,7 +251,7 @@
     @apply text-gray-400 text-xs;
   }
 
-  /* Content Layout Components */
+  /* === CONTENT LAYOUT COMPONENTS === */
   .content-container {
     @apply w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16;
   }
@@ -114,7 +272,7 @@
     @apply space-y-8;
   }
 
-  /* About Section Components */
+  /* === ENHANCED ABOUT SECTION COMPONENTS === */
   .about-section {
     @apply border-t border-gray-200 pt-24 mt-32 bg-white;
     @apply -mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-12 2xl:-mx-16;
@@ -132,7 +290,11 @@
 
   .about-image-container {
     @apply w-full;
-    /* Removed all height constraints and background */
+  }
+
+  /* Enhanced about image with reveal */
+  .about-image-animated {
+    @apply w-full h-auto object-cover object-center block reveal-left;
   }
 
   /* Main Photo Component (for about page profile image) */
@@ -144,12 +306,31 @@
     min-height: unset !important;
   }
 
+  /* Enhanced main photo with reveal */
+  .main-photo-animated {
+    @apply w-full h-auto object-cover object-center block reveal-left;
+    max-width: 100% !important;
+    height: auto !important;
+    background: none !important;
+    min-height: unset !important;
+  }
+
   .about-title {
     @apply text-3xl font-normal mb-8 text-black;
   }
 
+  /* Enhanced about title with reveal */
+  .about-title-animated {
+    @apply text-3xl font-normal mb-8 text-black reveal-right;
+  }
+
   .about-text {
     @apply text-gray-700 leading-relaxed mb-6;
+  }
+
+  /* Enhanced about text with staggered reveals */
+  .about-text-animated {
+    @apply text-gray-700 leading-relaxed mb-6 reveal-up;
   }
 
   .about-text-large {
@@ -160,7 +341,12 @@
     @apply text-gray-500 text-sm hover:text-black transition-colors inline-block;
   }
 
-  /* Hero Section Components */
+  /* Enhanced about link with reveal */
+  .about-link-animated {
+    @apply text-gray-500 text-sm hover:text-black transition-colors inline-block reveal-up;
+  }
+
+  /* === HERO SECTION COMPONENTS === */
   .hero-section {
     @apply relative w-screen h-screen overflow-hidden;
     margin-left: calc(-50vw + 50%);
@@ -182,7 +368,7 @@
     @apply text-sm uppercase tracking-wide font-semibold;
   }
 
-  /* Photo Grid Components */
+  /* === ENHANCED PHOTO GRID COMPONENTS === */
   .photo-grid {
     @apply grid grid-cols-1 gap-12 w-full px-4 sm:px-6 lg:px-8 mb-32;
   }
@@ -195,7 +381,7 @@
     @apply absolute inset-0 w-full h-full object-cover transition-transform duration-500;
   }
 
-  /* Detail Components */
+  /* === DETAIL COMPONENTS === */
   .detail-block {
     @apply space-y-3;
   }
@@ -212,7 +398,12 @@
     @apply text-2xl mb-6 text-gray-900;
   }
 
-  /* Link Components */
+  /* Enhanced section title with reveal */
+  .section-title-animated {
+    @apply text-2xl mb-6 text-gray-900 reveal-up;
+  }
+
+  /* === LINK COMPONENTS === */
   .link-button {
     @apply inline-flex items-center px-6 py-3 border border-gray-300 rounded;
     @apply bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400;
@@ -227,7 +418,7 @@
     @apply translate-x-1;
   }
 
-  /* Navigation Components */
+  /* === NAVIGATION COMPONENTS === */
   .nav-back {
     @apply inline-flex items-center text-gray-500 hover:text-gray-900 transition-colors;
   }
@@ -240,7 +431,7 @@
     @apply -translate-x-1;
   }
 
-  /* Utility Components */
+  /* === UTILITY COMPONENTS === */
   .details-grid {
     @apply grid gap-12 lg:grid-cols-3;
   }
@@ -249,13 +440,18 @@
     @apply border-t border-gray-200 pt-12;
   }
 
-  /* Page Header Components - Consistent across all pages */
+  /* === PAGE HEADER COMPONENTS === */
   .page-container {
-    @apply w-full px-4 pt-16; /* Standard page container */
+    @apply w-full px-4 pt-16;
   }
 
   .page-header {
     @apply text-center mb-16 max-w-4xl mx-auto;
+  }
+
+  /* Enhanced page header with reveal */
+  .page-header-animated {
+    @apply text-center mb-16 max-w-4xl mx-auto reveal-up;
   }
 
   .page-title {
@@ -325,25 +521,30 @@
     @apply text-xl font-normal mb-8 text-center;
   }
 
+  /* Enhanced section title large with reveal */
+  .section-title-large-animated {
+    @apply text-xl font-normal mb-8 text-center reveal-up;
+  }
+
   .section-title-small {
     @apply text-base font-medium mb-4;
   }
 
-  /* Contact Page Components - Now uses standard page header */
+  /* === CONTACT PAGE COMPONENTS === */
   .contact-container {
-    @apply page-container; /* Uses standard container */
+    @apply page-container;
   }
 
   .contact-header {
-    @apply page-header; /* Uses standard header */
+    @apply page-header;
   }
 
   .contact-title {
-    @apply page-title; /* Uses standard title */
+    @apply page-title;
   }
 
   .contact-subtitle {
-    @apply page-subtitle; /* Uses standard subtitle */
+    @apply page-subtitle;
   }
 
   .social-grid {
@@ -355,6 +556,13 @@
     @apply flex flex-col items-center p-8 bg-white border-2 border-gray-100 rounded;
     @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-xl;
     @apply relative overflow-hidden;
+  }
+
+  /* Enhanced social card with reveal */
+  .social-card-animated {
+    @apply flex flex-col items-center p-8 bg-white border-2 border-gray-100 rounded;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-xl;
+    @apply relative overflow-hidden reveal-up;
   }
 
   .social-card::before {
@@ -382,7 +590,7 @@
     @apply text-sm text-gray-500 m-0;
   }
 
-  /* Social Platform Colors */
+  /* === SOCIAL PLATFORM COLORS === */
   .social-email .social-icon {
     @apply bg-yellow-100 text-yellow-700;
   }
@@ -428,7 +636,7 @@
   }
 
   .contact-note-card {
-    @apply inline-block p-8 bg-gray-50 rounded-lg max-w-lg;
+    @apply inline-block p-8 bg-white rounded-lg max-w-lg;
   }
 
   .contact-note-title {
@@ -439,7 +647,7 @@
     @apply text-sm text-gray-600;
   }
 
-  /* About Page Components */
+  /* === ENHANCED ABOUT PAGE COMPONENTS === */
   .about-hero-section {
     @apply grid gap-12 mb-16 mt-8;
     @apply grid-cols-1 md:grid-cols-2;
@@ -451,6 +659,11 @@
 
   .about-experience-content {
     @apply space-y-4;
+  }
+
+  /* Enhanced about experience content with reveal */
+  .about-experience-content-animated {
+    @apply space-y-4 reveal-right;
   }
 
   .skills-section {
@@ -470,6 +683,11 @@
     @apply mb-8;
   }
 
+  /* Enhanced skill group with reveal */
+  .skill-group-animated {
+    @apply mb-8 reveal-up;
+  }
+
   .skill-list {
     @apply list-none p-0 space-y-2;
   }
@@ -487,6 +705,11 @@
     @apply flex flex-col items-center transition-transform duration-200 hover:-translate-y-1;
   }
 
+  /* Enhanced software item with staggered reveal */
+  .software-item-animated {
+    @apply flex flex-col items-center transition-transform duration-200 hover:-translate-y-1 reveal-up;
+  }
+
   .software-logo {
     @apply w-12 h-12 object-contain mb-2;
   }
@@ -501,6 +724,11 @@
 
   .timeline-item {
     @apply border-l-2 border-gray-200 pl-6 relative;
+  }
+
+  /* Enhanced timeline item with sequential reveal */
+  .timeline-item-animated {
+    @apply border-l-2 border-gray-200 pl-6 relative reveal-up;
   }
 
   .timeline-date {
@@ -524,6 +752,11 @@
     @apply relative overflow-hidden w-full aspect-square;
   }
 
+  /* Enhanced photo item with staggered reveal */
+  .photo-item-animated {
+    @apply relative overflow-hidden w-full aspect-square reveal-up;
+  }
+
   .grid-photo {
     @apply w-full h-full object-cover transition-transform duration-300;
   }
@@ -541,12 +774,17 @@
     @apply mt-20 mb-16 text-center bg-white p-12 border-2 border-gray-100;
   }
 
+  /* Enhanced CTA section with reveal */
+  .cta-section-animated {
+    @apply mt-20 mb-16 text-center bg-white p-12 border-2 border-gray-100 reveal-up;
+  }
+
   .cta-button {
     @apply inline-block px-6 py-3 bg-black text-white rounded-lg;
     @apply hover:bg-gray-800 transition-colors duration-200;
   }
 
-  /* Blog Page Components */
+  /* === BLOG PAGE COMPONENTS === */
   .blog-posts-section {
     @apply mb-16;
   }
@@ -560,8 +798,16 @@
   .blog-card {
     @apply bg-white border-2 border-gray-100 overflow-hidden;
     @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg;
-    aspect-ratio: 4 / 5; /* More compact ratio */
+    aspect-ratio: 4 / 5;
     @apply flex flex-col max-w-sm mx-auto;
+  }
+
+  /* Enhanced blog card with staggered reveal */
+  .blog-card-animated {
+    @apply bg-white border-2 border-gray-100 overflow-hidden;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg;
+    aspect-ratio: 4 / 5;
+    @apply flex flex-col max-w-sm mx-auto reveal-up;
   }
 
   .blog-card-link {
@@ -570,7 +816,7 @@
 
   .blog-card-image {
     @apply w-full overflow-hidden flex-shrink-0 p-2 bg-white;
-    height: 55%; /* Slightly smaller image area */
+    height: 55%;
   }
 
   .blog-image {
@@ -578,12 +824,12 @@
   }
 
   .blog-card-content {
-    @apply p-3 flex flex-col justify-between; /* Reduced padding */
-    height: 45%; /* More space for content */
+    @apply p-3 flex flex-col justify-between;
+    height: 45%;
   }
 
   .blog-card-title {
-    @apply text-base font-medium text-black mb-2 leading-tight; /* Smaller title */
+    @apply text-base font-medium text-black mb-2 leading-tight;
     @apply transition-colors duration-200;
   }
 
@@ -592,10 +838,10 @@
   }
 
   .blog-card-description {
-    @apply text-gray-700 leading-snug mb-2 flex-grow text-xs; /* Smaller text */
+    @apply text-gray-700 leading-snug mb-2 flex-grow text-xs;
     @apply overflow-hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Fewer lines */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
 
@@ -618,4 +864,30 @@
     width: 100vw;
     margin-left: calc(-50vw + 50%);
   }
+}
+
+/* ========================================
+   ENHANCED MOBILE NAVIGATION
+   ======================================== */
+
+/* Mobile navigation link styling */
+.mobile-nav-link {
+  @apply block text-center px-6 py-4 mx-3;
+  @apply bg-gradient-to-br from-gray-50 to-gray-100;
+  @apply border border-gray-200;
+  @apply text-gray-700 font-medium no-underline;
+  @apply transition-all duration-200 ease-in-out;
+  font-size: 16px;
+}
+
+.mobile-nav-link:hover {
+  @apply bg-gradient-to-br from-white to-gray-50;
+  @apply border-gray-300 text-gray-900;
+  @apply shadow-lg;
+  transform: translateY(-2px);
+}
+
+.mobile-nav-link:active {
+  transform: translateY(0);
+  @apply shadow-md;
 }

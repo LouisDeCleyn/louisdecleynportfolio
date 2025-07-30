@@ -27,9 +27,9 @@ const sortedPosts = blogPosts.sort((a, b) => b.publishDate.getTime() - a.publish
 ---
 
 <BaseLayout title="Blog - Louis Decleyn">
-  <!-- Standardized Page Header -->
+  <!-- Standardized Page Header with Reveal -->
   <div class="page-container">
-    <section class="page-header">
+    <section class="page-header reveal-up">
       <h1 class="page-title">Process & Thoughts</h1>
       <p class="page-subtitle">
         Behind-the-scenes looks at my design process, lessons learned from real projects, 
@@ -37,11 +37,11 @@ const sortedPosts = blogPosts.sort((a, b) => b.publishDate.getTime() - a.publish
       </p>
     </section>
 
-    <!-- Blog Posts Grid -->
+    <!-- Blog Posts Grid with Staggered Reveals -->
     <section class="blog-posts-section">
       <div class="blog-grid">
-        {sortedPosts.map((post) => (
-          <article class="blog-card">
+        {sortedPosts.map((post, index) => (
+          <article class={`blog-card reveal-stagger-${Math.min(index + 1, 10)}`}>
             <a href={`/blog/${post.slug}`} class="blog-card-link">
               <!-- Blog Image -->
               <div class="blog-card-image">
@@ -77,8 +77,8 @@ const sortedPosts = blogPosts.sort((a, b) => b.publishDate.getTime() - a.publish
       </div>
     </section>
 
-    <!-- Call to Action -->
-    <section class="cta-section">
+    <!-- Call to Action with Final Reveal -->
+    <section class="cta-section reveal-up">
       <h2 class="section-title-large">Want to discuss a project?</h2>
       <p class="text-base text-gray-700 mb-6 max-w-2xl mx-auto">
         I'm always interested in hearing about new challenges and opportunities to create meaningful products.
@@ -88,4 +88,7 @@ const sortedPosts = blogPosts.sort((a, b) => b.publishDate.getTime() - a.publish
       </a>
     </section>
   </div>
+
+  <!-- Load External Script -->
+  <script is:inline src="/scripts/reveal.js"></script>
 </BaseLayout>

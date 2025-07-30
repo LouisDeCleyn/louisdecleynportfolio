@@ -45,11 +45,11 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
 ---
 
 <BaseLayout title="Louis DeCleyn - Designer">
-  <!-- Projects Gallery -->
+  <!-- Projects Gallery with Staggered Reveals -->
   <section class="pt-16 mb-24">
     <div class="project-grid">
-      {projects.map((project) => (
-        <article>
+      {projects.map((project, index) => (
+        <article class={`reveal-stagger-${Math.min(index + 1, 10)}`}>
           <a href={`/projects/${project.slug}`} class="project-card group">
             {project.hero ? (
               <img 
@@ -70,12 +70,13 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
     </div>
   </section>
 
-  <!-- About Section -->
+  <!-- About Section with Enhanced Reveals -->
   <section class="about-section">
     <div class="content-container">
       <div class="about-grid">
         
-        <div class="order-1">
+        <!-- Photo with Left Reveal -->
+        <div class="order-1 reveal-left">
           <Image 
             src={aboutPhoto}
             alt="Louis working on a project"
@@ -88,24 +89,25 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
           </p>
         </div>
         
+        <!-- Content with Right Reveal and Staggered Text -->
         <div class="order-2">
-          <h2 class="about-title">About Me</h2>
+          <h2 class="about-title reveal-right">About Me</h2>
           
-          <p class="about-text about-text-large">
+          <p class="about-text about-text-large reveal-delay-1">
             Hello, I'm Louis, a multidisciplinary designer with an entrepreneurial mindset and a deep interest in human behaviour.
           </p>
           
-          <p class="about-text">
+          <p class="about-text reveal-delay-2">
             My work lives at the intersection of physical, digital, and visual design, shaped by curiosity and a drive to build things that matter.
             Often, I've found myself in early-stage or fast-moving environments where momentum matters. I've been lucky to learn from experienced founders and designers, building a network around the shared goal of turning ideas into reality.
           </p>
           
-          <p class="about-text">
+          <p class="about-text reveal-delay-3">
             I'm drawn to projects where I can take ownership, bring big ideas to life, and grow alongside ambitious teams.
             Working on something exciting and someone who can think like a designer and execute like a founder? I'd love to hear from you.
           </p>
           
-          <a href="/about" class="about-link">
+          <a href="/about" class="about-link reveal-delay-4">
             More about my background →
           </a>
         </div>
@@ -113,4 +115,7 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
       </div>
     </div>
   </section>
+
+  <!-- Load External Script -->
+  <script is:inline src="/scripts/reveal.js"></script>
 </BaseLayout>
