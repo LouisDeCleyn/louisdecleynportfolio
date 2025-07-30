@@ -437,7 +437,7 @@
   }
 
   .navigation-section {
-    @apply border-t border-gray-200 pt-12;
+    @apply pt-12;
   }
 
   /* === PAGE HEADER COMPONENTS === */
@@ -867,27 +867,180 @@
 }
 
 /* ========================================
-   ENHANCED MOBILE NAVIGATION
+   MOBILE NAVIGATION - CLEAN CONSOLIDATED VERSION
+   Replace all mobile navigation CSS in your global.css with this
    ======================================== */
 
-/* Mobile navigation link styling */
+/* Enhanced mobile menu button */
+.mobile-menu-button {
+  @apply relative p-2 rounded-lg;
+  @apply hover:bg-gray-100 active:bg-gray-200;
+  @apply transition-all duration-200;
+}
+
+.mobile-menu-button:hover {
+  transform: scale(1.05);
+}
+
+/* Smooth icon transitions */
+.mobile-menu-button svg {
+  transition: transform 0.3s ease;
+}
+
+/* Mobile menu container - positioned absolutely to float over page */
+.mobile-menu {
+  background: transparent !important;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  margin-top: 0 !important;
+  padding: 24px 16px;
+}
+
+/* Remove any background from the ul container */
+.mobile-menu ul {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile menu overlay - covers page content below navbar */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Show overlay when menu is open (not hidden and not closing) */
+.mobile-menu-overlay:not(.hidden):not(.closing) {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(143, 143, 143, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+/* Overlay closing animation */
+.mobile-menu-overlay.closing {
+  opacity: 0;
+  background: rgba(185, 185, 185, 0);
+  backdrop-filter: blur(0px);
+  transition: all 0.3s ease-out;
+}
+
+/* Mobile nav button styling - your original rectangular design */
 .mobile-nav-link {
-  @apply block text-center px-6 py-4 mx-3;
+  @apply block text-center px-6 py-8 mx-3 mb-4;
   @apply bg-gradient-to-br from-gray-50 to-gray-100;
   @apply border border-gray-200;
   @apply text-gray-700 font-medium no-underline;
-  @apply transition-all duration-200 ease-in-out;
+  @apply hover:bg-gradient-to-br hover:from-white hover:to-gray-50;
+  @apply hover:border-gray-300 hover:shadow-lg hover:-translate-y-1;
   font-size: 16px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Always start hidden */
+  opacity: 0;
+  transform: translateY(-30px);
 }
 
-.mobile-nav-link:hover {
-  @apply bg-gradient-to-br from-white to-gray-50;
-  @apply border-gray-300 text-gray-900;
-  @apply shadow-lg;
-  transform: translateY(-2px);
+/* Opening animations - clean state management */
+.mobile-menu.opening .mobile-nav-link {
+  animation: dropDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.mobile-nav-link:active {
-  transform: translateY(0);
-  @apply shadow-md;
+.mobile-menu.opening li:nth-child(1) .mobile-nav-link {
+  animation-delay: 200ms;
+}
+
+.mobile-menu.opening li:nth-child(2) .mobile-nav-link {
+  animation-delay: 300ms;
+}
+
+.mobile-menu.opening li:nth-child(3) .mobile-nav-link {
+  animation-delay: 400ms;
+}
+
+.mobile-menu.opening li:nth-child(4) .mobile-nav-link {
+  animation-delay: 500ms;
+}
+
+/* Closing animations - simple fade out, all buttons at once */
+.mobile-menu.closing .mobile-nav-link {
+  animation: fadeOut 0.2s ease-out forwards !important;
+}
+
+/* Reset state when completely hidden */
+.mobile-menu.hidden .mobile-nav-link {
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: none;
+  animation: none;
+}
+
+/* Opening keyframe animation - keep the great bounce effect */
+@keyframes dropDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateY(2px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Simple fade out animation - smooth and clean */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Performance optimizations */
+.mobile-menu,
+.mobile-nav-link,
+.mobile-menu-overlay {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* Clean up GPU acceleration after animations */
+.mobile-menu:not(.hidden):not(.closing) .mobile-nav-link {
+  will-change: auto;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-link,
+  .mobile-menu-overlay {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .mobile-menu-button,
+  .mobile-menu-button svg {
+    transition: none !important;
+  }
 }
