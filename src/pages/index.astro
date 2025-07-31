@@ -45,7 +45,7 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
 ---
 
 <BaseLayout title="Louis DeCleyn - Designer">
-  <!-- Projects Gallery with Staggered Reveals -->
+  <!-- Projects Gallery with Original Navigation -->
   <section class="pt-16 mb-24">
     <div class="project-grid">
       {projects.map((project, index) => (
@@ -56,6 +56,7 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
                 src={project.hero} 
                 alt={project.title}
                 class="project-image project-image-hover"
+                loading="lazy"
               />
             ) : (
               <div class="project-image flex items-center justify-center bg-gray-50">
@@ -113,6 +114,8 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
     </div>
   </section>
 
-  <!-- Load External Script -->
+
+
+  <!-- Load External Reveal Script -->
   <script is:inline src="/scripts/reveal.js"></script>
 </BaseLayout>

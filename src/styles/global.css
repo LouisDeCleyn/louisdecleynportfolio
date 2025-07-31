@@ -47,6 +47,168 @@
   }
 }
 
+/* ========================================
+   MOBILE VIEWPORT OPTIMIZATIONS
+   Modern viewport units and safe area handling
+   ======================================== */
+
+/* CSS Custom Properties for Dynamic Viewport */
+:root {
+  /* Fallback viewport dimensions */
+  --vh: 1vh;
+  --vw: 1vw;
+  
+  /* Dynamic viewport dimensions (updated by JavaScript) */
+  --dynamic-vh: 1vh;
+  --dynamic-vw: 1vw;
+  
+  /* Safe area insets (iOS notch, Android gesture areas) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  
+  /* Navigation height for calculations */
+  --nav-height: 64px;
+  
+  /* Available viewport height (full height minus navigation) */
+  --available-height: calc(100vh - var(--nav-height));
+  --available-height-dynamic: calc(var(--dynamic-vh, 1vh) * 100 - var(--nav-height));
+}
+
+/* Modern viewport utilities that gracefully fallback */
+.vh-full {
+  height: 100vh; /* Fallback */
+  height: 100dvh; /* Dynamic viewport height - modern browsers */
+  height: calc(var(--dynamic-vh, 1vh) * 100); /* JavaScript fallback */
+}
+
+.vh-screen {
+  min-height: 100vh; /* Fallback */
+  min-height: 100dvh; /* Dynamic viewport height */
+  min-height: calc(var(--dynamic-vh, 1vh) * 100);
+}
+
+.vh-available {
+  height: var(--available-height);
+  height: var(--available-height-dynamic);
+}
+
+/* Safe area utilities */
+.safe-top {
+  padding-top: var(--safe-top);
+}
+
+.safe-bottom {
+  padding-bottom: var(--safe-bottom);
+}
+
+.safe-left {
+  padding-left: var(--safe-left);
+}
+
+.safe-right {
+  padding-right: var(--safe-right);
+}
+
+.safe-area {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+/* Enhanced navigation with safe area support */
+.nav-sticky {
+  @apply fixed top-0 left-0 right-0 z-50 w-full;
+  @apply bg-white/95 backdrop-blur-sm border-b border-gray-200;
+  
+  /* Safe area support for devices with notches */
+  padding-top: var(--safe-top);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+  
+  /* Adjust height to account for safe area */
+  min-height: calc(64px + var(--safe-top));
+}
+
+/* Update main content to account for dynamic navigation height */
+main.content-container {
+  margin-top: calc(64px + var(--safe-top));
+  min-height: calc(100vh - 64px - var(--safe-top));
+}
+
+
+
+/* ========================================
+   ORIENTATION AND RESPONSIVE ENHANCEMENTS
+   Better layout adaptation for different orientations
+   ======================================== */
+
+/* Landscape-specific optimizations */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Compact navigation for landscape phones */
+  .nav-sticky {
+    min-height: calc(56px + var(--safe-top));
+  }
+  
+  .nav-sticky .content-container {
+    @apply py-2;
+  }
+  
+  main.content-container {
+    margin-top: calc(56px + var(--safe-top));
+  }
+}
+
+/* Portrait-specific optimizations */
+@media (orientation: portrait) {
+  .project-grid {
+    @apply grid-cols-1 sm:grid-cols-2;
+  }
+}
+
+/* ========================================
+   TOUCH INTERACTION ENHANCEMENTS
+   Better touch targets and gesture support
+   ======================================== */
+
+/* Enhanced touch targets for mobile */
+@media (max-width: 768px) {
+  .project-card {
+    /* Larger touch target */
+    min-height: 44px;
+  }
+  
+  /* Add visual feedback for touch */
+  .project-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   GPU acceleration and efficient rendering
+   ======================================== */
+
+/* GPU acceleration for smooth animations */
+.project-card {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize will-change during interactions */
+.project-card:hover {
+  will-change: transform, opacity;
+}
+
+/* Clean up GPU layers after animations */
+.project-card:not(:hover) {
+  will-change: auto;
+}
+
 /* Component Layer - Reusable patterns */
 @layer components {
   /* ========================================
@@ -203,11 +365,6 @@
 
   .nav-brand:hover {
     @apply opacity-70;
-  }
-
-  .nav-sticky {
-    @apply fixed top-0 left-0 right-0 z-50 w-full;
-    @apply bg-white/95 backdrop-blur-sm border-b border-gray-200;
   }
 
   .nav-links {
@@ -864,6 +1021,25 @@
     width: 100vw;
     margin-left: calc(-50vw + 50%);
   }
+  
+  /* Modern viewport utilities */
+  .h-dvh {
+    height: 100dvh;
+    height: calc(var(--dynamic-vh, 1vh) * 100);
+  }
+  
+  .min-h-dvh {
+    min-height: 100dvh;
+    min-height: calc(var(--dynamic-vh, 1vh) * 100);
+  }
+  
+  .h-svh {
+    height: 100svh;
+  }
+  
+  .h-lvh {
+    height: 100lvh;
+  }
 }
 
 /* ========================================
@@ -876,6 +1052,10 @@
   @apply relative p-2 rounded-lg;
   @apply hover:bg-gray-100 active:bg-gray-200;
   @apply transition-all duration-200;
+  
+  /* Enhanced touch target */
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .mobile-menu-button:hover {
@@ -897,6 +1077,10 @@
   z-index: 40;
   margin-top: 0 !important;
   padding: 24px 16px;
+  
+  /* Safe area support */
+  padding-left: max(16px, var(--safe-left));
+  padding-right: max(16px, var(--safe-right));
 }
 
 /* Remove any background from the ul container */
@@ -910,7 +1094,7 @@
 /* Mobile menu overlay - covers page content below navbar */
 .mobile-menu-overlay {
   position: fixed;
-  top: 64px;
+  top: calc(64px + var(--safe-top));
   left: 0;
   right: 0;
   bottom: 0;
@@ -954,6 +1138,9 @@
   /* Always start hidden */
   opacity: 0;
   transform: translateY(-30px);
+  
+  /* Enhanced touch target */
+  min-height: 44px;
 }
 
 /* Opening animations - clean state management */

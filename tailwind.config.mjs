@@ -41,6 +41,13 @@ export default {
       spacing: {
         '18': '4.5rem',
         '88': '22rem',
+        // Safe area spacing utilities
+        'safe-top': 'var(--safe-top)',
+        'safe-bottom': 'var(--safe-bottom)',
+        'safe-left': 'var(--safe-left)',
+        'safe-right': 'var(--safe-right)',
+        // Navigation height
+        'nav': 'var(--nav-height)',
       },
       backdropBlur: {
         xs: '2px',
@@ -51,7 +58,7 @@ export default {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.4s ease-out',
         
-        // New scroll reveal animations
+        // Scroll reveal animations
         'reveal-up': 'revealUp 0.6s ease-out forwards',
         'reveal-up-delay-1': 'revealUp 0.6s ease-out 0.1s forwards',
         'reveal-up-delay-2': 'revealUp 0.6s ease-out 0.2s forwards',
@@ -128,10 +135,56 @@ export default {
       },
       screens: {
         'xs': '475px',
+        // Add landscape-specific breakpoints
+        'landscape': { 'raw': '(orientation: landscape)' },
+        'portrait': { 'raw': '(orientation: portrait)' },
+        'short': { 'raw': '(max-height: 500px)' },
+        'tall': { 'raw': '(min-height: 800px)' },
       },
       gridTemplateColumns: {
         'project': 'repeat(auto-fit, minmax(280px, 1fr))',
         'project-lg': 'repeat(auto-fit, minmax(320px, 1fr))',
+      },
+      // Modern viewport height utilities
+      height: {
+        'dvh': '100dvh',
+        'svh': '100svh', 
+        'lvh': '100lvh',
+        'screen-dynamic': 'calc(var(--dynamic-vh, 1vh) * 100)',
+        'available': 'var(--available-height-dynamic)',
+      },
+      minHeight: {
+        'dvh': '100dvh',
+        'svh': '100svh',
+        'lvh': '100lvh', 
+        'screen-dynamic': 'calc(var(--dynamic-vh, 1vh) * 100)',
+        'available': 'var(--available-height-dynamic)',
+      },
+      maxHeight: {
+        'dvh': '100dvh',
+        'svh': '100svh',
+        'lvh': '100lvh',
+        'screen-dynamic': 'calc(var(--dynamic-vh, 1vh) * 100)',
+        'available': 'var(--available-height-dynamic)',
+      },
+      // Safe area padding utilities
+      padding: {
+        'safe-t': 'var(--safe-top)',
+        'safe-b': 'var(--safe-bottom)', 
+        'safe-l': 'var(--safe-left)',
+        'safe-r': 'var(--safe-right)',
+      },
+      margin: {
+        'safe-t': 'var(--safe-top)',
+        'safe-b': 'var(--safe-bottom)',
+        'safe-l': 'var(--safe-left)', 
+        'safe-r': 'var(--safe-right)',
+      },
+      // Z-index scale for layering
+      zIndex: {
+        'mobile-menu': '50',
+        'nav': '50',
+        'overlay': '40',
       }
     },
   },
