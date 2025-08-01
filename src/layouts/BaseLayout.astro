@@ -25,41 +25,42 @@ const { title, description = "Personal portfolio showcasing design work" } = Ast
     <title>{title}</title>
   </head>
   <body>
-    <header class="nav-sticky">
-      <nav class="content-container py-4">
-        <div class="flex justify-between items-center">
-          <a href="/" class="nav-brand">Louis DeCleyn</a>
-          
-          <!-- Desktop Navigation -->
-          <ul class="nav-links hidden md:flex">
-            <li><a href="/" class="nav-link">Home</a></li>
-            <li><a href="/about" class="nav-link">About</a></li>
-            <li><a href="/contact" class="nav-link">Contact</a></li>
-            <li><a href="/blog" class="nav-link">Blog</a></li>
-          </ul>
+    <!-- Replace your existing header section in BaseLayout.astro with this: -->
+<header class="nav-sticky">
+  <nav class="content-container">
+    <div class="flex justify-between items-center h-full">
+      <a href="/" class="nav-brand">Louis DeCleyn</a>
+      
+      <!-- Desktop Navigation -->
+      <ul class="nav-links hidden md:flex">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/about" class="nav-link">About</a></li>
+        <li><a href="/contact" class="nav-link">Contact</a></li>
+        <li><a href="/blog" class="nav-link">Blog</a></li>
+      </ul>
 
-          <!-- Mobile Menu Button -->
-          <button class="mobile-menu-button md:hidden" id="mobile-menu-btn">
-            <svg class="w-6 h-6 menu-icon transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-            <svg class="w-6 h-6 close-icon hidden transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
+      <!-- Mobile Menu Button -->
+      <button class="mobile-menu-button md:hidden" id="mobile-menu-btn">
+        <svg class="w-6 h-6 menu-icon transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+        <svg class="w-6 h-6 close-icon hidden transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
 
-        <!-- Mobile Navigation -->
-        <div class="mobile-menu hidden md:hidden" id="mobile-menu">
-          <ul class="space-y-2">
-            <li><a href="/" class="mobile-nav-link">Home</a></li>
-            <li><a href="/about" class="mobile-nav-link">About</a></li>
-            <li><a href="/contact" class="mobile-nav-link">Contact</a></li>
-            <li><a href="/blog" class="mobile-nav-link">Blog</a></li>
-          </ul>
-        </div>
-      </nav>
-    </header>
+    <!-- Mobile Navigation -->
+    <div class="mobile-menu hidden md:hidden" id="mobile-menu">
+      <ul class="space-y-2">
+        <li><a href="/" class="mobile-nav-link">Home</a></li>
+        <li><a href="/about" class="mobile-nav-link">About</a></li>
+        <li><a href="/contact" class="mobile-nav-link">Contact</a></li>
+        <li><a href="/blog" class="mobile-nav-link">Blog</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
     
     <!-- Mobile Menu Overlay - covers entire page below navbar -->
     <div class="mobile-menu-overlay hidden" id="mobile-menu-overlay"></div>
@@ -76,50 +77,75 @@ const { title, description = "Personal portfolio showcasing design work" } = Ast
       </div>
     </footer>
     
-    <!-- Dynamic Viewport Height Calculator -->
-    <script>
-      (function() {
-        'use strict';
-        
-        function updateViewportHeight() {
-          // Calculate the actual viewport height
-          const vh = window.innerHeight * 0.01;
-          const vw = window.innerWidth * 0.01;
-          
-          // Set custom properties
-          document.documentElement.style.setProperty('--dynamic-vh', `${vh}px`);
-          document.documentElement.style.setProperty('--dynamic-vw', `${vw}px`);
-          
-          // Update available height (accounting for navigation)
-          const navHeight = 64;
-          const safeTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-top')) || 0;
-          const availableHeight = window.innerHeight - navHeight - safeTop;
-          document.documentElement.style.setProperty('--available-height-dynamic', `${availableHeight}px`);
-        }
-        
-        // Update on load
-        updateViewportHeight();
-        
-        // Update on resize with debouncing
-        let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
-        window.addEventListener('resize', function() {
-          if (resizeTimeout) clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(updateViewportHeight, 100);
-        });
-        
-        // Update on orientation change
-        window.addEventListener('orientationchange', function() {
-          setTimeout(updateViewportHeight, 100);
-        });
-        
-        // iOS Safari specific: Update when scrolling stops (address bar)
-        let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
-        window.addEventListener('scroll', function() {
-          if (scrollTimeout) clearTimeout(scrollTimeout);
-          scrollTimeout = setTimeout(updateViewportHeight, 150);
-        }, { passive: true });
-      })();
-    </script>
+    <!-- Replace the viewport JavaScript in BaseLayout.astro with this properly typed version: -->
+<script>
+  (function() {
+    'use strict';
+    
+    function updateViewportHeight() {
+      // Calculate the actual viewport height
+      const vh = window.innerHeight * 0.01;
+      const vw = window.innerWidth * 0.01;
+      
+      // Set custom properties
+      document.documentElement.style.setProperty('--dynamic-vh', `${vh}px`);
+      document.documentElement.style.setProperty('--dynamic-vw', `${vw}px`);
+      
+      // Initialize safe area insets for desktop (they'll be 0)
+      const safeTop = getComputedStyle(document.documentElement).getPropertyValue('--safe-top').trim() || '0px';
+      const safeBottom = getComputedStyle(document.documentElement).getPropertyValue('--safe-bottom').trim() || '0px';
+      const safeLeft = getComputedStyle(document.documentElement).getPropertyValue('--safe-left').trim() || '0px';
+      const safeRight = getComputedStyle(document.documentElement).getPropertyValue('--safe-right').trim() || '0px';
+      
+      // Ensure safe area values are set (desktop will be 0px)
+      if (!safeTop || safeTop === 'env(safe-area-inset-top, 0px)') {
+        document.documentElement.style.setProperty('--safe-top', '0px');
+      }
+      if (!safeBottom || safeBottom === 'env(safe-area-inset-bottom, 0px)') {
+        document.documentElement.style.setProperty('--safe-bottom', '0px');
+      }
+      if (!safeLeft || safeLeft === 'env(safe-area-inset-left, 0px)') {
+        document.documentElement.style.setProperty('--safe-left', '0px');
+      }
+      if (!safeRight || safeRight === 'env(safe-area-inset-right, 0px)') {
+        document.documentElement.style.setProperty('--safe-right', '0px');
+      }
+      
+      // Update available height (accounting for navigation)
+      const navHeight = 64;
+      const safeTopValue = parseInt(document.documentElement.style.getPropertyValue('--safe-top')) || 0;
+      const availableHeight = window.innerHeight - navHeight - safeTopValue;
+      document.documentElement.style.setProperty('--available-height-dynamic', `${availableHeight}px`);
+    }
+    
+    // Update immediately on load
+    updateViewportHeight();
+    
+    // Update on resize with debouncing - properly typed timeout
+    let resizeTimeout = null;
+    window.addEventListener('resize', function() {
+      if (resizeTimeout !== null) clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateViewportHeight, 100);
+    });
+    
+    // Update on orientation change
+    window.addEventListener('orientationchange', function() {
+      setTimeout(updateViewportHeight, 100);
+    });
+    
+    // iOS Safari specific: Update when scrolling stops (address bar)
+    // Only on mobile devices
+    if (window.innerWidth <= 768) {
+      let scrollTimeout = null;
+      window.addEventListener('scroll', function() {
+        if (scrollTimeout !== null) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(updateViewportHeight, 150);
+      }, { passive: true });
+    }
+  })();
+</script>
+    
+
     
     <!-- Enhanced Mobile Menu JavaScript -->
     <script>

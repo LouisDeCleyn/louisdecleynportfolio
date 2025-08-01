@@ -2,6 +2,33 @@
 // src/pages/projects/[slug].astro
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+// Define types for better TypeScript support
+interface ProjectLink {
+  label: string;
+  url: string;
+}
+
+interface ProjectData {
+  title: string;
+  category: string;
+  timeline: string;
+  description: string;
+  hero: string;
+  problem?: string;
+  process?: string;
+  outcome?: string;
+  images: string[];
+  links: ProjectLink[];
+}
+
+type ProjectDataMap = {
+  'sine-health': ProjectData;
+  'stylideas': ProjectData;
+  'cadence': ProjectData;
+  'parametric-modelling': ProjectData;
+  'hearth': ProjectData;
+}
+
 // Simple static paths that work immediately
 export async function getStaticPaths() {
   return [
@@ -15,8 +42,11 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 
-// Project data with consistent slugs
-const projectData = {
+// Project order for navigation
+const projectOrder = ['sine-health', 'stylideas', 'cadence', 'parametric-modelling', 'hearth'];
+
+// Project data with consistent slugs - now properly typed
+const projectData: ProjectDataMap = {
   'sine-health': {
     title: 'Sine Health',
     category: 'Physical Product Design',
@@ -29,7 +59,9 @@ const projectData = {
     images: [
       '/projects/sine-health/image-1.png',
       '/projects/sine-health/image-2.JPG',
-      '/projects/sine-health/image-3.png',
+      '/projects/sine-health/image-3.jpg',
+      '/projects/sine-health/image-4.jpg',
+      '/projects/sine-health/image-5.png',
     ],
     links: [
       { label: 'View Online', url: 'https://sinehealth.co.uk/' },
@@ -88,7 +120,7 @@ const projectData = {
     hero: '/projects/hearth/hero.png',
     images: [
       '/projects/hearth/image-1.png',
-      '/projects/hearth/image-2.png',
+      '/projects/hearth/image-2.jpg',
       '/projects/hearth/image-3.jpg',
       '/projects/hearth/image-4.png'
     ],
@@ -96,7 +128,18 @@ const projectData = {
   },
 };
 
-const project = projectData[slug] || projectData['sine-health'];
+// Type-safe project lookup with fallback
+const validSlug = slug as keyof ProjectDataMap;
+const project = projectData[validSlug] || projectData['sine-health'];
+
+// Calculate next and previous projects
+const currentIndex = projectOrder.indexOf(validSlug);
+const nextIndex = (currentIndex + 1) % projectOrder.length;
+const prevIndex = (currentIndex - 1 + projectOrder.length) % projectOrder.length;
+const nextProject = projectData[projectOrder[nextIndex] as keyof ProjectDataMap];
+const prevProject = projectData[projectOrder[prevIndex] as keyof ProjectDataMap];
+const nextSlug = projectOrder[nextIndex];
+const prevSlug = projectOrder[prevIndex];
 ---
 
 <BaseLayout title={`${project.title} - Louis Decleyn`} description={project.description}>
@@ -145,8 +188,8 @@ const project = projectData[slug] || projectData['sine-health'];
 
   <!-- Photo Grid -->
   <section class="photo-grid">
-    {project.images.map((imageSrc, index) => (
-      <div class="cursor-pointer" key={index}>
+    {project.images.map((imageSrc: string, index: number) => (
+      <div class="cursor-pointer">
         <div class="photo-container">
           <img 
             src={imageSrc}
@@ -195,7 +238,7 @@ const project = projectData[slug] || projectData['sine-health'];
     <section class="content-section">
       <h2 class="section-title">Links & Resources</h2>
       <div class="flex flex-wrap gap-4">
-        {project.links.map((link) => (
+        {project.links.map((link: ProjectLink) => (
           <a 
             href={link.url} 
             target="_blank" 
@@ -212,15 +255,41 @@ const project = projectData[slug] || projectData['sine-health'];
     </section>
   )}
 
-  <!-- Navigation -->
+  <!-- Enhanced Navigation with Next/Previous Projects -->
   <section class="content-section navigation-section">
-    <div class="flex justify-between items-center">
+    <div class="project-navigation">
+      <!-- Back to Portfolio -->
       <a href="/" class="nav-back">
         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
         </svg>
         Back to Portfolio
       </a>
+
+      <!-- Project Navigation -->
+      <div class="project-nav-buttons">
+        <!-- Previous Project -->
+        <a href={`/projects/${prevSlug}`} class="project-nav-button project-nav-prev">
+          <svg class="project-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <div class="project-nav-content">
+            <span class="project-nav-label">Previous</span>
+            <span class="project-nav-title">{prevProject.title}</span>
+          </div>
+        </a>
+
+        <!-- Next Project -->
+        <a href={`/projects/${nextSlug}`} class="project-nav-button project-nav-next">
+          <div class="project-nav-content">
+            <span class="project-nav-label">Next</span>
+            <span class="project-nav-title">{nextProject.title}</span>
+          </div>
+          <svg class="project-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

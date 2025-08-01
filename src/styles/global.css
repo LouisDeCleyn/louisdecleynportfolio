@@ -118,7 +118,11 @@
   padding-right: var(--safe-right);
 }
 
-/* Enhanced navigation with safe area support */
+/* ========================================
+   FIXED NAVIGATION WITH PROPER CENTERING
+   ======================================== */
+
+/* Enhanced navigation with safe area support and proper centering */
 .nav-sticky {
   @apply fixed top-0 left-0 right-0 z-50 w-full;
   @apply bg-white/95 backdrop-blur-sm border-b border-gray-200;
@@ -128,8 +132,50 @@
   padding-left: var(--safe-left);
   padding-right: var(--safe-right);
   
-  /* Adjust height to account for safe area */
-  min-height: calc(64px + var(--safe-top));
+  /* Fix: Use consistent height instead of min-height for proper centering */
+  height: calc(64px + var(--safe-top));
+  
+  /* Ensure flex centering works properly */
+  display: flex;
+  align-items: center;
+}
+
+/* Fix: Ensure the nav container allows proper centering */
+.nav-sticky .content-container {
+  width: 100%;
+  height: 100%;
+  /* Remove any padding that interferes with centering */
+  padding-top: 0;
+  padding-bottom: 0;
+  /* Keep horizontal padding */
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Desktop specific navbar fix */
+@media (min-width: 768px) {
+  .nav-sticky {
+    height: 64px; /* Fixed height on desktop */
+  }
+  
+  .nav-sticky .content-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav-sticky .content-container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .nav-sticky .content-container {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
 }
 
 /* Update main content to account for dynamic navigation height */
@@ -137,8 +183,6 @@ main.content-container {
   margin-top: calc(64px + var(--safe-top));
   min-height: calc(100vh - 64px - var(--safe-top));
 }
-
-
 
 /* ========================================
    ORIENTATION AND RESPONSIVE ENHANCEMENTS
@@ -149,11 +193,7 @@ main.content-container {
 @media (orientation: landscape) and (max-height: 500px) {
   /* Compact navigation for landscape phones */
   .nav-sticky {
-    min-height: calc(56px + var(--safe-top));
-  }
-  
-  .nav-sticky .content-container {
-    @apply py-2;
+    height: calc(56px + var(--safe-top));
   }
   
   main.content-container {
@@ -505,25 +545,78 @@ main.content-container {
 
   /* === HERO SECTION COMPONENTS === */
   .hero-section {
-    @apply relative w-screen h-screen overflow-hidden;
-    margin-left: calc(-50vw + 50%);
+    @apply relative overflow-hidden;
+    /* Use the actual available width (excluding scrollbar) */
+    width: calc(100vw - (100vw - 100%));
+    height: 100vh;
+    height: 100dvh; /* Modern browsers */
+    height: calc(var(--dynamic-vh, 1vh) * 100); /* Fallback */
+    
+    /* Full-bleed calculation that accounts for scrollbar */
+    margin-left: calc(-50vw + 50% + (100vw - 100%) / 2);
+    margin-right: calc(-50vw + 50% + (100vw - 100%) / 2);
   }
 
   .hero-image {
     @apply w-full h-full object-cover object-center;
   }
 
+ /* ========================================
+   HERO BADGE VISIBILITY FIX
+   Replace the .hero-badge section in your global.css (around line 447)
+   ======================================== */
+
+.hero-badge {
+  @apply absolute text-white z-10;
+  /* Position it higher up and ensure it's always visible */
+  bottom: max(2rem, 10vh); /* Use the larger of 2rem or 10% of viewport height */
+  left: 2rem;
+  
+  /* Ensure it's above any potential navbar on mobile */
+  margin-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.hero-badge-content {
+  @apply bg-black/60 px-6 py-4 rounded backdrop-blur;
+  /* Add a subtle shadow to make it more visible against any background */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hero-badge-text {
+  @apply text-sm uppercase tracking-wide font-semibold;
+}
+
+/* Responsive adjustments for different screen sizes */
+@media (max-width: 768px) {
   .hero-badge {
-    @apply absolute bottom-8 left-8 text-white z-10;
+    /* On mobile, position it higher to ensure visibility */
+    bottom: max(1.5rem, 15vh);
+    left: 1.5rem;
   }
-
+  
   .hero-badge-content {
-    @apply bg-black/60 px-6 py-4 rounded backdrop-blur;
+    @apply px-4 py-3;
   }
-
+  
   .hero-badge-text {
-    @apply text-sm uppercase tracking-wide font-semibold;
+    @apply text-xs;
   }
+}
+
+@media (min-width: 1024px) {
+  .hero-badge {
+    /* On larger screens, we can position it a bit lower */
+    bottom: max(3rem, 8vh);
+    left: 3rem;
+  }
+}
+
+/* For very tall screens, ensure the badge doesn't get too far from the bottom */
+@media (min-height: 1000px) {
+  .hero-badge {
+    bottom: max(4rem, 6vh);
+  }
+}
 
   /* === ENHANCED PHOTO GRID COMPONENTS === */
   .photo-grid {
@@ -1018,8 +1111,10 @@ main.content-container {
   }
 
   .full-bleed {
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
+    /* Account for scrollbar in width calculation */
+    width: calc(100vw - (100vw - 100%));
+    margin-left: calc(-50vw + 50% + (100vw - 100%) / 2);
+    margin-right: calc(-50vw + 50% + (100vw - 100%) / 2);
   }
   
   /* Modern viewport utilities */
@@ -1229,5 +1324,172 @@ main.content-container {
   .mobile-menu-button,
   .mobile-menu-button svg {
     transition: none !important;
+  }
+}
+
+/* ========================================
+   PREVENT HORIZONTAL OVERFLOW
+   ======================================== */
+
+/* Fix 3: Prevent horizontal overflow */
+html, body {
+  overflow-x: hidden;
+}
+
+/* The formula (100vw - 100%) gives us the scrollbar width */
+/* So calc(100vw - (100vw - 100%)) = 100% (the actual content width) */
+/* And calc(-50vw + 50% + (100vw - 100%) / 2) centers it properly */
+
+/* ========================================
+   PROJECT NAVIGATION STYLES
+   Add this section to your global.css components layer (around line 700)
+   ======================================== */
+
+/* Enhanced project navigation container */
+.project-navigation {
+  @apply flex flex-col gap-8 md:flex-row md:justify-between md:items-center;
+}
+
+/* Project navigation buttons container */
+.project-nav-buttons {
+  @apply flex flex-col gap-4 sm:flex-row sm:gap-6;
+}
+
+/* Individual project navigation button */
+.project-nav-button {
+  @apply flex items-center gap-3 p-4 bg-white border-2 border-gray-100 rounded-lg;
+  @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg;
+  @apply text-gray-700 hover:text-gray-900 no-underline;
+  min-width: 200px;
+}
+
+/* Previous project button (left-aligned) */
+.project-nav-prev {
+  @apply justify-start;
+}
+
+/* Next project button (right-aligned) */
+.project-nav-next {
+  @apply justify-end sm:flex-row-reverse;
+}
+
+/* Project navigation icon */
+.project-nav-icon {
+  @apply w-5 h-5 flex-shrink-0 transition-transform duration-200;
+}
+
+/* Icon animation on hover */
+.project-nav-prev:hover .project-nav-icon {
+  @apply -translate-x-1;
+}
+
+.project-nav-next:hover .project-nav-icon {
+  @apply translate-x-1;
+}
+
+/* Project navigation content container */
+.project-nav-content {
+  @apply flex flex-col gap-1;
+}
+
+/* Project navigation label */
+.project-nav-label {
+  @apply text-xs uppercase tracking-wide text-gray-500 font-medium;
+}
+
+/* Project navigation title */
+.project-nav-title {
+  @apply text-sm font-medium text-gray-900 leading-tight;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .project-nav-button {
+    @apply w-full;
+    min-width: auto;
+  }
+  
+  .project-nav-next {
+    @apply flex-row justify-start;
+  }
+}
+
+/* Enhanced hover effects */
+.project-nav-button:hover .project-nav-title {
+  @apply text-black;
+}
+
+.project-nav-button:hover .project-nav-label {
+  @apply text-gray-600;
+}
+
+/* Add subtle border animation */
+.project-nav-button::before {
+  content: '';
+  @apply absolute top-0 left-0 right-0 h-0.5 bg-current transform scale-x-0 transition-transform duration-300;
+}
+
+.project-nav-button:hover::before {
+  @apply scale-x-100;
+}
+
+/* Ensure relative positioning for pseudo-element */
+.project-nav-button {
+  @apply relative overflow-hidden;
+}
+
+/* ========================================
+   MOBILE PROJECT NAVIGATION FIX
+   Replace the mobile responsive section in your project navigation styles
+   ======================================== */
+
+/* Responsive adjustments - keep buttons horizontal on mobile */
+@media (max-width: 640px) {
+  .project-nav-buttons {
+    /* Keep buttons horizontal on mobile instead of stacking */
+    @apply flex-row gap-3;
+  }
+  
+  .project-nav-button {
+    /* Make buttons equal width and fit side by side */
+    @apply flex-1;
+    min-width: 0; /* Allow flex shrinking */
+    padding: 1rem 0.75rem; /* Slightly reduce horizontal padding */
+  }
+  
+  .project-nav-next {
+    @apply flex-row justify-start;
+  }
+  
+  /* Adjust content layout for smaller buttons */
+  .project-nav-content {
+    @apply flex flex-col gap-0.5;
+  }
+  
+  .project-nav-title {
+    @apply text-xs leading-tight; /* Smaller text to fit better */
+  }
+  
+  .project-nav-label {
+    @apply text-xs;
+  }
+  
+  .project-nav-icon {
+    @apply w-4 h-4; /* Slightly smaller icons */
+  }
+}
+
+/* For very small screens, make text even more compact */
+@media (max-width: 480px) {
+  .project-nav-button {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .project-nav-title {
+    @apply text-xs;
+    /* Truncate very long project names */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
