@@ -4,9 +4,16 @@ import '../styles/global.css';
 export interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  ogType?: string;
 }
 
-const { title, description = "Personal portfolio showcasing design work" } = Astro.props;
+const { 
+  title, 
+  description = "Personal portfolio showcasing design work",
+  ogImage = "/og-image.JPG", // You'll need to create this
+  ogType = "website"
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -16,6 +23,24 @@ const { title, description = "Personal portfolio showcasing design work" } = Ast
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.url)} />
+    <meta property="og:site_name" content="Louis DeCleyn - Designer" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(ogImage, Astro.url)} />
+    
+    <!-- LinkedIn specific -->
+    <meta property="linkedin:owner" content="" />
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
