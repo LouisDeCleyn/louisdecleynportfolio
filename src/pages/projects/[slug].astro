@@ -51,7 +51,7 @@ const projectData: ProjectDataMap = {
     title: 'Sine Health',
     category: 'Physical Product Design',
     timeline: 'Ongoing • 2024',
-    description: 'Originally developed as my Final Major Project at Brunel University, Sine Health is now an early-stage startup developing a novel wearable for biofeedback and resilience training.',
+    description: 'Self led product development of a novel wearable device leveraging heart rate monitoring and vibration feedback for biofeedback and resilience training.',
     hero: '/projects/sine-health/hero.png',
     problem: 'Existing solutions take up audio or visual sensory channels limiting how it can be used.',
     process: 'Mentored and assisted through University, developed prototypes and working models to conduct early tests with users.',
@@ -71,7 +71,7 @@ const projectData: ProjectDataMap = {
     title: 'Stylideas',
     category: 'Physical Product Design',
     timeline: '1 Year • 2022',
-    description: 'During my year placement with Stylideas I assissted with the conception and product development of the Clear View portable heated mirror.',
+    description: 'Full-cycle design contribution to the conception and development of the Clear View portable heated mirror.',
     hero: '/projects/stylideas/hero.png',
     problem: 'Develop innovative mirror concept, capitalising on amazon mirror trends.',
     process: 'Conducted user research, developed and tested working prototypes.',
@@ -90,7 +90,7 @@ const projectData: ProjectDataMap = {
     title: 'Cadence',
     category: 'Product Concept',
     timeline: '1 months • 2025',
-    description: 'A concept and early prototype for a timer utilising gradients of light to seamlessly divide up time for both athletics and pomodoro work techniques.',
+    description: 'Concept development and early prototype testing for a workout timer utilising gradients of light to seamlessly divide up time - enhancing the experience for fluid movement practices.',
     hero: '/projects/cadence/hero.png',
     images: [
       '/projects/cadence/image-1.png',
@@ -105,7 +105,7 @@ const projectData: ProjectDataMap = {
     title: 'Parametric Modelling',
     category: 'Skill Highlight',
     timeline: 'Ongoing • 2025',
-    description: 'Ongoing learning of parametric modelling techniques, alongside applying findings to create visually interesting product designs.',
+    description: 'Ongoing exploration of parametric modelling techniques, alongside applying learnings to create product concepts.',
     hero: '/projects/parametric-modelling/hero.png',
     images: [
       '/projects/parametric-modelling/image-1.png',
@@ -118,7 +118,7 @@ const projectData: ProjectDataMap = {
     title: 'Hearth',
     category: 'Brand Design',
     timeline: '1 Month • 2024',
-    description: 'Brand design for small batch of gifts for friends and family.',
+    description: 'Designed branded products for small-batch manufacture as personal gifts for friends and family.',
     hero: '/projects/hearth/hero.png',
     images: [
       '/projects/hearth/image-1.png',
@@ -152,6 +152,8 @@ const prevSlug = projectOrder[prevIndex];
       alt={`${project.title} - Hero Image`}
       class="hero-image"
       loading="eager"
+      data-gallery={validSlug}
+      data-index="0"
     />
     
     <!-- Project category overlay -->
@@ -198,6 +200,8 @@ const prevSlug = projectOrder[prevIndex];
             alt={`${project.title} - Process Image ${index + 1}`}
             class="photo-image hover:scale-105"
             loading="lazy"
+            data-gallery={validSlug}
+            data-index={index + 1}
           />
         </div>
       </div>

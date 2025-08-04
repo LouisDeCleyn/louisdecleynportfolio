@@ -499,6 +499,235 @@ main.content-container {
     }
   }
 
+    /* ========================================
+    IMAGE GALLERY MODAL
+    Add this to your global.css in the @layer components section
+    (after the coming soon card styles)
+    ======================================== */
+
+  /* Modal Overlay */
+  .image-gallery-modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center;
+    @apply transition-all duration-300 ease-out;
+    @apply opacity-0 pointer-events-none;
+  }
+
+  .image-gallery-modal:not(.hidden) {
+    @apply opacity-100 pointer-events-auto;
+  }
+
+  /* Modal Backdrop */
+  .gallery-backdrop {
+    @apply absolute inset-0 bg-black/90 backdrop-blur-sm;
+    @apply transition-all duration-300;
+  }
+
+  /* Modal Content Container */
+  .gallery-content {
+    @apply relative w-full h-full flex items-center justify-center;
+    @apply p-4;
+    
+    /* Safe area support */
+    padding-top: max(1rem, var(--safe-top));
+    padding-bottom: max(1rem, var(--safe-bottom));
+    padding-left: max(1rem, var(--safe-left));
+    padding-right: max(1rem, var(--safe-right));
+  }
+
+  /* Close Button */
+  .gallery-close-btn {
+    @apply absolute top-4 right-4 z-10;
+    @apply w-10 h-10 flex items-center justify-center;
+    @apply bg-black/50 text-white rounded-full;
+    @apply hover:bg-black/70 transition-all duration-200;
+    @apply backdrop-blur-sm;
+    
+    /* Safe area positioning */
+    top: max(1rem, var(--safe-top));
+    right: max(1rem, var(--safe-right));
+  }
+
+  .gallery-close-btn:hover {
+    @apply scale-110;
+  }
+
+  /* Image Counter */
+  .gallery-counter {
+    @apply absolute top-4 left-1/2 transform -translate-x-1/2 z-10;
+    @apply px-3 py-1 bg-black/50 text-white text-sm rounded-full;
+    @apply backdrop-blur-sm font-medium;
+    
+    /* Safe area positioning */
+    top: max(1rem, var(--safe-top));
+  }
+
+  /* Image Container */
+  .gallery-image-container {
+    @apply relative flex items-center justify-center;
+    @apply w-full h-full;
+  }
+
+  /* Main Gallery Image */
+  .gallery-image {
+    @apply block transition-opacity duration-300;
+    
+    /* Responsive image sizing - fits any aspect ratio within safe viewport */
+    max-width: calc(100vw - var(--safe-left) - var(--safe-right) - 2rem);
+    max-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - 2rem);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    
+    /* Center the image */
+    margin: auto;
+  }
+
+  /* Loading Spinner */
+  .gallery-loading {
+    @apply absolute inset-0 flex items-center justify-center;
+    @apply bg-black/20 backdrop-blur-sm;
+  }
+
+  .gallery-spinner {
+    @apply w-8 h-8 border-2 border-white/30 border-t-white rounded-full;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Navigation Arrows */
+  .gallery-nav {
+    @apply absolute top-1/2 transform -translate-y-1/2 z-10;
+    @apply w-12 h-12 flex items-center justify-center;
+    @apply bg-black/50 text-white rounded-full;
+    @apply hover:bg-black/70 transition-all duration-200;
+    @apply backdrop-blur-sm;
+  }
+
+  .gallery-nav:hover {
+    @apply scale-110;
+  }
+
+  .gallery-nav-prev {
+    @apply left-4;
+    left: max(1rem, var(--safe-left));
+  }
+
+  .gallery-nav-next {
+    @apply right-4;
+    right: max(1rem, var(--safe-right));
+  }
+
+  /* Mobile Optimizations */
+  @media (max-width: 768px) {
+    .gallery-content {
+      @apply p-2;
+      padding-top: max(0.5rem, var(--safe-top));
+      padding-bottom: max(0.5rem, var(--safe-bottom));
+      padding-left: max(0.5rem, var(--safe-left));
+      padding-right: max(0.5rem, var(--safe-right));
+    }
+    
+    .gallery-close-btn {
+      @apply w-12 h-12;
+      top: max(0.75rem, var(--safe-top));
+      right: max(0.75rem, var(--safe-right));
+    }
+    
+    .gallery-counter {
+      @apply text-xs px-2;
+      top: max(0.75rem, var(--safe-top));
+    }
+    
+    .gallery-nav {
+      @apply w-10 h-10;
+    }
+    
+    .gallery-nav-prev {
+      left: max(0.75rem, var(--safe-left));
+    }
+    
+    .gallery-nav-next {
+      right: max(0.75rem, var(--safe-right));
+    }
+    
+    .gallery-image {
+      max-width: calc(100vw - var(--safe-left) - var(--safe-right) - 1rem);
+      max-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - 1rem);
+    }
+  }
+
+  /* Very small screens */
+  @media (max-width: 480px) {
+    .gallery-nav {
+      @apply w-8 h-8;
+    }
+    
+    .gallery-close-btn {
+      @apply w-10 h-10;
+    }
+    
+    .gallery-counter {
+      @apply text-xs;
+    }
+  }
+
+  /* Landscape phone optimizations */
+  @media (orientation: landscape) and (max-height: 500px) {
+    .gallery-content {
+      @apply p-1;
+    }
+    
+    .gallery-close-btn,
+    .gallery-nav {
+      @apply w-8 h-8;
+    }
+    
+    .gallery-counter {
+      @apply text-xs px-2 py-0.5;
+    }
+    
+    .gallery-image {
+      max-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - 0.5rem);
+    }
+  }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .image-gallery-modal,
+    .gallery-backdrop,
+    .gallery-image,
+    .gallery-close-btn,
+    .gallery-nav {
+      @apply transition-none;
+    }
+    
+    .gallery-close-btn:hover,
+    .gallery-nav:hover {
+      @apply scale-100;
+    }
+    
+    .gallery-spinner {
+      animation: none;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .gallery-close-btn,
+    .gallery-nav,
+    .gallery-counter {
+      @apply bg-black text-white border border-white;
+    }
+    
+    .gallery-backdrop {
+      @apply bg-black;
+    }
+  }
+
   /* === CONTENT LAYOUT COMPONENTS === */
   .content-container {
     @apply w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16;

@@ -65,8 +65,48 @@ const { title, description = "Personal portfolio showcasing design work" } = Ast
     <!-- Mobile Menu Overlay - covers entire page below navbar -->
     <div class="mobile-menu-overlay hidden" id="mobile-menu-overlay"></div>
     
+    <!-- Image Gallery Modal -->
+    <div class="image-gallery-modal hidden" id="image-gallery-modal">
+      <!-- Modal Backdrop -->
+      <div class="gallery-backdrop" id="gallery-backdrop"></div>
+      
+      <!-- Modal Content -->
+      <div class="gallery-content">
+        <!-- Close Button -->
+        <button class="gallery-close-btn" id="gallery-close-btn" aria-label="Close gallery">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+        
+        <!-- Image Counter -->
+        <div class="gallery-counter" id="gallery-counter">
+          <span id="gallery-current">1</span> of <span id="gallery-total">1</span>
+        </div>
+        
+        <!-- Image Container -->
+        <div class="gallery-image-container">
+          <img id="gallery-image" class="gallery-image" alt="" />
+          <div class="gallery-loading" id="gallery-loading">
+            <div class="gallery-spinner"></div>
+          </div>
+        </div>
+        
+        <!-- Navigation Arrows -->
+        <button class="gallery-nav gallery-nav-prev" id="gallery-prev" aria-label="Previous image">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        
+        <button class="gallery-nav gallery-nav-next" id="gallery-next" aria-label="Next image">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-    
     <main class="content-container pt-12">
       <slot />
     </main>
@@ -122,7 +162,7 @@ const { title, description = "Personal portfolio showcasing design work" } = Ast
     updateViewportHeight();
     
     // Update on resize with debouncing - properly typed timeout
-    let resizeTimeout = null;
+    let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
     window.addEventListener('resize', function() {
       if (resizeTimeout !== null) clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(updateViewportHeight, 100);
@@ -136,7 +176,7 @@ const { title, description = "Personal portfolio showcasing design work" } = Ast
     // iOS Safari specific: Update when scrolling stops (address bar)
     // Only on mobile devices
     if (window.innerWidth <= 768) {
-      let scrollTimeout = null;
+      let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
       window.addEventListener('scroll', function() {
         if (scrollTimeout !== null) clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(updateViewportHeight, 150);
@@ -221,6 +261,236 @@ const { title, description = "Personal portfolio showcasing design work" } = Ast
             closeMenu();
           });
         }
+      });
+    </script>
+
+    <!-- Image Gallery JavaScript -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Type definitions
+        interface GalleryImage {
+          src: string;
+          alt: string;
+        }
+
+        const modal = document.getElementById('image-gallery-modal');
+        const backdrop = document.getElementById('gallery-backdrop');
+        const closeBtn = document.getElementById('gallery-close-btn');
+        const prevBtn = document.getElementById('gallery-prev');
+        const nextBtn = document.getElementById('gallery-next');
+        const galleryImage = document.getElementById('gallery-image') as HTMLImageElement;
+        const currentSpan = document.getElementById('gallery-current');
+        const totalSpan = document.getElementById('gallery-total');
+        const loading = document.getElementById('gallery-loading');
+        
+        let galleryImages: GalleryImage[] = [];
+        let currentIndex: number = 0;
+        let startX: number = 0;
+        let startY: number = 0;
+        
+        // Collect all gallery images and add click handlers
+        function initializeGallery(): void {
+          const clickableImages = document.querySelectorAll('img[data-gallery]') as NodeListOf<HTMLImageElement>;
+          
+          clickableImages.forEach((img: HTMLImageElement) => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', function(this: HTMLImageElement) {
+              const galleryName = this.getAttribute('data-gallery');
+              const imageIndex = parseInt(this.getAttribute('data-index') || '0') || 0;
+              if (galleryName) {
+                openGallery(galleryName, imageIndex);
+              }
+            });
+          });
+        }
+        
+        // Open gallery with specific project images
+        function openGallery(galleryName: string, startIndex: number = 0): void {
+          // Collect all images from the same gallery
+          const images = document.querySelectorAll(`img[data-gallery="${galleryName}"]`) as NodeListOf<HTMLImageElement>;
+          galleryImages = Array.from(images).map((img: HTMLImageElement) => ({
+            src: img.src,
+            alt: img.alt || ''
+          }));
+          
+          if (galleryImages.length === 0) return;
+          
+          currentIndex = Math.max(0, Math.min(startIndex, galleryImages.length - 1));
+          
+          // Update counter
+          if (totalSpan) {
+            totalSpan.textContent = galleryImages.length.toString();
+          }
+          
+          // Show modal
+          if (modal) {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+          }
+          
+          // Load first image
+          loadImage(currentIndex);
+          
+          // Focus management
+          if (closeBtn) {
+            closeBtn.focus();
+          }
+        }
+        
+        // Load image at specific index
+        function loadImage(index: number): void {
+          if (index < 0 || index >= galleryImages.length) return;
+          
+          currentIndex = index;
+          if (currentSpan) {
+            currentSpan.textContent = (index + 1).toString();
+          }
+          
+          // Show loading
+          if (loading) {
+            loading.classList.remove('hidden');
+          }
+          if (galleryImage) {
+            galleryImage.style.opacity = '0';
+          }
+          
+          // Load new image
+          const img = new Image();
+          img.onload = function() {
+            if (galleryImage) {
+              galleryImage.src = img.src;
+              galleryImage.alt = galleryImages[index].alt;
+            }
+            if (loading) {
+              loading.classList.add('hidden');
+            }
+            if (galleryImage) {
+              galleryImage.style.opacity = '1';
+            }
+          };
+          img.onerror = function() {
+            if (loading) {
+              loading.classList.add('hidden');
+            }
+            if (galleryImage) {
+              galleryImage.style.opacity = '1';
+            }
+          };
+          img.src = galleryImages[index].src;
+          
+          // Update navigation buttons
+          if (prevBtn) {
+            prevBtn.style.display = galleryImages.length > 1 ? 'flex' : 'none';
+          }
+          if (nextBtn) {
+            nextBtn.style.display = galleryImages.length > 1 ? 'flex' : 'none';
+          }
+        }
+        
+        // Close gallery
+        function closeGallery(): void {
+          if (modal) {
+            modal.classList.add('hidden');
+          }
+          document.body.style.overflow = '';
+          galleryImages = [];
+          currentIndex = 0;
+        }
+        
+        // Navigate to previous image
+        function previousImage(): void {
+          if (galleryImages.length <= 1) return;
+          const newIndex = currentIndex > 0 ? currentIndex - 1 : galleryImages.length - 1;
+          loadImage(newIndex);
+        }
+        
+        // Navigate to next image
+        function nextImage(): void {
+          if (galleryImages.length <= 1) return;
+          const newIndex = currentIndex < galleryImages.length - 1 ? currentIndex + 1 : 0;
+          loadImage(newIndex);
+        }
+        
+        // Event listeners
+        if (closeBtn) {
+          closeBtn.addEventListener('click', closeGallery);
+        }
+        if (backdrop) {
+          backdrop.addEventListener('click', closeGallery);
+        }
+        if (prevBtn) {
+          prevBtn.addEventListener('click', previousImage);
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener('click', nextImage);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e: KeyboardEvent) {
+          if (!modal || modal.classList.contains('hidden')) return;
+          
+          switch(e.key) {
+            case 'Escape':
+              e.preventDefault();
+              closeGallery();
+              break;
+            case 'ArrowLeft':
+              e.preventDefault();
+              previousImage();
+              break;
+            case 'ArrowRight':
+              e.preventDefault();
+              nextImage();
+              break;
+          }
+        });
+        
+        // Touch/swipe support
+        let touchStartTime: number = 0;
+        
+        if (modal) {
+          modal.addEventListener('touchstart', function(e: TouchEvent) {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            touchStartTime = Date.now();
+          }, { passive: true });
+          
+          modal.addEventListener('touchend', function(e: TouchEvent) {
+            if (modal.classList.contains('hidden')) return;
+            
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            const deltaX = endX - startX;
+            const deltaY = endY - startY;
+            const touchDuration = Date.now() - touchStartTime;
+            
+            // Swipe detection
+            const minSwipeDistance = 50;
+            const maxSwipeTime = 300;
+            
+            if (touchDuration < maxSwipeTime) {
+              if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaY) < 100) {
+                // Horizontal swipe
+                if (deltaX > 0) {
+                  previousImage();
+                } else {
+                  nextImage();
+                }
+              } else if (deltaY > minSwipeDistance && Math.abs(deltaX) < 100) {
+                // Swipe down to close
+                closeGallery();
+              }
+            }
+          }, { passive: true });
+          
+          // Prevent scroll when modal is open
+          modal.addEventListener('touchmove', function(e: TouchEvent) {
+            e.preventDefault();
+          }, { passive: false });
+        }
+        
+        // Initialize after DOM is ready
+        initializeGallery();
       });
     </script>
     
