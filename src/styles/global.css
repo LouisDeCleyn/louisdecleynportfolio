@@ -448,6 +448,57 @@ main.content-container {
     @apply text-gray-400 text-xs;
   }
 
+  /* ========================================
+     COMING SOON PROJECT CARD
+     ======================================== */
+
+  /* Coming soon card - matches existing project card structure but non-interactive */
+  .coming-soon-card {
+    @apply block cursor-default;
+  }
+
+  /* Coming soon placeholder - replaces the project-image */
+  .coming-soon-placeholder {
+    @apply aspect-square w-full border-2 border-dashed border-gray-300 mb-4;
+    @apply flex items-center justify-center bg-gray-50/30;
+    @apply transition-all duration-300 ease-out;
+    @apply group-hover:border-gray-400 group-hover:bg-gray-100/50;
+    @apply group-hover:-translate-y-2 group-hover:shadow-lg;
+  }
+
+  /* Icon container within placeholder */
+  .coming-soon-icon {
+    @apply text-gray-400 group-hover:text-gray-500 transition-all duration-200;
+  }
+
+  /* Subtle icon animation on hover */
+  .coming-soon-card:hover .coming-soon-icon svg {
+    @apply transform rotate-90 transition-transform duration-300 ease-out;
+  }
+
+  /* Text styling - inherits from existing project card classes */
+  .coming-soon-card .project-title {
+    @apply opacity-80;
+  }
+
+  .coming-soon-card .project-category {
+    @apply italic;
+  }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .coming-soon-card:hover .coming-soon-icon svg {
+      @apply transform-none;
+    }
+  }
+
+  /* Responsive adjustments to match existing project cards */
+  @media (max-width: 768px) {
+    .coming-soon-placeholder {
+      @apply mb-3;
+    }
+  }
+
   /* === CONTENT LAYOUT COMPONENTS === */
   .content-container {
     @apply w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16;
