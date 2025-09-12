@@ -15,7 +15,7 @@ const projectData = {
     title: 'Stylideas',
     category: 'Physical Product Design',
     description: 'A digital experience design project focused on user research and interface design.',
-    hero: '/projects/stylideas/hero.png'
+    hero: '/projects/stylideas/hero.jpg'
   },
   'cadence': {
     title: 'Cadence',
@@ -45,6 +45,16 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
 ---
 
 <BaseLayout title="Louis DeCleyn - Designer">
+
+  <!-- Standardized Page Header with Reveal -->
+  <div class="page-container">
+    <section class="page-header reveal-up">
+      <h1 class="page-title">Hi i'm Louis</h1>
+      <p class="page-subtitle">
+        Welcome to my site. Here you’ll find projects I’ve worked on, a look into my design process, and some of the ideas that fascinate me.
+      </p>
+    </section>
+    
   <!-- Projects Gallery with Original Navigation -->
   <section class="pt-16 mb-24">
     <div class="project-grid">

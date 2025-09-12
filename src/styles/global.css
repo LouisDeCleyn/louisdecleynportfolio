@@ -5,9 +5,9 @@
 /* Base Layer - Global defaults */
 @layer base {
   html {
-    @apply bg-gray-50 font-sans;
+    @apply bg-white font-sans;
     background-image: 
-      linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
       linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
     background-size: 20px 20px;
     background-attachment: fixed;
