@@ -1,0 +1,237 @@
+/* ========================================
+   DESIGN TOKENS
+   Core design decisions for the portfolio site
+   ======================================== */
+
+:root {
+  /* ========================================
+     COLOR SYSTEM
+     ======================================== */
+  
+  /* Brand Colors */
+  --color-primary: #000000;
+  --color-primary-light: #333333;
+  --color-primary-dark: #000000;
+  
+  /* Neutral Palette - Replaces scattered gray-* usage */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  
+  /* Semantic Surface Colors */
+  --color-surface: var(--color-neutral-0);
+  --color-surface-elevated: var(--color-neutral-0);
+  --color-background: var(--color-neutral-50);
+  --color-background-alt: var(--color-neutral-100);
+  
+  /* Semantic Text Colors */
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-700);
+  --color-text-tertiary: var(--color-neutral-600);
+  --color-text-muted: var(--color-neutral-500);
+  --color-text-subtle: var(--color-neutral-400);
+  --color-text-inverse: var(--color-neutral-0);
+  
+  /* Semantic Border Colors */
+  --color-border-light: var(--color-neutral-200);
+  --color-border-medium: var(--color-neutral-300);
+  --color-border-strong: var(--color-neutral-400);
+  
+  /* Interactive Colors */
+  --color-link: var(--color-primary);
+  --color-link-hover: var(--color-primary-light);
+  
+  /* ========================================
+     TYPOGRAPHY SYSTEM
+     ======================================== */
+  
+  /* Font Families */
+  --font-family-primary: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-family-mono: 'Fira Code', 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+  
+  /* Font Sizes - Consistent scale */
+  --font-size-xs: 0.75rem;      /* 12px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg: 1.125rem;     /* 18px */
+  --font-size-xl: 1.25rem;      /* 20px */
+  --font-size-2xl: 1.5rem;      /* 24px */
+  --font-size-3xl: 1.875rem;    /* 30px */
+  --font-size-4xl: 2.25rem;     /* 36px */
+  --font-size-5xl: 3rem;        /* 48px */
+  
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+  
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* ========================================
+     SPACING SYSTEM
+     ======================================== */
+  
+  /* Base Spacing Scale */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+  
+  /* Semantic Spacing */
+  --spacing-tight: var(--space-2);
+  --spacing-normal: var(--space-4);
+  --spacing-relaxed: var(--space-6);
+  --spacing-loose: var(--space-8);
+  
+  /* Layout Spacing */
+  --spacing-section: var(--space-24);        /* Between major sections */
+  --spacing-component: var(--space-16);      /* Between components */
+  --spacing-element: var(--space-8);         /* Between related elements */
+  --spacing-item: var(--space-6);           /* Between list items */
+  
+  /* ========================================
+     LAYOUT DIMENSIONS
+     ======================================== */
+  
+  /* Container Widths */
+  --container-max-width: 1600px;
+  --content-max-width: 65ch;
+  --content-wide-max-width: 80ch;
+  
+  /* Component Dimensions */
+  --nav-height: 64px;
+  --sidebar-width: 280px;
+  --card-max-width: 400px;
+  
+  /* ========================================
+     COMPONENT TOKENS
+     ======================================== */
+  
+  /* Navigation */
+  --nav-bg: color-mix(in srgb, var(--color-surface) 95%, transparent);
+  --nav-border: var(--color-border-light);
+  --nav-link-color: var(--color-text-tertiary);
+  --nav-link-hover-color: var(--color-text-primary);
+  --nav-brand-color: var(--color-text-primary);
+  
+  /* Project Cards */
+  --card-bg: var(--color-surface);
+  --card-border: var(--color-border-light);
+  --card-border-hover: var(--color-border-medium);
+  --card-padding: var(--space-6);
+  --card-gap: var(--space-6);
+  --card-border-radius: 0.5rem;
+  
+  /* Buttons */
+  --button-padding-x: var(--space-6);
+  --button-padding-y: var(--space-3);
+  --button-border-radius: 0.5rem;
+  --button-bg-primary: var(--color-primary);
+  --button-text-primary: var(--color-text-inverse);
+  --button-bg-secondary: transparent;
+  --button-text-secondary: var(--color-text-primary);
+  --button-border-secondary: var(--color-border-medium);
+  
+  /* Forms */
+  --input-bg: var(--color-surface);
+  --input-border: var(--color-border-medium);
+  --input-border-focus: var(--color-primary);
+  --input-text: var(--color-text-primary);
+  --input-placeholder: var(--color-text-muted);
+  
+  /* ========================================
+     VISUAL EFFECTS
+     ======================================== */
+  
+  /* Border Radius */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-full: 0;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  
+  /* Component Shadows */
+  --shadow-card: var(--shadow-md);
+  --shadow-card-hover: var(--shadow-lg);
+  --shadow-modal: var(--shadow-2xl);
+  --shadow-nav: var(--shadow-sm);
+  
+  /* ========================================
+     TRANSITIONS & ANIMATIONS
+     ======================================== */
+  
+  /* Transition Durations */
+  --transition-fast: 150ms;
+  --transition-normal: 250ms;
+  --transition-slow: 350ms;
+  --transition-slower: 500ms;
+  
+  /* Transition Easing */
+  --ease-linear: linear;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* Common Transitions */
+  --transition-colors: color var(--transition-normal) var(--ease-out);
+  --transition-transform: transform var(--transition-normal) var(--ease-out);
+  --transition-opacity: opacity var(--transition-normal) var(--ease-out);
+  --transition-all: all var(--transition-normal) var(--ease-out);
+  
+  /* ========================================
+     RESPONSIVE BREAKPOINTS
+     ======================================== */
+  
+  /* Note: CSS custom properties can't be used in media queries directly,
+     but these document our breakpoint system for reference */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  
+  /* ========================================
+     Z-INDEX SCALE
+     ======================================== */
+  
+  --z-index-dropdown: 10;
+  --z-index-sticky: 20;
+  --z-index-fixed: 30;
+  --z-index-modal-backdrop: 40;
+  --z-index-modal: 50;
+  --z-index-popover: 60;
+  --z-index-tooltip: 70;
+  --z-index-toast: 80;
+}

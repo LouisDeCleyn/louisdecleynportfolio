@@ -1,3 +1,6 @@
+/* Import design tokens first */
+@import './tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,7 +8,8 @@
 /* Base Layer - Global defaults */
 @layer base {
   html {
-    @apply bg-white font-sans;
+    background-color: var(--color-surface);
+    font-family: var(--font-family-primary);
     background-image: 
       linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
       linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
@@ -14,25 +18,32 @@
   }
 
   body {
-    @apply text-gray-900 antialiased flex flex-col min-h-screen;
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
 
   main {
-    @apply flex-1;
+    flex: 1;
   }
 
-  /* Typography defaults */
+  /* Typography defaults using tokens */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-medium leading-tight;
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
   }
 
   /* Remove default link styling globally */
   a {
-    @apply text-inherit no-underline;
+    color: inherit;
+    text-decoration: none;
   }
 
   a:hover {
-    @apply text-inherit no-underline;
+    color: inherit;
+    text-decoration: none;
   }
 
   /* Respect reduced motion preferences */
@@ -67,9 +78,6 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
-  
-  /* Navigation height for calculations */
-  --nav-height: 64px;
   
   /* Available viewport height (full height minus navigation) */
   --available-height: calc(100vh - var(--nav-height));
@@ -120,12 +128,21 @@
 
 /* ========================================
    FIXED NAVIGATION WITH PROPER CENTERING
+   Updated to use design tokens
    ======================================== */
 
 /* Enhanced navigation with safe area support and proper centering */
 .nav-sticky {
-  @apply fixed top-0 left-0 right-0 z-50 w-full;
-  @apply bg-white/95 backdrop-blur-sm border-b border-gray-200;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-index-fixed);
+  width: 100%;
+  background-color: var(--nav-bg);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--nav-border);
+  box-shadow: var(--shadow-nav);
   
   /* Safe area support for devices with notches */
   padding-top: var(--safe-top);
@@ -133,7 +150,7 @@
   padding-right: var(--safe-right);
   
   /* Fix: Use consistent height instead of min-height for proper centering */
-  height: calc(64px + var(--safe-top));
+  height: calc(var(--nav-height) + var(--safe-top));
   
   /* Ensure flex centering works properly */
   display: flex;
@@ -147,41 +164,41 @@
   /* Remove any padding that interferes with centering */
   padding-top: 0;
   padding-bottom: 0;
-  /* Keep horizontal padding */
-  padding-left: 1rem;
-  padding-right: 1rem;
+  /* Keep horizontal padding using tokens */
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
 }
 
 /* Desktop specific navbar fix */
 @media (min-width: 768px) {
   .nav-sticky {
-    height: 64px; /* Fixed height on desktop */
+    height: var(--nav-height);
   }
   
   .nav-sticky .content-container {
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
   }
 }
 
 @media (min-width: 1024px) {
   .nav-sticky .content-container {
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding-left: var(--space-12);
+    padding-right: var(--space-12);
   }
 }
 
 @media (min-width: 1280px) {
   .nav-sticky .content-container {
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-left: var(--space-16);
+    padding-right: var(--space-16);
   }
 }
 
 /* Update main content to account for dynamic navigation height */
 main.content-container {
-  margin-top: calc(64px + var(--safe-top));
-  min-height: calc(100vh - 64px - var(--safe-top));
+  margin-top: calc(var(--nav-height) + var(--safe-top));
+  min-height: calc(100vh - var(--nav-height) - var(--safe-top));
 }
 
 /* ========================================
@@ -204,7 +221,13 @@ main.content-container {
 /* Portrait-specific optimizations */
 @media (orientation: portrait) {
   .project-grid {
-    @apply grid-cols-1 sm:grid-cols-2;
+    grid-template-columns: 1fr;
+  }
+  
+  @media (min-width: 640px) {
+    .project-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
 
@@ -249,203 +272,349 @@ main.content-container {
   will-change: auto;
 }
 
-/* Component Layer - Reusable patterns */
+/* Component Layer - Reusable patterns using design tokens */
 @layer components {
   /* ========================================
    SCROLL REVEAL SYSTEM - DATA ATTRIBUTES
    ======================================== */
 
-/* Elements with data-reveal attributes start hidden */
-[data-reveal] {
-  /* Initial state is handled by JavaScript to prevent FOUC */
-}
-
-/* Smooth transitions for all reveal elements */
-[data-reveal] {
-  transition-property: opacity, transform;
-  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition-duration: 0.7s;
-}
-
-/* Respect reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
+  /* Elements with data-reveal attributes start hidden */
   [data-reveal] {
-    transition: none !important;
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-    visibility: visible !important;
+    /* Initial state is handled by JavaScript to prevent FOUC */
   }
-}
 
-/* Optional: Add subtle hover effects that work with reveals */
-[data-reveal]:hover {
-  /* Enhance existing hover effects after reveal */
-}
+  /* Smooth transitions for all reveal elements */
+  [data-reveal] {
+    transition-property: opacity, transform;
+    transition-timing-function: var(--ease-out);
+    transition-duration: var(--transition-slower);
+  }
 
-/* Performance optimization for reveal elements */
-[data-reveal] {
-  /* GPU acceleration hint */
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      transition: none !important;
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+  }
 
-/* Clean up GPU layers after animation completes */
-[data-reveal][style*="opacity: 1"] {
-  will-change: auto;
-}
+  /* Optional: Add subtle hover effects that work with reveals */
+  [data-reveal]:hover {
+    /* Enhance existing hover effects after reveal */
+  }
 
-/* ========================================
-   ENHANCED COMPONENT STYLES
+  /* Performance optimization for reveal elements */
+  [data-reveal] {
+    /* GPU acceleration hint */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Clean up GPU layers after animation completes */
+  [data-reveal][style*="opacity: 1"] {
+    will-change: auto;
+  }
+
+  /* ========================================
+   ENHANCED COMPONENT STYLES USING TOKENS
    ======================================== */
 
-/* Project cards with reveal-friendly hover effects */
-.project-card {
-  @apply block;
-}
+  /* Project cards with reveal-friendly hover effects */
+  .project-card {
+    display: block;
+  }
 
-.project-card-enhanced {
-  @apply block transition-all duration-300 ease-out;
-}
+  .project-card-enhanced {
+    display: block;
+    transition: var(--transition-all);
+  }
 
-.project-card-enhanced:hover {
-  @apply -translate-y-1;
-}
+  .project-card-enhanced:hover {
+    transform: translateY(-0.25rem);
+  }
 
-/* About section enhancements for reveals */
-.about-section {
-  @apply border-t border-gray-200 pt-24 mt-32 bg-white;
-  @apply -mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-12 2xl:-mx-16;
-  @apply px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pb-32 mb-0;
-}
+  /* About section enhancements for reveals */
+  .about-section {
+    border-top: 1px solid var(--color-border-light);
+    padding-top: var(--spacing-section);
+    margin-top: var(--spacing-section);
+    background-color: var(--color-surface);
+    margin-left: calc(-1 * var(--space-4));
+    margin-right: calc(-1 * var(--space-4));
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+    padding-bottom: var(--spacing-section);
+    margin-bottom: 0;
+  }
 
-/* Enhanced social cards for contact page */
-.social-card {
-  @apply flex flex-col items-center p-8 bg-white border-2 border-gray-100 rounded;
-  @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-xl;
-  @apply relative overflow-hidden;
-}
+  @media (min-width: 640px) {
+    .about-section {
+      margin-left: calc(-1 * var(--space-6));
+      margin-right: calc(-1 * var(--space-6));
+      padding-left: var(--space-6);
+      padding-right: var(--space-6);
+    }
+  }
 
-.social-card::before {
-  content: '';
-  @apply absolute top-0 left-0 right-0 h-0.5 bg-current transform scale-x-0 transition-transform duration-300;
-}
+  @media (min-width: 1024px) {
+    .about-section {
+      margin-left: calc(-1 * var(--space-8));
+      margin-right: calc(-1 * var(--space-8));
+      padding-left: var(--space-8);
+      padding-right: var(--space-8);
+    }
+  }
 
-.social-card:hover::before {
-  @apply scale-x-100;
-}
+  @media (min-width: 1280px) {
+    .about-section {
+      margin-left: calc(-1 * var(--space-12));
+      margin-right: calc(-1 * var(--space-12));
+      padding-left: var(--space-12);
+      padding-right: var(--space-12);
+    }
+  }
 
-/* Timeline items with better spacing for reveals */
-.timeline-item {
-  @apply border-l-2 border-gray-200 pl-6 relative mb-8;
-}
+  @media (min-width: 1536px) {
+    .about-section {
+      margin-left: calc(-1 * var(--space-16));
+      margin-right: calc(-1 * var(--space-16));
+      padding-left: var(--space-16);
+      padding-right: var(--space-16);
+    }
+  }
 
-.timeline-item::before {
-  content: '';
-  @apply absolute -left-2 top-0 w-4 h-4 bg-white border-2 border-gray-200 rounded-full;
-}
+  /* Enhanced social cards for contact page */
+  .social-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-8);
+    background-color: var(--card-bg);
+    border: 2px solid var(--card-border);
+    transition: var(--transition-all);
+    position: relative;
+    overflow: hidden;
+  }
 
-/* Software items with enhanced hover for stagger reveals */
-.software-item {
-  @apply flex flex-col items-center transition-all duration-200;
-}
+  .social-card:hover {
+    transform: translateY(-0.25rem);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--shadow-card-hover);
+  }
 
-.software-item:hover {
-  @apply -translate-y-1 scale-105;
-}
+  .social-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transition: transform var(--transition-normal);
+  }
 
-.software-logo {
-  @apply w-12 h-12 object-contain mb-2 transition-transform duration-200;
-}
+  .social-card:hover::before {
+    transform: scaleX(1);
+  }
 
-/* Photo grid with reveal-optimized styling */
-.photo-item {
-  @apply relative overflow-hidden w-full aspect-square;
-  @apply transition-all duration-300 hover:scale-105;
-}
+  /* Timeline items with better spacing for reveals */
+  .timeline-item {
+    border-left: 2px solid var(--color-border-light);
+    padding-left: var(--space-6);
+    position: relative;
+    margin-bottom: var(--space-8);
+  }
 
-.grid-photo {
-  @apply w-full h-full object-cover transition-transform duration-300;
-}
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-full);
+  }
 
-.photo-overlay {
-  @apply absolute inset-0 bg-black/70 flex items-center justify-center;
-  @apply opacity-0 hover:opacity-100 transition-opacity duration-300 p-4;
-}
+  /* Software items with enhanced hover for stagger reveals */
+  .software-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: var(--transition-transform);
+  }
 
-/* ========================================
-   DEBUGGING UTILITIES (Remove in production)
-   ======================================== */
+  .software-item:hover {
+    transform: translateY(-0.25rem) scale(1.05);
+  }
 
-/* Uncomment for debugging reveal elements */
-/*
-[data-reveal] {
-  outline: 1px dashed rgba(255, 0, 0, 0.3) !important;
-}
+  .software-logo {
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+    margin-bottom: var(--space-2);
+    transition: var(--transition-transform);
+  }
 
-[data-reveal="stagger"] {
-  outline-color: rgba(0, 255, 0, 0.3) !important;
-}
+  /* Photo grid with reveal-optimized styling */
+  .photo-item {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1;
+    transition: var(--transition-all);
+  }
 
-[data-reveal][style*="opacity: 1"] {
-  outline-color: rgba(0, 0, 255, 0.3) !important;
-}
-*/
+  .photo-item:hover {
+    transform: scale(1.05);
+  }
 
-  /* === EXISTING NAVIGATION COMPONENTS === */
+  .grid-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-transform);
+  }
+
+  .photo-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgb(0 0 0 / 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition-opacity);
+    padding: var(--space-4);
+  }
+
+  .photo-overlay:hover {
+    opacity: 1;
+  }
+
+  /* === NAVIGATION COMPONENTS USING TOKENS === */
   .nav-brand {
-    @apply text-xl text-black;
-    background: linear-gradient(30deg, #000000 0%, #6f7279 100%);
+    font-size: var(--font-size-xl);
+    color: var(--nav-brand-color);
+    background: linear-gradient(30deg, var(--color-primary) 0%, var(--color-neutral-600) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    transition: opacity 0.2s ease;
+    transition: var(--transition-opacity);
   }
 
   .nav-brand:hover {
-    @apply opacity-70;
+    opacity: 0.7;
   }
 
   .nav-links {
-    @apply flex gap-6 md:gap-8 lg:gap-12;
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 768px) {
+    .nav-links {
+      gap: var(--space-8);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .nav-links {
+      gap: var(--space-12);
+    }
   }
 
   .nav-link {
-    @apply text-base text-gray-600 hover:text-black transition-colors duration-200 font-normal;
+    font-size: var(--font-size-base);
+    color: var(--nav-link-color);
+    transition: var(--transition-colors);
+    font-weight: var(--font-weight-normal);
+  }
+
+  .nav-link:hover {
+    color: var(--nav-link-hover-color);
   }
 
   /* === ENHANCED PROJECT GRID COMPONENTS === */
   .project-grid {
-    @apply grid gap-6 md:gap-8 lg:gap-12;
-    @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+    display: grid;
+    gap: var(--card-gap);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .project-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-8);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .project-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-12);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .project-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   .project-card {
-    @apply block;
+    display: block;
   }
 
   /* Enhanced project cards with reveal animations */
   .project-card-animated {
-    @apply block reveal-up;
+    display: block;
+    /* Add reveal class in JavaScript */
   }
 
   .project-image {
-    @apply aspect-square w-full object-cover border border-gray-200 mb-4;
-    @apply group-hover:border-gray-400 transition-all duration-200;
+    aspect-ratio: 1;
+    width: 100%;
+    object-fit: cover;
+    border: 1px solid var(--card-border);
+    margin-bottom: var(--space-4);
+    transition: var(--transition-all);
+  }
+
+  .project-card:hover .project-image {
+    border-color: var(--card-border-hover);
   }
 
   .project-image-hover {
-    @apply transition-all duration-300 ease-out;
-    @apply group-hover:-translate-y-2 group-hover:shadow-lg;
+    transition: var(--transition-all);
+  }
+
+  .project-card:hover .project-image-hover {
+    transform: translateY(-0.5rem);
+    box-shadow: var(--shadow-card-hover);
   }
 
   .project-title {
-    @apply text-sm font-normal mb-2 text-black group-hover:opacity-70 transition-opacity;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-normal);
+    margin-bottom: var(--space-2);
+    color: var(--color-text-primary);
+    transition: var(--transition-opacity);
+  }
+
+  .project-card:hover .project-title {
+    opacity: 0.7;
   }
 
   .project-category {
-    @apply text-gray-400 text-xs;
+    color: var(--color-text-subtle);
+    font-size: var(--font-size-xs);
   }
 
   /* ========================================
@@ -454,126 +623,182 @@ main.content-container {
 
   /* Coming soon card - matches existing project card structure but non-interactive */
   .coming-soon-card {
-    @apply block cursor-default;
+    display: block;
+    cursor: default;
   }
 
   /* Coming soon placeholder - replaces the project-image */
   .coming-soon-placeholder {
-    @apply aspect-square w-full border-2 border-dashed border-gray-300 mb-4;
-    @apply flex items-center justify-center bg-gray-50/30;
-    @apply transition-all duration-300 ease-out;
-    @apply group-hover:border-gray-400 group-hover:bg-gray-100/50;
-    @apply group-hover:-translate-y-2 group-hover:shadow-lg;
+    aspect-ratio: 1;
+    width: 100%;
+    border: 2px dashed var(--color-border-medium);
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: color-mix(in srgb, var(--color-background) 30%, transparent);
+    transition: var(--transition-all);
+  }
+
+  .coming-soon-card:hover .coming-soon-placeholder {
+    border-color: var(--color-border-strong);
+    background-color: color-mix(in srgb, var(--color-background-alt) 50%, transparent);
+    transform: translateY(-0.5rem);
+    box-shadow: var(--shadow-card-hover);
   }
 
   /* Icon container within placeholder */
   .coming-soon-icon {
-    @apply text-gray-400 group-hover:text-gray-500 transition-all duration-200;
+    color: var(--color-text-subtle);
+    transition: var(--transition-all);
+  }
+
+  .coming-soon-card:hover .coming-soon-icon {
+    color: var(--color-text-muted);
   }
 
   /* Subtle icon animation on hover */
   .coming-soon-card:hover .coming-soon-icon svg {
-    @apply transform rotate-90 transition-transform duration-300 ease-out;
+    transform: rotate(90deg);
+    transition: transform var(--transition-normal) var(--ease-out);
   }
 
   /* Text styling - inherits from existing project card classes */
   .coming-soon-card .project-title {
-    @apply opacity-80;
+    opacity: 0.8;
   }
 
   .coming-soon-card .project-category {
-    @apply italic;
+    font-style: italic;
   }
 
   /* Respect reduced motion preferences */
   @media (prefers-reduced-motion: reduce) {
     .coming-soon-card:hover .coming-soon-icon svg {
-      @apply transform-none;
+      transform: none;
     }
   }
 
   /* Responsive adjustments to match existing project cards */
   @media (max-width: 768px) {
     .coming-soon-placeholder {
-      @apply mb-3;
+      margin-bottom: var(--space-3);
     }
   }
 
-    /* ========================================
+  /* ========================================
     IMAGE GALLERY MODAL
-    Add this to your global.css in the @layer components section
-    (after the coming soon card styles)
+    Updated to use design tokens
     ======================================== */
 
   /* Modal Overlay */
   .image-gallery-modal {
-    @apply fixed inset-0 z-50 flex items-center justify-center;
-    @apply transition-all duration-300 ease-out;
-    @apply opacity-0 pointer-events-none;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-index-modal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-all);
+    opacity: 0;
+    pointer-events: none;
   }
 
   .image-gallery-modal:not(.hidden) {
-    @apply opacity-100 pointer-events-auto;
+    opacity: 1;
+    pointer-events: auto;
   }
 
   /* Modal Backdrop */
   .gallery-backdrop {
-    @apply absolute inset-0 bg-black/90 backdrop-blur-sm;
-    @apply transition-all duration-300;
+    position: absolute;
+    inset: 0;
+    background-color: rgb(0 0 0 / 0.9);
+    backdrop-filter: blur(4px);
+    transition: var(--transition-all);
   }
 
   /* Modal Content Container */
   .gallery-content {
-    @apply relative w-full h-full flex items-center justify-center;
-    @apply p-4;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
     
     /* Safe area support */
-    padding-top: max(1rem, var(--safe-top));
-    padding-bottom: max(1rem, var(--safe-bottom));
-    padding-left: max(1rem, var(--safe-left));
-    padding-right: max(1rem, var(--safe-right));
+    padding-top: max(var(--space-4), var(--safe-top));
+    padding-bottom: max(var(--space-4), var(--safe-bottom));
+    padding-left: max(var(--space-4), var(--safe-left));
+    padding-right: max(var(--space-4), var(--safe-right));
   }
 
   /* Close Button */
   .gallery-close-btn {
-    @apply absolute top-4 right-4 z-10;
-    @apply w-10 h-10 flex items-center justify-center;
-    @apply bg-black/50 text-white rounded-full;
-    @apply hover:bg-black/70 transition-all duration-200;
-    @apply backdrop-blur-sm;
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    z-index: 10;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0 0 0 / 0.5);
+    color: var(--color-text-inverse);
+    border-radius: var(--radius-full);
+    backdrop-filter: blur(4px);
+    transition: var(--transition-all);
     
     /* Safe area positioning */
-    top: max(1rem, var(--safe-top));
-    right: max(1rem, var(--safe-right));
+    top: max(var(--space-4), var(--safe-top));
+    right: max(var(--space-4), var(--safe-right));
   }
 
   .gallery-close-btn:hover {
-    @apply scale-110;
+    background-color: rgb(0 0 0 / 0.7);
+    transform: scale(1.1);
   }
 
   /* Image Counter */
   .gallery-counter {
-    @apply absolute top-4 left-1/2 transform -translate-x-1/2 z-10;
-    @apply px-3 py-1 bg-black/50 text-white text-sm rounded-full;
-    @apply backdrop-blur-sm font-medium;
+    position: absolute;
+    top: var(--space-4);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    padding: var(--space-2) var(--space-3);
+    background-color: rgb(0 0 0 / 0.5);
+    color: var(--color-text-inverse);
+    font-size: var(--font-size-sm);
+    border-radius: var(--radius-full);
+    backdrop-filter: blur(4px);
+    font-weight: var(--font-weight-medium);
     
     /* Safe area positioning */
-    top: max(1rem, var(--safe-top));
+    top: max(var(--space-4), var(--safe-top));
   }
 
   /* Image Container */
   .gallery-image-container {
-    @apply relative flex items-center justify-center;
-    @apply w-full h-full;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
   }
 
   /* Main Gallery Image */
   .gallery-image {
-    @apply block transition-opacity duration-300;
+    display: block;
+    transition: var(--transition-opacity);
     
     /* Responsive image sizing - fits any aspect ratio within safe viewport */
-    max-width: calc(100vw - var(--safe-left) - var(--safe-right) - 2rem);
-    max-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - 2rem);
+    max-width: calc(100vw - var(--safe-left) - var(--safe-right) - var(--space-8));
+    max-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - var(--space-8));
     width: auto;
     height: auto;
     object-fit: contain;
@@ -584,12 +809,21 @@ main.content-container {
 
   /* Loading Spinner */
   .gallery-loading {
-    @apply absolute inset-0 flex items-center justify-center;
-    @apply bg-black/20 backdrop-blur-sm;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0 0 0 / 0.2);
+    backdrop-filter: blur(4px);
   }
 
   .gallery-spinner {
-    @apply w-8 h-8 border-2 border-white/30 border-t-white rounded-full;
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid color-mix(in srgb, var(--color-text-inverse) 30%, transparent);
+    border-top-color: var(--color-text-inverse);
+    border-radius: var(--radius-full);
     animation: spin 1s linear infinite;
   }
 
@@ -600,98 +834,115 @@ main.content-container {
 
   /* Navigation Arrows */
   .gallery-nav {
-    @apply absolute top-1/2 transform -translate-y-1/2 z-10;
-    @apply w-12 h-12 flex items-center justify-center;
-    @apply bg-black/50 text-white rounded-full;
-    @apply hover:bg-black/70 transition-all duration-200;
-    @apply backdrop-blur-sm;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0 0 0 / 0.5);
+    color: var(--color-text-inverse);
+    border-radius: var(--radius-full);
+    backdrop-filter: blur(4px);
+    transition: var(--transition-all);
   }
 
   .gallery-nav:hover {
-    @apply scale-110;
+    background-color: rgb(0 0 0 / 0.7);
+    transform: translateY(-50%) scale(1.1);
   }
 
   .gallery-nav-prev {
-    @apply left-4;
-    left: max(1rem, var(--safe-left));
+    left: var(--space-4);
+    left: max(var(--space-4), var(--safe-left));
   }
 
   .gallery-nav-next {
-    @apply right-4;
-    right: max(1rem, var(--safe-right));
+    right: var(--space-4);
+    right: max(var(--space-4), var(--safe-right));
   }
 
   /* Mobile Optimizations */
   @media (max-width: 768px) {
     .gallery-content {
-      @apply p-2;
-      padding-top: max(0.5rem, var(--safe-top));
-      padding-bottom: max(0.5rem, var(--safe-bottom));
-      padding-left: max(0.5rem, var(--safe-left));
-      padding-right: max(0.5rem, var(--safe-right));
+      padding: var(--space-2);
+      padding-top: max(var(--space-2), var(--safe-top));
+      padding-bottom: max(var(--space-2), var(--safe-bottom));
+      padding-left: max(var(--space-2), var(--safe-left));
+      padding-right: max(var(--space-2), var(--safe-right));
     }
     
     .gallery-close-btn {
-      @apply w-12 h-12;
-      top: max(0.75rem, var(--safe-top));
-      right: max(0.75rem, var(--safe-right));
+      width: 3rem;
+      height: 3rem;
+      top: max(var(--space-3), var(--safe-top));
+      right: max(var(--space-3), var(--safe-right));
     }
     
     .gallery-counter {
-      @apply text-xs px-2;
-      top: max(0.75rem, var(--safe-top));
+      font-size: var(--font-size-xs);
+      padding: var(--space-1) var(--space-2);
+      top: max(var(--space-3), var(--safe-top));
     }
     
     .gallery-nav {
-      @apply w-10 h-10;
+      width: 2.5rem;
+      height: 2.5rem;
     }
     
     .gallery-nav-prev {
-      left: max(0.75rem, var(--safe-left));
+      left: max(var(--space-3), var(--safe-left));
     }
     
     .gallery-nav-next {
-      right: max(0.75rem, var(--safe-right));
+      right: max(var(--space-3), var(--safe-right));
     }
     
     .gallery-image {
-      max-width: calc(100vw - var(--safe-left) - var(--safe-right) - 1rem);
-      max-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - 1rem);
+      max-width: calc(100vw - var(--safe-left) - var(--safe-right) - var(--space-4));
+      max-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - var(--space-4));
     }
   }
 
   /* Very small screens */
   @media (max-width: 480px) {
     .gallery-nav {
-      @apply w-8 h-8;
+      width: 2rem;
+      height: 2rem;
     }
     
     .gallery-close-btn {
-      @apply w-10 h-10;
+      width: 2.5rem;
+      height: 2.5rem;
     }
     
     .gallery-counter {
-      @apply text-xs;
+      font-size: var(--font-size-xs);
     }
   }
 
   /* Landscape phone optimizations */
   @media (orientation: landscape) and (max-height: 500px) {
     .gallery-content {
-      @apply p-1;
+      padding: var(--space-1);
     }
     
     .gallery-close-btn,
     .gallery-nav {
-      @apply w-8 h-8;
+      width: 2rem;
+      height: 2rem;
     }
     
     .gallery-counter {
-      @apply text-xs px-2 py-0.5;
+      font-size: var(--font-size-xs);
+      padding: var(--space-1) var(--space-2);
     }
     
     .gallery-image {
-      max-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - 0.5rem);
+      max-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - var(--space-2));
     }
   }
 
@@ -702,12 +953,12 @@ main.content-container {
     .gallery-image,
     .gallery-close-btn,
     .gallery-nav {
-      @apply transition-none;
+      transition: none;
     }
     
     .gallery-close-btn:hover,
     .gallery-nav:hover {
-      @apply scale-100;
+      transform: scale(1);
     }
     
     .gallery-spinner {
@@ -720,112 +971,228 @@ main.content-container {
     .gallery-close-btn,
     .gallery-nav,
     .gallery-counter {
-      @apply bg-black text-white border border-white;
+      background-color: var(--color-primary);
+      color: var(--color-text-inverse);
+      border: 1px solid var(--color-text-inverse);
     }
     
     .gallery-backdrop {
-      @apply bg-black;
+      background-color: var(--color-primary);
     }
   }
 
-  /* === CONTENT LAYOUT COMPONENTS === */
+  /* ========================================
+   CONTENT LAYOUT COMPONENTS - INLINE META SYSTEM
+   ======================================== */
+  
+  /* Main content containers */
   .content-container {
-    @apply w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16;
+    width: 100%;
   }
 
+  /* Content section wrapper - used throughout the site, not just content blocks */
   .content-section {
-    @apply max-w-5xl mx-auto px-6 md:px-8 lg:px-12 mb-24 mt-24;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+    margin-bottom: var(--spacing-section);
+    margin-top: var(--spacing-section);
   }
 
-  .content-grid {
-    @apply grid gap-12 lg:grid-cols-3;
+  @media (min-width: 768px) {
+    .content-section {
+      padding-left: var(--space-10);
+      padding-right: var(--space-10);
+    }
   }
 
-  .content-main {
-    @apply lg:col-span-2;
+  @media (min-width: 1024px) {
+    .content-section {
+      padding-left: var(--space-12);
+      padding-right: var(--space-12);
+    }
   }
 
-  .content-sidebar {
-    @apply space-y-8;
+  /* Section titles - base styling used throughout site */
+  .section-title {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-6);
+    color: var(--color-text-primary);
+  }
+
+  /* Project header with inline meta */
+  .project-header {
+    margin-bottom: var(--space-8);
+  }
+
+  .project-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-6);
+    margin-bottom: var(--space-2);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .project-meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    white-space: nowrap;
+  }
+
+  .project-meta-icon {
+    font-size: 1em;
+    opacity: 0.7;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .project-meta-row {
+      gap: var(--space-4);
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Alternative: Text-only version without icons */
+  .project-meta-row.text-only .project-meta-item {
+    position: relative;
+  }
+
+  .project-meta-row.text-only .project-meta-item:not(:last-child)::after {
+    content: "•";
+    margin-left: var(--space-4);
+    margin-right: calc(var(--space-4) * -0.5);
+    opacity: 0.6;
+  }
+
+  .project-meta-row.text-only .project-meta-icon {
+    display: none;
   }
 
   /* === ENHANCED ABOUT SECTION COMPONENTS === */
-  .about-section {
-    @apply border-t border-gray-200 pt-24 mt-32 bg-white;
-    @apply -mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-12 2xl:-mx-16;
-    @apply px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pb-32 mb-0;
+  .about-grid {
+    display: grid;
+    gap: var(--space-12);
+    align-items: start;
+    grid-template-columns: 1fr;
   }
 
-  .about-grid {
-    @apply grid gap-12 items-start;
-    @apply grid-cols-1 md:grid-cols-2;
+  @media (min-width: 768px) {
+    .about-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   .about-image {
-    @apply w-full h-auto object-cover object-center block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+    display: block;
   }
 
   .about-image-container {
-    @apply w-full;
+    width: 100%;
   }
 
   /* Enhanced about image with reveal */
   .about-image-animated {
-    @apply w-full h-auto object-cover object-center block reveal-left;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    /* Add reveal-left class in JavaScript */
   }
 
   /* Main Photo Component (for about page profile image) */
   .main-photo {
-    @apply w-full h-auto object-cover object-center block;
-    max-width: 100% !important;
-    height: auto !important;
-    background: none !important;
-    min-height: unset !important;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    background: none;
+    min-height: unset;
   }
 
   /* Enhanced main photo with reveal */
   .main-photo-animated {
-    @apply w-full h-auto object-cover object-center block reveal-left;
-    max-width: 100% !important;
-    height: auto !important;
-    background: none !important;
-    min-height: unset !important;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    background: none;
+    min-height: unset;
+    /* Add reveal-left class in JavaScript */
   }
 
   .about-title {
-    @apply text-3xl font-normal mb-8 text-black;
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-normal);
+    margin-bottom: var(--space-8);
+    color: var(--color-text-primary);
   }
 
   /* Enhanced about title with reveal */
   .about-title-animated {
-    @apply text-3xl font-normal mb-8 text-black reveal-right;
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-normal);
+    margin-bottom: var(--space-8);
+    color: var(--color-text-primary);
+    /* Add reveal-right class in JavaScript */
   }
 
   .about-text {
-    @apply text-gray-700 leading-relaxed mb-6;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-6);
   }
 
   /* Enhanced about text with staggered reveals */
   .about-text-animated {
-    @apply text-gray-700 leading-relaxed mb-6 reveal-up;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-6);
+    /* Add reveal-up class in JavaScript */
   }
 
   .about-text-large {
-    @apply text-lg;
+    font-size: var(--font-size-lg);
   }
 
   .about-link {
-    @apply text-gray-500 text-sm hover:text-black transition-colors inline-block;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    transition: var(--transition-colors);
+    display: inline-block;
+  }
+
+  .about-link:hover {
+    color: var(--color-text-primary);
   }
 
   /* Enhanced about link with reveal */
   .about-link-animated {
-    @apply text-gray-500 text-sm hover:text-black transition-colors inline-block reveal-up;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    transition: var(--transition-colors);
+    display: inline-block;
+    /* Add reveal-up class in JavaScript */
   }
 
   /* === HERO SECTION COMPONENTS === */
   .hero-section {
-    @apply relative overflow-hidden;
+    position: relative;
+    overflow: hidden;
     /* Use the actual available width (excluding scrollbar) */
     width: calc(100vw - (100vw - 100%));
     height: 100vh;
@@ -838,553 +1205,865 @@ main.content-container {
   }
 
   .hero-image {
-    @apply w-full h-full object-cover object-center;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 
- /* ========================================
+  /* ========================================
    HERO BADGE VISIBILITY FIX
-   Replace the .hero-badge section in your global.css (around line 447)
+   Updated with design tokens
    ======================================== */
 
-.hero-badge {
-  @apply absolute text-white z-10;
-  /* Position it higher up and ensure it's always visible */
-  bottom: max(2rem, 10vh); /* Use the larger of 2rem or 10% of viewport height */
-  left: 2rem;
-  
-  /* Ensure it's above any potential navbar on mobile */
-  margin-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-.hero-badge-content {
-  @apply bg-black/60 px-6 py-4 rounded backdrop-blur;
-  /* Add a subtle shadow to make it more visible against any background */
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-}
-
-.hero-badge-text {
-  @apply text-sm uppercase tracking-wide font-semibold;
-}
-
-/* Responsive adjustments for different screen sizes */
-@media (max-width: 768px) {
   .hero-badge {
-    /* On mobile, position it higher to ensure visibility */
-    bottom: max(1.5rem, 15vh);
-    left: 1.5rem;
+    position: absolute;
+    color: var(--color-text-inverse);
+    z-index: 10;
+    /* Position it higher up and ensure it's always visible */
+    bottom: max(var(--space-8), 10vh); /* Use the larger of 2rem or 10% of viewport height */
+    left: var(--space-8);
+    
+    /* Ensure it's above any potential navbar on mobile */
+    margin-bottom: env(safe-area-inset-bottom, 0px);
   }
-  
+
   .hero-badge-content {
-    @apply px-4 py-3;
+    background-color: rgb(0 0 0 / 0.6);
+    padding: var(--space-4) var(--space-6);
+    backdrop-filter: blur(8px);
+    /* Add a subtle shadow to make it more visible against any background */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
   }
-  
+
   .hero-badge-text {
-    @apply text-xs;
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: var(--font-weight-semibold);
   }
-}
 
-@media (min-width: 1024px) {
-  .hero-badge {
-    /* On larger screens, we can position it a bit lower */
-    bottom: max(3rem, 8vh);
-    left: 3rem;
+  /* Responsive adjustments for different screen sizes */
+  @media (max-width: 768px) {
+    .hero-badge {
+      /* On mobile, position it higher to ensure visibility */
+      bottom: max(var(--space-6), 15vh);
+      left: var(--space-6);
+    }
+    
+    .hero-badge-content {
+      padding: var(--space-3) var(--space-4);
+    }
+    
+    .hero-badge-text {
+      font-size: var(--font-size-xs);
+    }
   }
-}
 
-/* For very tall screens, ensure the badge doesn't get too far from the bottom */
-@media (min-height: 1000px) {
-  .hero-badge {
-    bottom: max(4rem, 6vh);
+  @media (min-width: 1024px) {
+    .hero-badge {
+      /* On larger screens, we can position it a bit lower */
+      bottom: max(var(--space-12), 8vh);
+      left: var(--space-12);
+    }
   }
-}
+
+  /* For very tall screens, ensure the badge doesn't get too far from the bottom */
+  @media (min-height: 1000px) {
+    .hero-badge {
+      bottom: max(var(--space-16), 6vh);
+    }
+  }
 
   /* === ENHANCED PHOTO GRID COMPONENTS === */
   .photo-grid {
-    @apply grid grid-cols-1 gap-12 w-full px-4 sm:px-6 lg:px-8 mb-32;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    width: 100%;
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+    margin-bottom: var(--spacing-section);
+  }
+
+  @media (min-width: 640px) {
+    .photo-grid {
+      padding-left: var(--space-6);
+      padding-right: var(--space-6);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .photo-grid {
+      padding-left: var(--space-8);
+      padding-right: var(--space-8);
+    }
   }
 
   .photo-container {
-    @apply relative w-full max-w-5xl aspect-video mx-auto overflow-hidden bg-gray-100;
+    position: relative;
+    width: 100%;
+    max-width: var(--container-max-width);
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
+    overflow: hidden;
+    background-color: var(--color-background);
   }
 
   .photo-image {
-    @apply absolute inset-0 w-full h-full object-cover transition-transform duration-500;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slower);
   }
 
   /* === DETAIL COMPONENTS === */
   .detail-block {
-    @apply space-y-3;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
   }
 
   .detail-label {
-    @apply text-sm uppercase tracking-wide text-gray-600;
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
   }
 
   .detail-value {
-    @apply text-sm text-gray-500;
-  }
-
-  .section-title {
-    @apply text-2xl mb-6 text-gray-900;
-  }
-
-  /* Enhanced section title with reveal */
-  .section-title-animated {
-    @apply text-2xl mb-6 text-gray-900 reveal-up;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
   }
 
   /* === LINK COMPONENTS === */
   .link-button {
-    @apply inline-flex items-center px-6 py-3 border border-gray-300 rounded;
-    @apply bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400;
-    @apply transition-all duration-200;
+    display: inline-flex;
+    align-items: center;
+    padding: var(--button-padding-y) var(--button-padding-x);
+    border: 1px solid var(--button-border-secondary);
+    border-radius: var(--button-border-radius);
+    background-color: var(--button-bg-secondary);
+    color: var(--button-text-secondary);
+    transition: var(--transition-all);
+  }
+
+  .link-button:hover {
+    background-color: var(--color-background);
+    border-color: var(--color-border-strong);
   }
 
   .link-icon {
-    @apply w-4 h-4 ml-2 transition-transform duration-200;
+    width: 1rem;
+    height: 1rem;
+    margin-left: var(--space-2);
+    transition: var(--transition-transform);
   }
 
   .link-button:hover .link-icon {
-    @apply translate-x-1;
+    transform: translateX(0.25rem);
   }
 
   /* === NAVIGATION COMPONENTS === */
   .nav-back {
-    @apply inline-flex items-center text-gray-500 hover:text-gray-900 transition-colors;
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-text-muted);
+    transition: var(--transition-colors);
+  }
+
+  .nav-back:hover {
+    color: var(--color-text-primary);
   }
 
   .nav-icon {
-    @apply w-5 h-5 mr-2 transition-transform duration-200;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: var(--space-2);
+    transition: var(--transition-transform);
   }
 
   .nav-back:hover .nav-icon {
-    @apply -translate-x-1;
+    transform: translateX(-0.25rem);
   }
 
   /* === UTILITY COMPONENTS === */
   .details-grid {
-    @apply grid gap-12 lg:grid-cols-3;
+    display: grid;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 1024px) {
+    .details-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   .navigation-section {
-    @apply pt-12;
+    padding-top: var(--space-12);
   }
 
   /* === PAGE HEADER COMPONENTS === */
   .page-container {
-    @apply w-full px-4 pt-16;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+    padding-top: var(--space-4);
   }
 
   .page-header {
-    @apply text-center mb-16 max-w-4xl mx-auto;
+    text-align: center;
+    margin-bottom: var(--space-16);
+    max-width: 64rem;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Enhanced page header with reveal */
   .page-header-animated {
-    @apply text-center mb-16 max-w-4xl mx-auto reveal-up;
+    text-align: center;
+    margin-bottom: var(--space-16);
+    max-width: 64rem;
+    margin-left: auto;
+    margin-right: auto;
+    /* Add reveal-up class in JavaScript */
   }
 
   .page-title {
-    @apply text-3xl font-normal mb-6 text-black;
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-normal);
+    margin-bottom: var(--space-6);
+    color: var(--color-text-primary);
   }
 
   /* Legacy main-title class - matches page-title for consistency */
   .main-title {
-    @apply text-3xl font-normal mb-6 text-black;
-    font-size: 2.25rem !important;
-    font-weight: 400 !important;
-    margin-bottom: 1.5rem !important;
-    color: #000000 !important;
-    line-height: 1.1 !important;
-  }
-
-  /* Legacy blog-title class - matches page-title for consistency */
-  .blog-title {
-    @apply text-3xl font-normal mb-6 text-black;
-    font-size: 2.25rem !important;
-    font-weight: 400 !important;
-    margin-bottom: 1.5rem !important;
-    color: #000000 !important;
-    line-height: 1.1 !important;
-  }
-
-  /* Legacy subtitle/description classes for consistency */
-  .main-subtitle, .page-intro {
-    @apply text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto;
-    font-size: 1.125rem !important;
-    color: #4b5563 !important;
-    line-height: 1.6 !important;
-  }
-
-  /* Override any component-scoped main title styling */
-  h1.main-title[data-astro-cid] {
-    font-size: 2.25rem !important;
-    font-weight: 400 !important;
-    color: #000000 !important;
-    line-height: 1.1 !important;
-    margin-bottom: 1.5rem !important;
-  }
-
-  /* Override any component-scoped blog title styling */
-  h1.blog-title[data-astro-cid] {
-    font-size: 2.25rem !important;
-    font-weight: 400 !important;
-    color: #000000 !important;
-    line-height: 1.1 !important;
-    margin-bottom: 1.5rem !important;
-  }
-
-  .page-subtitle {
-    @apply text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto;
-  }
-
-  .page-description {
-    @apply text-base text-gray-600 leading-relaxed max-w-2xl mx-auto;
-  }
-
-  /* Content Sections - Standardized spacing */
-  .content-section-spacing {
-    @apply mb-16;
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-normal);
+    margin-bottom: var(--space-6);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-tight);
   }
 
   .section-title-large {
-    @apply text-xl font-normal mb-8 text-center;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-normal);
+    margin-bottom: var(--space-8);
+    text-align: center;
   }
 
   /* Enhanced section title large with reveal */
   .section-title-large-animated {
-    @apply text-xl font-normal mb-8 text-center reveal-up;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-normal);
+    margin-bottom: var(--space-8);
+    text-align: center;
+    /* Add reveal-up class in JavaScript */
   }
 
   .section-title-small {
-    @apply text-base font-medium mb-4;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-4);
+  }
+
+  /* Enhanced section title with reveal - for non-content-block sections */
+  .section-title-animated {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-6);
+    color: var(--color-text-primary);
+    /* Add reveal-up class in JavaScript */
+  }
+
+  /* Content Sections - Standardized spacing */
+  .content-section-spacing {
+    margin-bottom: var(--space-16);
   }
 
   /* === CONTACT PAGE COMPONENTS === */
   .contact-container {
-    @apply page-container;
+    /* Use page-container styles */
   }
 
   .contact-header {
-    @apply page-header;
+    /* Use page-header styles */
   }
 
   .contact-title {
-    @apply page-title;
+    /* Use page-title styles */
   }
 
   .contact-subtitle {
-    @apply page-subtitle;
+    /* Use page-subtitle styles */
   }
 
   .social-grid {
-    @apply grid gap-6 mb-16;
-    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5;
+    display: grid;
+    gap: var(--space-6);
+    margin-bottom: var(--space-16);
+    grid-template-columns: 1fr;
   }
 
-  .social-card {
-    @apply flex flex-col items-center p-8 bg-white border-2 border-gray-100 rounded;
-    @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-xl;
-    @apply relative overflow-hidden;
+  @media (min-width: 640px) {
+    .social-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .social-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .social-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
   }
 
   /* Enhanced social card with reveal */
   .social-card-animated {
-    @apply flex flex-col items-center p-8 bg-white border-2 border-gray-100 rounded;
-    @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-xl;
-    @apply relative overflow-hidden reveal-up;
-  }
-
-  .social-card::before {
-    content: '';
-    @apply absolute top-0 left-0 right-0 h-0.5 bg-current transform scale-x-0 transition-transform duration-300;
-  }
-
-  .social-card:hover::before {
-    @apply scale-x-100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-8);
+    background-color: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: var(--radius-md);
+    transition: var(--transition-all);
+    position: relative;
+    overflow: hidden;
+    /* Add reveal-up class in JavaScript */
   }
 
   .social-icon {
-    @apply w-12 h-12 mb-4 p-3 rounded-full flex items-center justify-center transition-all duration-300;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: var(--space-4);
+    padding: var(--space-3);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-all);
   }
 
   .social-icon svg {
-    @apply w-full h-full;
+    width: 100%;
+    height: 100%;
   }
 
   .social-card h3 {
-    @apply text-lg font-semibold mb-1 text-gray-900;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-1);
+    color: var(--color-text-primary);
   }
 
   .social-card p {
-    @apply text-sm text-gray-500 m-0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: 0;
   }
 
   /* === SOCIAL PLATFORM COLORS === */
   .social-email .social-icon {
-    @apply bg-yellow-100 text-yellow-700;
+    background-color: color-mix(in srgb, #eab308 10%, transparent);
+    color: #a16207;
   }
 
   .social-email:hover .social-icon {
-    @apply bg-yellow-700 text-white;
+    background-color: #a16207;
+    color: var(--color-text-inverse);
   }
 
   .social-linkedin .social-icon {
-    @apply bg-blue-100 text-blue-600;
+    background-color: color-mix(in srgb, #2563eb 10%, transparent);
+    color: #1d4ed8;
   }
 
   .social-linkedin:hover .social-icon {
-    @apply bg-blue-600 text-white;
+    background-color: #1d4ed8;
+    color: var(--color-text-inverse);
   }
 
   .social-github .social-icon {
-    @apply bg-gray-100 text-gray-700;
+    background-color: var(--color-background);
+    color: var(--color-text-secondary);
   }
 
   .social-github:hover .social-icon {
-    @apply bg-gray-700 text-white;
+    background-color: var(--color-text-secondary);
+    color: var(--color-text-inverse);
   }
 
   .social-threads .social-icon {
-    @apply bg-gray-100 text-gray-900;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
   }
 
   .social-threads:hover .social-icon {
-    @apply bg-gray-900 text-white;
+    background-color: var(--color-text-primary);
+    color: var(--color-text-inverse);
   }
 
   .social-instagram .social-icon {
-    @apply bg-pink-100 text-pink-600;
+    background-color: color-mix(in srgb, #ec4899 10%, transparent);
+    color: #db2777;
   }
 
   .social-instagram:hover .social-icon {
-    @apply bg-gradient-to-br from-purple-600 to-pink-600 text-white;
+    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    color: var(--color-text-inverse);
   }
 
   .contact-note {
-    @apply text-center;
+    text-align: center;
   }
 
   .contact-note-card {
-    @apply inline-block p-8 bg-white rounded-lg max-w-lg;
+    display: inline-block;
+    padding: var(--space-8);
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    max-width: 32rem;
   }
 
   .contact-note-title {
-    @apply text-gray-900 mb-3 font-medium;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+    font-weight: var(--font-weight-medium);
   }
 
   .contact-note-text {
-    @apply text-sm text-gray-600;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
   }
 
   /* === ENHANCED ABOUT PAGE COMPONENTS === */
   .about-hero-section {
-    @apply grid gap-12 mb-16 mt-8;
-    @apply grid-cols-1 md:grid-cols-2;
+    display: grid;
+    gap: var(--space-12);
+    margin-bottom: var(--space-16);
+    margin-top: var(--space-8);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .about-hero-section {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   .about-photo-container {
-    @apply w-full;
+    width: 100%;
   }
 
   .about-experience-content {
-    @apply space-y-4;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
   }
 
   /* Enhanced about experience content with reveal */
   .about-experience-content-animated {
-    @apply space-y-4 reveal-right;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    /* Add reveal-right class in JavaScript */
   }
 
   .skills-section {
-    @apply mb-16;
+    margin-bottom: var(--space-16);
   }
 
   .skills-grid {
-    @apply grid gap-12 lg:grid-cols-3;
+    display: grid;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 1024px) {
+    .skills-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   .skills-experience-section {
-    @apply grid gap-12 mb-16;
-    @apply grid-cols-1 lg:grid-cols-2;
+    display: grid;
+    gap: var(--space-12);
+    margin-bottom: var(--space-16);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 1024px) {
+    .skills-experience-section {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   .skill-group {
-    @apply mb-8;
+    margin-bottom: var(--space-8);
   }
 
   /* Enhanced skill group with reveal */
   .skill-group-animated {
-    @apply mb-8 reveal-up;
+    margin-bottom: var(--space-8);
+    /* Add reveal-up class in JavaScript */
   }
 
   .skill-list {
-    @apply list-none p-0 space-y-2;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
   }
 
   .skill-list li {
-    @apply text-sm text-gray-700 py-1;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    padding: var(--space-1) 0;
   }
 
   .software-grid {
-    @apply grid gap-6 mb-4;
-    @apply grid-cols-2 sm:grid-cols-3 md:grid-cols-5;
+    display: grid;
+    gap: var(--space-6);
+    margin-bottom: var(--space-4);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 640px) {
+    .software-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .software-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
   }
 
   .software-item {
-    @apply flex flex-col items-center transition-transform duration-200 hover:-translate-y-1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: var(--transition-transform);
+  }
+
+  .software-item:hover {
+    transform: translateY(-0.25rem);
   }
 
   /* Enhanced software item with staggered reveal */
   .software-item-animated {
-    @apply flex flex-col items-center transition-transform duration-200 hover:-translate-y-1 reveal-up;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: var(--transition-transform);
+    /* Add reveal-up class in JavaScript */
+  }
+
+  .software-item-animated:hover {
+    transform: translateY(-0.25rem);
   }
 
   .software-logo {
-    @apply w-12 h-12 object-contain mb-2;
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+    margin-bottom: var(--space-2);
   }
 
   .software-name {
-    @apply text-xs font-medium text-center text-gray-700 leading-tight;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-tight);
   }
 
   .timeline {
-    @apply flex flex-col gap-6;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
   }
 
   .timeline-item {
-    @apply border-l-2 border-gray-200 pl-6 relative;
+    border-left: 2px solid var(--color-border-light);
+    padding-left: var(--space-6);
+    position: relative;
   }
 
   /* Enhanced timeline item with sequential reveal */
   .timeline-item-animated {
-    @apply border-l-2 border-gray-200 pl-6 relative reveal-up;
+    border-left: 2px solid var(--color-border-light);
+    padding-left: var(--space-6);
+    position: relative;
+    /* Add reveal-up class in JavaScript */
   }
 
   .timeline-date {
-    @apply text-sm text-gray-500 mb-1;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
   }
 
   .timeline-role {
-    @apply text-lg font-medium mb-2;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-2);
   }
 
   .timeline-description {
-    @apply text-sm text-gray-700 leading-relaxed;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
   }
 
   .about-photo-grid {
-    @apply grid gap-4 mb-4;
-    @apply grid-cols-2 md:grid-cols-3 lg:grid-cols-5;
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    .about-photo-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .about-photo-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
   }
 
   .photo-item {
-    @apply relative overflow-hidden w-full aspect-square;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1;
   }
 
   /* Enhanced photo item with staggered reveal */
   .photo-item-animated {
-    @apply relative overflow-hidden w-full aspect-square reveal-up;
-  }
-
-  .grid-photo {
-    @apply w-full h-full object-cover transition-transform duration-300;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1;
+    /* Add reveal-up class in JavaScript */
   }
 
   .photo-overlay {
-    @apply absolute inset-0 bg-black/70 flex items-center justify-center;
-    @apply opacity-0 hover:opacity-100 transition-opacity duration-300 p-4;
+    position: absolute;
+    inset: 0;
+    background-color: rgb(0 0 0 / 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition-opacity);
+    padding: var(--space-4);
+  }
+
+  .photo-overlay:hover {
+    opacity: 1;
   }
 
   .photo-description {
-    @apply text-white text-center text-sm font-medium leading-tight;
+    color: var(--color-text-inverse);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
   }
 
   .cta-section {
-    @apply mt-20 mb-16 text-center bg-white p-12 border-2 border-gray-100;
+    margin-top: var(--space-20);
+    margin-bottom: var(--space-16);
+    text-align: center;
+    background-color: var(--color-surface);
+    padding: var(--space-12);
+    border: 2px solid var(--card-border);
+    max-width: var(--container-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    width: calc(100% - var(--space-8)); /* Account for parent padding */
   }
 
   /* Enhanced CTA section with reveal */
   .cta-section-animated {
-    @apply mt-20 mb-16 text-center bg-white p-12 border-2 border-gray-100 reveal-up;
+    margin-top: var(--space-20);
+    margin-bottom: var(--space-16);
+    text-align: center;
+    background-color: var(--color-surface);
+    padding: var(--space-12);
+    border: 2px solid var(--card-border);
+    /* Add reveal-up class in JavaScript */
   }
 
   .cta-button {
-    @apply inline-block px-6 py-3 bg-black text-white rounded-lg;
-    @apply hover:bg-gray-800 transition-colors duration-200;
+    display: inline-block;
+    padding: var(--button-padding-y) var(--button-padding-x);
+    background-color: var(--button-bg-primary);
+    color: var(--button-text-primary);
+    border-radius: var(--radius-lg);
+    transition: var(--transition-colors);
+  }
+
+  .cta-button:hover {
+    background-color: var(--color-neutral-800);
   }
 
   /* === BLOG PAGE COMPONENTS === */
   .blog-posts-section {
-    @apply mb-16;
+    margin-bottom: var(--space-16);
   }
 
   .blog-grid {
-    @apply grid gap-6;
-    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
-    @apply max-w-6xl mx-auto;
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 640px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .blog-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   .blog-card {
-    @apply bg-white border-2 border-gray-100 overflow-hidden;
-    @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg;
+    background-color: var(--color-surface);
+    border: 2px solid var(--card-border);
+    overflow: hidden;
+    transition: var(--transition-all);
     aspect-ratio: 4 / 5;
-    @apply flex flex-col max-w-sm mx-auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 20rem;
+    margin: 0 auto;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-0.25rem);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--shadow-card-hover);
   }
 
   /* Enhanced blog card with staggered reveal */
   .blog-card-animated {
-    @apply bg-white border-2 border-gray-100 overflow-hidden;
-    @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg;
+    background-color: var(--color-surface);
+    border: 2px solid var(--card-border);
+    overflow: hidden;
+    transition: var(--transition-all);
     aspect-ratio: 4 / 5;
-    @apply flex flex-col max-w-sm mx-auto reveal-up;
+    display: flex;
+    flex-direction: column;
+    max-width: 20rem;
+    margin: 0 auto;
+    /* Add reveal-up class in JavaScript */
+  }
+
+  .blog-card-animated:hover {
+    transform: translateY(-0.25rem);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--shadow-card-hover);
   }
 
   .blog-card-link {
-    @apply flex flex-col h-full no-underline text-inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
   }
 
   .blog-card-image {
-    @apply w-full overflow-hidden flex-shrink-0 p-2 bg-white;
+    width: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+    padding: var(--space-2);
+    background-color: var(--color-surface);
     height: 55%;
   }
 
   .blog-image {
-    @apply w-full h-full object-cover object-center transition-transform duration-300 block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: var(--transition-transform);
+    display: block;
   }
 
   .blog-card-content {
-    @apply p-3 flex flex-col justify-between;
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     height: 45%;
   }
 
   .blog-card-title {
-    @apply text-base font-medium text-black mb-2 leading-tight;
-    @apply transition-colors duration-200;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+    line-height: var(--line-height-tight);
+    transition: var(--transition-colors);
   }
 
   .blog-card:hover .blog-card-title {
-    @apply text-gray-600;
+    color: var(--color-text-tertiary);
   }
 
   .blog-card-description {
-    @apply text-gray-700 leading-snug mb-2 flex-grow text-xs;
-    @apply overflow-hidden;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-snug);
+    margin-bottom: var(--space-2);
+    flex-grow: 1;
+    font-size: var(--font-size-xs);
+    overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
 
   .blog-card-meta {
-    @apply flex items-center justify-between text-xs text-gray-500;
-    @apply pt-2 border-t border-gray-100 mt-auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    padding-top: var(--space-2);
+    margin-top: auto;
   }
 }
 
-/* Utility Layer - Custom utilities */
+/* Utility Layer - Custom utilities using design tokens */
 @layer utilities {
   .text-gradient {
-    background: linear-gradient(30deg, #000000 0%, #6f7279 100%);
+    background: linear-gradient(30deg, var(--color-primary) 0%, var(--color-neutral-600) 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -1415,18 +2094,39 @@ main.content-container {
   .h-lvh {
     height: 100lvh;
   }
+
+  /* Design token utilities */
+  .text-primary { color: var(--color-text-primary); }
+  .text-secondary { color: var(--color-text-secondary); }
+  .text-tertiary { color: var(--color-text-tertiary); }
+  .text-muted { color: var(--color-text-muted); }
+  .text-subtle { color: var(--color-text-subtle); }
+
+  .bg-surface { background-color: var(--color-surface); }
+  .bg-surface-elevated { background-color: var(--color-surface-elevated); }
+  .bg-background { background-color: var(--color-background); }
+  .bg-background-alt { background-color: var(--color-background-alt); }
+
+  .border-light { border-color: var(--color-border-light); }
+  .border-medium { border-color: var(--color-border-medium); }
+  .border-strong { border-color: var(--color-border-strong); }
+
+  .section-spacing { margin-bottom: var(--spacing-section); }
+  .component-spacing { margin-bottom: var(--spacing-component); }
+  .element-spacing { margin-bottom: var(--spacing-element); }
 }
 
 /* ========================================
    MOBILE NAVIGATION - CLEAN CONSOLIDATED VERSION
-   Replace all mobile navigation CSS in your global.css with this
+   Updated to use design tokens
    ======================================== */
 
 /* Enhanced mobile menu button */
 .mobile-menu-button {
-  @apply relative p-2 rounded-lg;
-  @apply hover:bg-gray-100 active:bg-gray-200;
-  @apply transition-all duration-200;
+  position: relative;
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-all);
   
   /* Enhanced touch target */
   min-width: 44px;
@@ -1434,34 +2134,39 @@ main.content-container {
 }
 
 .mobile-menu-button:hover {
+  background-color: var(--color-background);
   transform: scale(1.05);
+}
+
+.mobile-menu-button:active {
+  background-color: var(--color-background-alt);
 }
 
 /* Smooth icon transitions */
 .mobile-menu-button svg {
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-normal);
 }
 
 /* Mobile menu container - positioned absolutely to float over page */
 .mobile-menu {
-  background: transparent !important;
+  background: transparent;
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 40;
-  margin-top: 0 !important;
-  padding: 24px 16px;
+  z-index: var(--z-index-modal-backdrop);
+  margin-top: 0;
+  padding: var(--space-6) var(--space-4);
   
   /* Safe area support */
-  padding-left: max(16px, var(--safe-left));
-  padding-right: max(16px, var(--safe-right));
+  padding-left: max(var(--space-4), var(--safe-left));
+  padding-right: max(var(--space-4), var(--safe-right));
 }
 
 /* Remove any background from the ul container */
 .mobile-menu ul {
-  background: transparent !important;
-  backdrop-filter: none !important;
+  background: transparent;
+  backdrop-filter: none;
   margin: 0;
   padding: 0;
 }
@@ -1469,16 +2174,16 @@ main.content-container {
 /* Mobile menu overlay - covers page content below navbar */
 .mobile-menu-overlay {
   position: fixed;
-  top: calc(64px + var(--safe-top));
+  top: calc(var(--nav-height) + var(--safe-top));
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0);
   backdrop-filter: blur(0px);
-  z-index: 30;
+  z-index: var(--z-index-sticky);
   opacity: 0;
   pointer-events: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--transition-slower) var(--ease-in-out);
 }
 
 /* Show overlay when menu is open (not hidden and not closing) */
@@ -1494,22 +2199,27 @@ main.content-container {
   opacity: 0;
   background: rgba(185, 185, 185, 0);
   backdrop-filter: blur(0px);
-  transition: all 0.3s ease-out;
+  transition: all var(--transition-normal) ease-out;
 }
 
-/* Mobile nav button styling - your original rectangular design */
+/* Mobile nav button styling - using design tokens */
 .mobile-nav-link {
-  @apply block text-center px-6 py-8 mx-3 mb-4;
-  @apply bg-gradient-to-br from-gray-50 to-gray-100;
-  @apply border border-gray-200;
-  @apply text-gray-700 font-medium no-underline;
-  @apply hover:bg-gradient-to-br hover:from-white hover:to-gray-50;
-  @apply hover:border-gray-300 hover:shadow-lg hover:-translate-y-1;
-  font-size: 16px;
+  display: block;
+  text-align: center;
+  padding: var(--space-8) var(--space-6);
+  margin: 0 var(--space-3) var(--space-4);
+  background: linear-gradient(135deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  font-size: var(--font-size-base);
   min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: var(--transition-all);
+  
   /* Always start hidden */
   opacity: 0;
   transform: translateY(-30px);
@@ -1518,9 +2228,16 @@ main.content-container {
   min-height: 44px;
 }
 
+.mobile-nav-link:hover {
+  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-background) 100%);
+  border-color: var(--color-border-medium);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-0.25rem);
+}
+
 /* Opening animations - clean state management */
 .mobile-menu.opening .mobile-nav-link {
-  animation: dropDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: dropDown var(--transition-slower) var(--ease-in-out) forwards;
 }
 
 .mobile-menu.opening li:nth-child(1) .mobile-nav-link {
@@ -1541,7 +2258,7 @@ main.content-container {
 
 /* Closing animations - simple fade out, all buttons at once */
 .mobile-menu.closing .mobile-nav-link {
-  animation: fadeOut 0.2s ease-out forwards !important;
+  animation: fadeOut 0.2s ease-out forwards;
 }
 
 /* Reset state when completely hidden */
@@ -1592,18 +2309,41 @@ main.content-container {
   will-change: auto;
 }
 
+/* ========================================
+   FOOTER STYLING
+   ======================================== */
+
+footer {
+  background-color: var(--color-background);
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--color-border-light);
+}
+
+footer .content-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+footer p {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .mobile-nav-link,
   .mobile-menu-overlay {
-    transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
   
   .mobile-menu-button,
   .mobile-menu-button svg {
-    transition: none !important;
+    transition: none;
   }
 }
 
@@ -1616,160 +2356,197 @@ html, body {
   overflow-x: hidden;
 }
 
-/* The formula (100vw - 100%) gives us the scrollbar width */
-/* So calc(100vw - (100vw - 100%)) = 100% (the actual content width) */
-/* And calc(-50vw + 50% + (100vw - 100%) / 2) centers it properly */
-
 /* ========================================
    PROJECT NAVIGATION STYLES
-   Add this section to your global.css components layer (around line 700)
+   Updated with design tokens
    ======================================== */
 
 /* Enhanced project navigation container */
 .project-navigation {
-  @apply flex flex-col gap-8 md:flex-row md:justify-between md:items-center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .project-navigation {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 /* Project navigation buttons container */
 .project-nav-buttons {
-  @apply flex flex-col gap-4 sm:flex-row sm:gap-6;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .project-nav-buttons {
+    flex-direction: row;
+    gap: var(--space-6);
+  }
 }
 
 /* Individual project navigation button */
 .project-nav-button {
-  @apply flex items-center gap-3 p-4 bg-white border-2 border-gray-100 rounded-lg;
-  @apply transition-all duration-300 hover:-translate-y-1 hover:border-gray-200 hover:shadow-lg;
-  @apply text-gray-700 hover:text-gray-900 no-underline;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background-color: var(--card-bg);
+  border: 2px solid var(--card-border);
+  transition: var(--transition-all);
+  color: var(--color-text-secondary);
+  text-decoration: none;
   min-width: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-nav-button:hover {
+  transform: translateY(-0.25rem);
+  border-color: var(--card-border-hover);
+  box-shadow: var(--shadow-card-hover);
+  color: var(--color-text-primary);
 }
 
 /* Previous project button (left-aligned) */
 .project-nav-prev {
-  @apply justify-start;
+  justify-content: flex-start;
 }
 
 /* Next project button (right-aligned) */
 .project-nav-next {
-  @apply justify-end sm:flex-row-reverse;
+  justify-content: flex-end;
+}
+
+@media (min-width: 640px) {
+  .project-nav-next {
+    flex-direction: row-reverse;
+  }
 }
 
 /* Project navigation icon */
 .project-nav-icon {
-  @apply w-5 h-5 flex-shrink-0 transition-transform duration-200;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  transition: var(--transition-transform);
 }
 
 /* Icon animation on hover */
 .project-nav-prev:hover .project-nav-icon {
-  @apply -translate-x-1;
+  transform: translateX(-0.25rem);
 }
 
 .project-nav-next:hover .project-nav-icon {
-  @apply translate-x-1;
+  transform: translateX(0.25rem);
 }
 
 /* Project navigation content container */
 .project-nav-content {
-  @apply flex flex-col gap-1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 /* Project navigation label */
 .project-nav-label {
-  @apply text-xs uppercase tracking-wide text-gray-500 font-medium;
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
 }
 
 /* Project navigation title */
 .project-nav-title {
-  @apply text-sm font-medium text-gray-900 leading-tight;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
 }
-
-/* Responsive adjustments */
-@media (max-width: 640px) {
-  .project-nav-button {
-    @apply w-full;
-    min-width: auto;
-  }
-  
-  .project-nav-next {
-    @apply flex-row justify-start;
-  }
-}
-
-/* Enhanced hover effects */
-.project-nav-button:hover .project-nav-title {
-  @apply text-black;
-}
-
-.project-nav-button:hover .project-nav-label {
-  @apply text-gray-600;
-}
-
-/* Add subtle border animation */
-.project-nav-button::before {
-  content: '';
-  @apply absolute top-0 left-0 right-0 h-0.5 bg-current transform scale-x-0 transition-transform duration-300;
-}
-
-.project-nav-button:hover::before {
-  @apply scale-x-100;
-}
-
-/* Ensure relative positioning for pseudo-element */
-.project-nav-button {
-  @apply relative overflow-hidden;
-}
-
-/* ========================================
-   MOBILE PROJECT NAVIGATION FIX
-   Replace the mobile responsive section in your project navigation styles
-   ======================================== */
 
 /* Responsive adjustments - keep buttons horizontal on mobile */
 @media (max-width: 640px) {
   .project-nav-buttons {
     /* Keep buttons horizontal on mobile instead of stacking */
-    @apply flex-row gap-3;
+    flex-direction: row;
+    gap: var(--space-3);
   }
   
   .project-nav-button {
     /* Make buttons equal width and fit side by side */
-    @apply flex-1;
+    flex: 1;
     min-width: 0; /* Allow flex shrinking */
-    padding: 1rem 0.75rem; /* Slightly reduce horizontal padding */
+    padding: var(--space-4) var(--space-3); /* Slightly reduce horizontal padding */
   }
   
   .project-nav-next {
-    @apply flex-row justify-start;
+    flex-direction: row;
+    justify-content: flex-start;
   }
   
   /* Adjust content layout for smaller buttons */
   .project-nav-content {
-    @apply flex flex-col gap-0.5;
+    gap: var(--space-1);
   }
   
   .project-nav-title {
-    @apply text-xs leading-tight; /* Smaller text to fit better */
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-tight);
   }
   
   .project-nav-label {
-    @apply text-xs;
+    font-size: var(--font-size-xs);
   }
   
   .project-nav-icon {
-    @apply w-4 h-4; /* Slightly smaller icons */
+    width: 1rem;
+    height: 1rem;
   }
 }
 
 /* For very small screens, make text even more compact */
 @media (max-width: 480px) {
   .project-nav-button {
-    padding: 0.75rem 0.5rem;
+    padding: var(--space-3) var(--space-2);
   }
   
   .project-nav-title {
-    @apply text-xs;
+    font-size: var(--font-size-xs);
     /* Truncate very long project names */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+}
+
+/* Enhanced hover effects */
+.project-nav-button:hover .project-nav-title {
+  color: var(--color-text-primary);
+}
+
+.project-nav-button:hover .project-nav-label {
+  color: var(--color-text-tertiary);
+}
+
+/* Add subtle border animation */
+.project-nav-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transition: transform var(--transition-normal);
+}
+
+.project-nav-button:hover::before {
+  transform: scaleX(1);
 }

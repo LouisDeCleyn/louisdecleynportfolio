@@ -34,6 +34,18 @@ const projectData = {
     category: 'Brand Design',
     description: 'End-to-end design of a learning platform focused on user engagement.',
     hero: '/projects/hearth/hero.png'
+  },
+    'art-projects': {
+    title: 'Sketching',
+    category: 'Skill Highlight',
+    description: 'Art and design projects that havent realised into fully fledged projects.',
+    hero: '/projects/art-projects/hero.jpg'
+  },
+    'making-projects': {
+    title: 'Making and Breaking',
+    category: 'Skill Highlight',
+    description: 'Art and design projects that havent realised into fully fledged projects.',
+    hero: '/projects/art-projects/making/IMG_1258.jpg'
   }
 };
 
@@ -51,12 +63,12 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
     <section class="page-header reveal-up">
       <h1 class="page-title">Hi i'm Louis</h1>
       <p class="page-subtitle">
-        Welcome to my site. Here you’ll find projects I’ve worked on, a look into my design process, and some of the ideas that fascinate me.
+        Welcome to my site. Here you'll find projects I've worked on, a look into my design process, and some of the ideas that fascinate me.
       </p>
     </section>
     
   <!-- Projects Gallery with Original Navigation -->
-  <section class="pt-16 mb-24">
+  <section class="element-spacing">
     <div class="project-grid">
       {projects.map((project, index) => (
         <article class={`reveal-stagger-${Math.min(index + 1, 10)}`}>
@@ -69,8 +81,8 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
                 loading="lazy"
               />
             ) : (
-              <div class="project-image flex items-center justify-center bg-gray-50">
-                <span class="text-gray-400 text-sm font-medium">[{project.category}]</span>
+              <div class="project-image flex items-center justify-center bg-background">
+                <span class="text-subtle text-sm font-medium">[{project.category}]</span>
               </div>
             )}
             <h2 class="project-title">{project.title}</h2>
@@ -97,49 +109,45 @@ const projects = Object.entries(projectData).map(([slug, data]) => ({
   </section>
 
   <!-- About Section with Enhanced Reveals -->
-  <section class="about-section">
-    <div class="content-container">
-      <div class="about-grid">
-        
-        <!-- Photo with Left Reveal -->
-        <div class="order-1 reveal-left">
-          <Image 
-            src={aboutPhoto}
-            alt="Louis working on a project"
-            class="about-image"
-            width={3000}
-            height={2000}
-          />
-        </div>
-        
-        <!-- Content with Right Reveal and Staggered Text -->
-        <div class="order-2">
-          <h2 class="about-title reveal-right">About Me</h2>
-          
-          <p class="about-text about-text-large reveal-delay-1">
-            Hello, I'm Louis, a multidisciplinary designer with an entrepreneurial mindset and a deep interest in human behaviour.
-          </p>
-          
-          <p class="about-text reveal-delay-2">
-            My work lives at the intersection of physical, digital, and visual design, shaped by curiosity and a drive to build things that matter.
-            Often, I've found myself in early-stage or fast-moving environments where momentum matters. I've been lucky to learn from experienced founders and designers, building a network around the shared goal of turning ideas into reality.
-          </p>
-          
-          <p class="about-text reveal-delay-3">
-            I'm drawn to projects where I can take ownership, bring big ideas to life, and grow alongside ambitious teams.
-            Working on something exciting and need someone who can think like a designer and execute like a founder? I'd love to hear from you.
-          </p>
-          
-          <a href="/about" class="about-link reveal-delay-4">
-            More about my background →
-          </a>
-        </div>
-        
+  <section class="cta-section reveal-up">
+    <div class="about-grid">
+      
+      <!-- Photo with Left Reveal -->
+      <div class="order-1 reveal-left">
+        <Image 
+          src={aboutPhoto}
+          alt="Louis working on a project"
+          class="about-image"
+          width={3000}
+          height={2000}
+        />
       </div>
+      
+      <!-- Content with Right Reveal and Staggered Text -->
+      <div class="order-2">
+        <h2 class="section-title-large reveal-right">About Me</h2>
+        
+        <p class="about-text about-text-large reveal-delay-1">
+          Hello, I'm Louis, a multidisciplinary designer with an entrepreneurial mindset and a deep interest in human behaviour.
+        </p>
+        
+        <p class="about-text reveal-delay-2">
+          My work lives at the intersection of physical, digital, and visual design, shaped by curiosity and a drive to build things that matter.
+          Often, I've found myself in early-stage or fast-moving environments where momentum matters. I've been lucky to learn from experienced founders and designers, building a network around the shared goal of turning ideas into reality.
+        </p>
+        
+        <p class="about-text reveal-delay-3">
+          I'm drawn to projects where I can take ownership, bring big ideas to life, and grow alongside ambitious teams.
+          Working on something exciting and need someone who can think like a designer and execute like a founder? I'd love to hear from you.
+        </p>
+        
+        <a href="/about" class="cta-button reveal-delay-4">
+          More about my background
+        </a>
+      </div>
+      
     </div>
   </section>
-
-
 
   <!-- Load External Reveal Script -->
   <script is:inline src="/scripts/reveal.js"></script>

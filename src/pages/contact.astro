@@ -3,18 +3,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Contact - Louis Decleyn">
-  <div class="contact-container">
+  <div class="page-container">
     <!-- Page Header with Reveal -->
-    <section class="contact-header reveal-up">
-      <h1 class="contact-title">Let's Connect</h1>
-      <p class="contact-subtitle">
+    <section class="page-header reveal-up">
+      <h1 class="page-title">Let's Connect</h1>
+      <p class="page-subtitle">
         I'd love to hear about your project or just have a conversation about design. 
         Find me on these platforms or drop me a line directly.
       </p>
     </section>
 
     <!-- Social Media Grid with Staggered Reveals -->
-    <section class="mb-16">
+    <section class="content-section-spacing">
       <div class="social-grid">
         
         <!-- Email -->
@@ -75,16 +75,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </section>
 
-    <!-- Quick Contact Note with Final Reveal -->
-    <section class="contact-note reveal-up">
-      <div class="contact-note-card">
-        <p class="contact-note-title">
-          <strong>Prefer email?</strong> I typically respond within 24 hours.
-        </p>
-        <p class="contact-note-text">
-          For project inquiries, feel free to include a brief overview of what you're working on.
-        </p>
-      </div>
+    <!-- Call to Action with Final Reveal -->
+    <section class="cta-section reveal-up">
+      <h2 class="section-title-large">Prefer email?</h2>
+      <p class="page-description section-spacing">
+        I typically respond within 24 hours. For project inquiries, feel free to include a brief overview of what you're working on.
+      </p>
+      <a href="mailto:louisdecleyn@icloud.com" class="cta-button">
+        Send Email
+      </a>
     </section>
   </div>
 

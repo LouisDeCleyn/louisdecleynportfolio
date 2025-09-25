@@ -1,148 +1,25 @@
 ---
 // src/pages/projects/[slug].astro
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentBlocks from '../../components/ContentBlocks.astro';
+import { projectOrder, getProject, getProjectNavigation } from '../../data/projects';
+import 'material-symbols/outlined.css'
+import type { ProjectSlug, ProjectLink } from '../../data/types';
 
-// Define types for better TypeScript support
-interface ProjectLink {
-  label: string;
-  url: string;
-}
-
-interface ProjectData {
-  title: string;
-  category: string;
-  timeline: string;
-  description: string;
-  hero: string;
-  problem?: string;
-  process?: string;
-  outcome?: string;
-  images: string[];
-  links: ProjectLink[];
-}
-
-type ProjectDataMap = {
-  'sine-health': ProjectData;
-  'stylideas': ProjectData;
-  'cadence': ProjectData;
-  'parametric-modelling': ProjectData;
-  'hearth': ProjectData;
-}
-
-// Simple static paths that work immediately
 export async function getStaticPaths() {
-  return [
-    { params: { slug: 'sine-health' } },
-    { params: { slug: 'stylideas' } },
-    { params: { slug: 'cadence' } },
-    { params: { slug: 'parametric-modelling' } },
-    { params: { slug: 'hearth' } },
-  ];
+  return projectOrder.map(slug => ({ params: { slug } }));
 }
 
 const { slug } = Astro.params;
 
-// Project order for navigation
-const projectOrder = ['sine-health', 'stylideas', 'cadence', 'parametric-modelling', 'hearth'];
+// Get project data
+const project = getProject(slug);
+if (!project) {
+  return Astro.redirect('/404');
+}
 
-// Project data with consistent slugs - now properly typed
-const projectData: ProjectDataMap = {
-  'sine-health': {
-    title: 'Sine Health',
-    category: 'Physical Product Design',
-    timeline: 'Ongoing • 2024',
-    description: 'Self led product development of a novel wearable device leveraging heart rate monitoring and vibration feedback for biofeedback and resilience training.',
-    hero: '/projects/sine-health/hero.png',
-    problem: 'Existing solutions take up audio or visual sensory channels limiting how it can be used.',
-    process: 'Mentored and assisted through University, developed prototypes and working models to conduct early tests with users.',
-    outcome: 'Research backed product concept used to raise initial funding. Currently developing MVP.',
-    images: [
-      '/projects/sine-health/image-1.png',
-      '/projects/sine-health/image-2.png',
-      '/projects/sine-health/image-3.png',
-      '/projects/sine-health/image-4.JPG',
-      '/projects/sine-health/image-5.JPG',
-      
-    ],
-    links: [
-      { label: 'View Online', url: 'https://sinehealth.co.uk/' },
-    ]
-  },
-  'stylideas': {
-    title: 'Stylideas',
-    category: 'Physical Product Design',
-    timeline: '1 Year • 2022',
-    description: 'Full-cycle design contribution to the conception and development of the Clear View portable heated mirror.',
-    hero: '/projects/stylideas/hero.jpg',
-    problem: 'Develop innovative mirror concept, capitalising on amazon mirror trends.',
-    process: 'Conducted user research, developed and tested working prototypes.',
-    outcome: 'Clear View mirror is now sold across many major retailors such as QVC and Boots.',
-    images: [
-      '/projects/stylideas/image-1.jpeg',
-      '/projects/stylideas/image-2.jpg',
-      '/projects/stylideas/image-3.png',
-      '/projects/stylideas/image-4.png'
-    ],
-    links: [
-      { label: 'View Online', url: 'https://stylpro.co.uk/products/stylpro-anti-fog-heated-bathroom-mirror' },
-    ]
-  },
-  'cadence': {
-    title: 'Cadence',
-    category: 'Product Concept',
-    timeline: '1 months • 2025',
-    description: 'Concept development and early prototype testing for a workout timer utilising gradients of light to seamlessly divide up time - enhancing the experience for fluid movement practices.',
-    hero: '/projects/cadence/hero.png',
-    images: [
-      '/projects/cadence/image-1.png',
-      '/projects/cadence/image-2.png',
-      '/projects/cadence/image-3.png',
-      '/projects/cadence/image-4.jpg',
-      '/projects/cadence/image-5.png',
-    ],
-    links: []
-  },
-  'parametric-modelling': {
-    title: 'Parametric Modelling',
-    category: 'Skill Highlight',
-    timeline: 'Ongoing • 2025',
-    description: 'Ongoing exploration of parametric modelling techniques, alongside applying learnings to create product concepts.',
-    hero: '/projects/parametric-modelling/hero.png',
-    images: [
-      '/projects/parametric-modelling/image-1.png',
-      '/projects/parametric-modelling/image-2.png',
-      '/projects/parametric-modelling/image-3.png'
-    ],
-    links: []
-  },
-  'hearth': {
-    title: 'Hearth',
-    category: 'Brand Design',
-    timeline: '1 Month • 2024',
-    description: 'Designed branded products for small-batch manufacture as personal gifts for friends and family.',
-    hero: '/projects/hearth/hero.png',
-    images: [
-      '/projects/hearth/image-1.png',
-      '/projects/hearth/image-2.jpg',
-      '/projects/hearth/image-3.jpg',
-      '/projects/hearth/image-4.png'
-    ],
-    links: []
-  },
-};
-
-// Type-safe project lookup with fallback
-const validSlug = slug as keyof ProjectDataMap;
-const project = projectData[validSlug] || projectData['sine-health'];
-
-// Calculate next and previous projects
-const currentIndex = projectOrder.indexOf(validSlug);
-const nextIndex = (currentIndex + 1) % projectOrder.length;
-const prevIndex = (currentIndex - 1 + projectOrder.length) % projectOrder.length;
-const nextProject = projectData[projectOrder[nextIndex] as keyof ProjectDataMap];
-const prevProject = projectData[projectOrder[prevIndex] as keyof ProjectDataMap];
-const nextSlug = projectOrder[nextIndex];
-const prevSlug = projectOrder[prevIndex];
+// Get navigation
+const navigation = getProjectNavigation(slug);
 ---
 
 <BaseLayout title={`${project.title} - Louis Decleyn`} description={project.description}>
@@ -153,87 +30,83 @@ const prevSlug = projectOrder[prevIndex];
       alt={`${project.title} - Hero Image`}
       class="hero-image"
       loading="eager"
-      data-gallery={validSlug}
+      data-gallery={slug}
       data-index="0"
     />
     
-    <!-- Project category overlay -->
-    <div class="hero-badge">
-      <div class="hero-badge-content">
-        <span class="hero-badge-text">{project.category}</span>
-      </div>
-    </div>
   </section>
 
-  <!-- Project Info Section -->
-  <section class="content-section">
-    <div class="content-grid">
-      <!-- Main Content -->
-      <div class="content-main">
-        <h1 class="text-3xl lg:text-4xl font-normal leading-tight mb-6">{project.title}</h1>
-        <p class="text-lg text-gray-600 leading-relaxed">{project.description}</p>
-      </div>
+<!-- Project Info Section -->
+<section class="content-section">
+  <div class="content-container"> <!-- Changed from content-grid to content-container -->
+    <!-- Single column layout with inline meta -->
+    <div class="project-header">
+      <h1 class="page-title">{project.title}</h1>
       
-      <!-- Project Details Sidebar -->
-      <div class="content-sidebar">
-        <!-- Timeline -->
-        <div class="detail-block">
-          <h3 class="detail-label">Timeline</h3>
-          <p class="detail-value">{project.timeline}</p>
+      <!-- Inline meta row -->
+      <div class="project-meta-row">
+        <div class="project-meta-item">
+          <span class="material-symbols-outlined project-meta-icon">schedule</span>
+          <span>{project.timeline}</span>
         </div>
-        
-        <!-- Category -->
-        <div class="detail-block">
-          <h3 class="detail-label">Category</h3>
-          <p class="detail-value">{project.category}</p>
+        <div class="project-meta-item">
+          <span class="material-symbols-outlined project-meta-icon">construction</span>
+          <span>{project.category}</span>
         </div>
       </div>
     </div>
-  </section>
+    
+    <p class="page-description">{project.description}</p>
+  </div>
+</section>
 
-  <!-- Photo Grid -->
-  <section class="photo-grid">
-    {project.images.map((imageSrc: string, index: number) => (
-      <div class="cursor-pointer">
-        <div class="photo-container">
-          <img 
-            src={imageSrc}
-            alt={`${project.title} - Process Image ${index + 1}`}
-            class="photo-image hover:scale-105"
-            loading="lazy"
-            data-gallery={validSlug}
-            data-index={index + 1}
-          />
+  <!-- Modular Content Blocks -->
+  {project.contentBlocks && (
+    <ContentBlocks blocks={project.contentBlocks} />
+  )}
+
+  <!-- Legacy Photo Grid (for projects without content blocks) -->
+  {!project.contentBlocks && project.images && (
+    <section class="photo-grid">
+      {project.images.map((imageSrc: string, index: number) => (
+        <div class="cursor-pointer">
+          <div class="photo-container">
+            <img 
+              src={imageSrc}
+              alt={`${project.title} - Process Image ${index + 1}`}
+              class="photo-image hover:scale-105"
+              loading="lazy"
+              data-gallery={slug}
+              data-index={index + 1}
+            />
+          </div>
         </div>
-      </div>
-    ))}
-  </section>
+      ))}
+    </section>
+  )}
 
-  <!-- Project Details Grid - Only show if any of the fields exist -->
-  {(project.problem || project.process || project.outcome) && (
+  <!-- Legacy Project Details Grid (for projects without content blocks) -->
+  {!project.contentBlocks && (project.problem || project.process || project.outcome) && (
     <section class="content-section">
       <div class="details-grid">
-        <!-- Problem - Only show if exists -->
         {project.problem && (
           <div>
             <h2 class="section-title">Problem</h2>
-            <p class="text-gray-700 leading-relaxed">{project.problem}</p>
+            <p class="text-secondary">{project.problem}</p>
           </div>
         )}
 
-        <!-- Process - Only show if exists -->
         {project.process && (
           <div>
             <h2 class="section-title">Process</h2>
-            <p class="text-gray-700 leading-relaxed">{project.process}</p>
+            <p class="text-secondary">{project.process}</p>
           </div>
         )}
 
-        <!-- Outcome - Only show if exists -->
         {project.outcome && (
           <div>
             <h2 class="section-title">Outcome</h2>
-            <p class="text-gray-700 leading-relaxed">{project.outcome}</p>
+            <p class="text-secondary">{project.outcome}</p>
           </div>
         )}
       </div>
@@ -276,26 +149,30 @@ const prevSlug = projectOrder[prevIndex];
       <!-- Project Navigation -->
       <div class="project-nav-buttons">
         <!-- Previous Project -->
-        <a href={`/projects/${prevSlug}`} class="project-nav-button project-nav-prev">
-          <svg class="project-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-          </svg>
-          <div class="project-nav-content">
-            <span class="project-nav-label">Previous</span>
-            <span class="project-nav-title">{prevProject.title}</span>
-          </div>
-        </a>
+        {navigation.prev && (
+          <a href={`/projects/${navigation.prev.slug}`} class="project-nav-button project-nav-prev">
+            <svg class="project-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            <div class="project-nav-content">
+              <span class="project-nav-label">Previous</span>
+              <span class="project-nav-title">{navigation.prev.data.title}</span>
+            </div>
+          </a>
+        )}
 
         <!-- Next Project -->
-        <a href={`/projects/${nextSlug}`} class="project-nav-button project-nav-next">
-          <div class="project-nav-content">
-            <span class="project-nav-label">Next</span>
-            <span class="project-nav-title">{nextProject.title}</span>
-          </div>
-          <svg class="project-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-        </a>
+        {navigation.next && (
+          <a href={`/projects/${navigation.next.slug}`} class="project-nav-button project-nav-next">
+            <div class="project-nav-content">
+              <span class="project-nav-label">Next</span>
+              <span class="project-nav-title">{navigation.next.data.title}</span>
+            </div>
+            <svg class="project-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        )}
       </div>
     </div>
   </section>
