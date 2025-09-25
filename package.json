@@ -9,7 +9,7 @@
     "astro": "astro"
   },
   "engines": {
-    "node": "24.4.1"
+    "node": "22.x"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^6.3.2",
