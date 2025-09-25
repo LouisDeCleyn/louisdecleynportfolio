@@ -4,9 +4,12 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev --host",
-    "build": "astro build",
+    "build": "astro build --verbose",
     "preview": "astro preview",
     "astro": "astro"
+  },
+  "engines": {
+    "node": ">=20 <21"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^6.3.2",
