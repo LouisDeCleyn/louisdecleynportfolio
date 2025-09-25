@@ -1,5 +1,3 @@
-/* Import design tokens first */
-@import './tokens.css';
 
 @tailwind base;
 @tailwind components;
