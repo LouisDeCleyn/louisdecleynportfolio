@@ -2,7 +2,7 @@
 # src/content/blog/my-design-process.md
 title: "A Material History of Armour"
 description: "Tracing the evolution of armour from ancient organic materials to modern composites and smart materials."
-publishDate: 2024-06-25
+publishDate: 2022-11-25
 tags: ["materials", "history"]
 featured: true
 heroImage: "/assets/blog/process-hero.jpg"
