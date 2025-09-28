@@ -6,13 +6,6 @@ export const cadenceData: ProjectData = {
     timeline: '1 months • 2025',
     description: 'Cadence is a flow-based exercise timer I designed to help users find rhythm in their workouts. Using a simple LED sequence, it guides periods of movement and rest without distraction, creating a more intuitive alternative to conventional timers. The project explored how light and pacing can shape focus, flow, and performance.',
     hero: '/projects/cadence/hero.png',
-    images: [
-      '/projects/cadence/image-1.png',
-      '/projects/cadence/image-2.png',
-      '/projects/cadence/image-3.png',
-      '/projects/cadence/image-4.jpg',
-      '/projects/cadence/image-5.png',
-    ],
     links: [],
 
  contentBlocks: [
@@ -30,7 +23,7 @@ export const cadenceData: ProjectData = {
     {
       type: 'banner-image',
       data: {
-        image: '/projects/cadence/hero-2.png',
+        image: '/projects/cadence/hero-2.webp',
         caption: 'Cadence Colourways',
         overlay: false
       }
@@ -60,7 +53,7 @@ export const cadenceData: ProjectData = {
       data: {
         heading: 'Cadence: Find Your Flow',
         text: 'Cadence assist the user in finding a balance between structured workouts and stretching routines - allowing flow between positions. The use of ambient light to guide also means that the status of the timer can be viewed from any position.',
-        image: '/projects/cadence/downward-dog.png',
+        image: '/projects/cadence/downward-dog.webp',
         imageAlt: 'Comparison of current biofeedback solutions'
       }
     },
@@ -72,15 +65,15 @@ export const cadenceData: ProjectData = {
         aspectRatio: '8/6', // or '1', '4/3', '3/2', etc.
         images: [
           {
-            src: '/projects/cadence/image-1.png',
+            src: '/projects/cadence/image-1.webp',
             alt: 'Device worn on wrist',
           },
           {
-            src: '/projects/cadence/image-2.png',
+            src: '/projects/cadence/image-2.webp',
             alt: 'Mobile app interface',
           },
           {
-            src: '/projects/cadence/image-3.png',
+            src: '/projects/cadence/image-3.webp',
             alt: 'Mobile app interface',
           },
         ]
@@ -89,7 +82,7 @@ export const cadenceData: ProjectData = {
     {
       type: 'banner-image',
       data: {
-        image: '/projects/cadence/interaction.jpg',
+        image: '/projects/cadence/interaction.webp',
         caption: 'Cadence Colourways',
         overlay: false
       }
@@ -97,7 +90,7 @@ export const cadenceData: ProjectData = {
     {
       type: 'banner-image',
       data: {
-        image: '/projects/cadence/banner.jpg',
+        image: '/projects/cadence/banner.webp',
         caption: 'Cadence Colourways',
         overlay: false
       }
@@ -106,7 +99,7 @@ export const cadenceData: ProjectData = {
     {
       type: 'banner-image',
       data: {
-        image: '/projects/cadence/image-4.jpg',
+        image: '/projects/cadence/image-4.webp',
         heading: 'Development Process',
         caption: 'Cadence Colourways',
         overlay: false
@@ -115,7 +108,7 @@ export const cadenceData: ProjectData = {
     {
       type: 'banner-image',
       data: {
-        image: '/projects/cadence/process banner.png',
+        image: '/projects/cadence/process banner.webp',
         caption: 'Cadence Colourways',
         overlay: false
       }

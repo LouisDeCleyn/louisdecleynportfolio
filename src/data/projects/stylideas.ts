@@ -30,7 +30,7 @@ export const stylIdeasData: ProjectData = {
       data: {
         heading: 'Clear View Heated Shower Mirror',
         text: ' The Clear View Shower Mirror uses a heated mirror surface to rapidly de-fog the mirror during a shower. The mirror can attach to both horizontal and vertical surfaces for flexibility during use.',
-        image: '/projects/stylideas/image-3.png',
+        image: '/projects/stylideas/image-3.webp',
         imageAlt: 'Comparison of current biofeedback solutions'
       }
     },
@@ -109,7 +109,7 @@ export const stylIdeasData: ProjectData = {
             alt: 'User testing session'
           },
           {
-            src: '/projects/stylideas/Untitled_Artwork.png',
+            src: '/projects/stylideas/Untitled_Artwork.webp',
             alt: 'User testing session'
           },
           {

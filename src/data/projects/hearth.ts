@@ -7,9 +7,9 @@ export const hearthData: ProjectData = {
     description: 'Designed branded products for small-batch manufacture as personal gifts for friends and family.',
     hero: '/projects/hearth/hero.png',
     images: [
-      '/projects/hearth/image-1.png',
-      '/projects/hearth/image-2.jpg',
-      '/projects/hearth/image-3.jpg',
+      '/projects/hearth/image-1.webp',
+      '/projects/hearth/image-2.webp',
+      '/projects/hearth/image-3.webp',
       '/projects/hearth/image-4.png'
     ],
     links: []

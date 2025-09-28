@@ -39,27 +39,27 @@ export const parametricModellingData: ProjectData = {
         heading: 'Renders',
         images: [
           {
-            src: '/projects/parametric-modelling/image-1.png',
+            src: '/projects/parametric-modelling/image-1.webp',
             alt: 'Algorithmic chair design',
           },
           {
-            src: '/projects/parametric-modelling/image-2.png',
+            src: '/projects/parametric-modelling/image-2.webp',
             alt: 'Parametric facade system',
           },
           {
-            src: '/projects/parametric-modelling/image-3.png',
+            src: '/projects/parametric-modelling/image-3.webp',
             alt: 'Generative jewelry',
           },
           {
-            src: '/projects/parametric-modelling/image-4.png',
+            src: '/projects/parametric-modelling/image-4.webp',
             alt: 'Generative jewelry',
           },
           {
-            src: '/projects/parametric-modelling/image-5.png',
+            src: '/projects/parametric-modelling/image-5.webp',
             alt: 'Generative jewelry',
           },
           {
-            src: '/projects/parametric-modelling/image-6.png',
+            src: '/projects/parametric-modelling/image-6.webp',
             alt: 'Generative jewelry',
           }
         ]

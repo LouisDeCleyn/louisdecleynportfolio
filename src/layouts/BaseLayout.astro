@@ -7,13 +7,17 @@ export interface Props {
   description?: string;
   ogImage?: string;
   ogType?: string;
+  preloadImage?: string;
+  heroImage?: string;
 }
 
 const { 
   title, 
   description = "Personal portfolio showcasing design work",
-  ogImage = "/og-image.JPG", // You'll need to create this
-  ogType = "website"
+  ogImage = "/og-image.JPG",
+  ogType = "website",
+  preloadImage,
+  heroImage
 } = Astro.props;
 ---
 
@@ -24,7 +28,57 @@ const {
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
+    <!-- Critical Image Preloading -->
+    {preloadImage && (
+      <link rel="preload" as="image" href={preloadImage} />
+    )}
+    {heroImage && heroImage !== preloadImage && (
+      <link rel="preload" as="image" href={heroImage} />
+    )}
+    
+    <!-- Critical CSS - Inline for immediate loading feedback -->
+    <style>
+      .hero-image { 
+        width: 100%; 
+        height: 100vh; 
+        object-fit: cover;
+        background: #f5f5f5;
+        image-rendering: -webkit-optimize-contrast;
+      }
+      .image-optimized {
+        background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
+                    linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
+                    linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
+                    linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+        background-size: 20px 20px;
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      }
+      .image-optimized[src] {
+        background: none;
+      }
+      .image-optimized[loading="eager"] { 
+        opacity: 1; 
+      }
+      .image-optimized[loading="lazy"] { 
+        opacity: 0; 
+        transition: opacity 0.3s ease; 
+      }
+      .image-optimized.loaded { 
+        opacity: 1; 
+      }
+      @media (max-width: 768px) {
+        .hero-image {
+          max-height: 60vh;
+          image-rendering: -webkit-optimize-contrast;
+        }
+      }
+    </style>
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={ogType} />
@@ -44,74 +98,67 @@ const {
     <!-- LinkedIn specific -->
     <meta property="linkedin:owner" content="" />
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <title>{title}</title>
   </head>
   <body>
-    <!-- Replace your existing header section in BaseLayout.astro with this: -->
-<header class="nav-sticky">
-  <nav class="content-container">
-    <div class="flex justify-between items-center h-full">
-      <a href="/" class="nav-brand">Louis DeCleyn</a>
-      
-      <!-- Desktop Navigation -->
-      <ul class="nav-links hidden md:flex">
-        <li><a href="/" class="nav-link">Home</a></li>
-        <li><a href="/about" class="nav-link">About</a></li>
-        <li><a href="/contact" class="nav-link">Contact</a></li>
-        <li><a href="/blog" class="nav-link">Journal</a></li>
-      </ul>
+    <header class="nav-sticky">
+      <nav class="content-container">
+        <div class="flex justify-between items-center h-full">
+          <a href="/" class="nav-brand">Louis DeCleyn</a>
+          
+          <!-- Desktop Navigation -->
+          <ul class="nav-links hidden md:flex">
+            <li><a href="/" class="nav-link">Home</a></li>
+            <li><a href="/about" class="nav-link">About</a></li>
+            <li><a href="/contact" class="nav-link">Contact</a></li>
+            <li><a href="/blog" class="nav-link">Journal</a></li>
+          </ul>
 
-      <!-- Mobile Menu Button -->
-      <button class="mobile-menu-button md:hidden" id="mobile-menu-btn">
-        <svg class="w-6 h-6 menu-icon transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-        <svg class="w-6 h-6 close-icon hidden transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
-    </div>
+          <!-- Mobile Menu Button -->
+          <button class="mobile-menu-button md:hidden" id="mobile-menu-btn">
+            <svg class="w-6 h-6 menu-icon transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <svg class="w-6 h-6 close-icon hidden transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
 
-    <!-- Mobile Navigation -->
-    <div class="mobile-menu hidden md:hidden" id="mobile-menu">
-      <ul class="space-y-2">
-        <li><a href="/" class="mobile-nav-link">Home</a></li>
-        <li><a href="/about" class="mobile-nav-link">About</a></li>
-        <li><a href="/contact" class="mobile-nav-link">Contact</a></li>
-        <li><a href="/blog" class="mobile-nav-link">Journal</a></li>
-      </ul>
-    </div>
-  </nav>
-</header>
+        <!-- Mobile Navigation -->
+        <div class="mobile-menu hidden md:hidden" id="mobile-menu">
+          <ul class="space-y-2">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li><a href="/about" class="mobile-nav-link">About</a></li>
+            <li><a href="/contact" class="mobile-nav-link">Contact</a></li>
+            <li><a href="/blog" class="mobile-nav-link">Journal</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
     
-    <!-- Mobile Menu Overlay - covers entire page below navbar -->
+    <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay hidden" id="mobile-menu-overlay"></div>
     
     <!-- Image Gallery Modal -->
     <div class="image-gallery-modal hidden" id="image-gallery-modal">
-      <!-- Modal Backdrop -->
       <div class="gallery-backdrop" id="gallery-backdrop"></div>
       
-      <!-- Modal Content -->
       <div class="gallery-content">
-        <!-- Close Button -->
         <button class="gallery-close-btn" id="gallery-close-btn" aria-label="Close gallery">
           <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
         
-        <!-- Image Counter -->
         <div class="gallery-counter" id="gallery-counter">
           <span id="gallery-current">1</span> of <span id="gallery-total">1</span>
         </div>
         
-        <!-- Image Container -->
         <div class="gallery-image-container">
           <img id="gallery-image" class="gallery-image" alt="" />
           <div class="gallery-loading" id="gallery-loading">
@@ -119,7 +166,6 @@ const {
           </div>
         </div>
         
-        <!-- Navigation Arrows -->
         <button class="gallery-nav gallery-nav-prev" id="gallery-prev" aria-label="Previous image">
           <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
@@ -144,78 +190,68 @@ const {
       </div>
     </footer>
     
-    <!-- Replace the viewport JavaScript in BaseLayout.astro with this properly typed version: -->
-<script>
-  (function() {
-    'use strict';
-    
-    function updateViewportHeight() {
-      // Calculate the actual viewport height
-      const vh = window.innerHeight * 0.01;
-      const vw = window.innerWidth * 0.01;
-      
-      // Set custom properties
-      document.documentElement.style.setProperty('--dynamic-vh', `${vh}px`);
-      document.documentElement.style.setProperty('--dynamic-vw', `${vw}px`);
-      
-      // Initialize safe area insets for desktop (they'll be 0)
-      const safeTop = getComputedStyle(document.documentElement).getPropertyValue('--safe-top').trim() || '0px';
-      const safeBottom = getComputedStyle(document.documentElement).getPropertyValue('--safe-bottom').trim() || '0px';
-      const safeLeft = getComputedStyle(document.documentElement).getPropertyValue('--safe-left').trim() || '0px';
-      const safeRight = getComputedStyle(document.documentElement).getPropertyValue('--safe-right').trim() || '0px';
-      
-      // Ensure safe area values are set (desktop will be 0px)
-      if (!safeTop || safeTop === 'env(safe-area-inset-top, 0px)') {
-        document.documentElement.style.setProperty('--safe-top', '0px');
-      }
-      if (!safeBottom || safeBottom === 'env(safe-area-inset-bottom, 0px)') {
-        document.documentElement.style.setProperty('--safe-bottom', '0px');
-      }
-      if (!safeLeft || safeLeft === 'env(safe-area-inset-left, 0px)') {
-        document.documentElement.style.setProperty('--safe-left', '0px');
-      }
-      if (!safeRight || safeRight === 'env(safe-area-inset-right, 0px)') {
-        document.documentElement.style.setProperty('--safe-right', '0px');
-      }
-      
-      // Update available height (accounting for navigation)
-      const navHeight = 64;
-      const safeTopValue = parseInt(document.documentElement.style.getPropertyValue('--safe-top')) || 0;
-      const availableHeight = window.innerHeight - navHeight - safeTopValue;
-      document.documentElement.style.setProperty('--available-height-dynamic', `${availableHeight}px`);
-    }
-    
-    // Update immediately on load
-    updateViewportHeight();
-    
-    // Update on resize with debouncing - properly typed timeout
-    let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
-    window.addEventListener('resize', function() {
-      if (resizeTimeout !== null) clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(updateViewportHeight, 100);
-    });
-    
-    // Update on orientation change
-    window.addEventListener('orientationchange', function() {
-      setTimeout(updateViewportHeight, 100);
-    });
-    
-    // iOS Safari specific: Update when scrolling stops (address bar)
-    // Only on mobile devices
-    if (window.innerWidth <= 768) {
-      let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
-      window.addEventListener('scroll', function() {
-        if (scrollTimeout !== null) clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(updateViewportHeight, 150);
-      }, { passive: true });
-    }
-  })();
-</script>
-    
-
-    
-    <!-- Enhanced Mobile Menu JavaScript -->
+    <!-- Viewport Management -->
     <script>
+      // @ts-nocheck
+      (function() {
+        'use strict';
+        
+        function updateViewportHeight() {
+          const vh = window.innerHeight * 0.01;
+          const vw = window.innerWidth * 0.01;
+          
+          document.documentElement.style.setProperty('--dynamic-vh', `${vh}px`);
+          document.documentElement.style.setProperty('--dynamic-vw', `${vw}px`);
+          
+          const safeTop = getComputedStyle(document.documentElement).getPropertyValue('--safe-top').trim() || '0px';
+          const safeBottom = getComputedStyle(document.documentElement).getPropertyValue('--safe-bottom').trim() || '0px';
+          const safeLeft = getComputedStyle(document.documentElement).getPropertyValue('--safe-left').trim() || '0px';
+          const safeRight = getComputedStyle(document.documentElement).getPropertyValue('--safe-right').trim() || '0px';
+          
+          if (!safeTop || safeTop === 'env(safe-area-inset-top, 0px)') {
+            document.documentElement.style.setProperty('--safe-top', '0px');
+          }
+          if (!safeBottom || safeBottom === 'env(safe-area-inset-bottom, 0px)') {
+            document.documentElement.style.setProperty('--safe-bottom', '0px');
+          }
+          if (!safeLeft || safeLeft === 'env(safe-area-inset-left, 0px)') {
+            document.documentElement.style.setProperty('--safe-left', '0px');
+          }
+          if (!safeRight || safeRight === 'env(safe-area-inset-right, 0px)') {
+            document.documentElement.style.setProperty('--safe-right', '0px');
+          }
+          
+          const navHeight = 64;
+          const safeTopValue = parseInt(document.documentElement.style.getPropertyValue('--safe-top')) || 0;
+          const availableHeight = window.innerHeight - navHeight - safeTopValue;
+          document.documentElement.style.setProperty('--available-height-dynamic', `${availableHeight}px`);
+        }
+        
+        updateViewportHeight();
+        
+        let resizeTimeout = null;
+        window.addEventListener('resize', function() {
+          if (resizeTimeout !== null) clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(updateViewportHeight, 100);
+        });
+        
+        window.addEventListener('orientationchange', function() {
+          setTimeout(updateViewportHeight, 100);
+        });
+        
+        if (window.innerWidth <= 768) {
+          let scrollTimeout = null;
+          window.addEventListener('scroll', function() {
+            if (scrollTimeout !== null) clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(updateViewportHeight, 150);
+          }, { passive: true });
+        }
+      })();
+    </script>
+    
+    <!-- Mobile Menu -->
+    <script>
+      // @ts-nocheck
       document.addEventListener('DOMContentLoaded', function() {
         const mobileMenuButton = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -223,29 +259,20 @@ const {
         const menuIcon = document.querySelector('.menu-icon');
         const closeIcon = document.querySelector('.close-icon');
         
-        // Ensure all elements exist
         if (mobileMenuButton && mobileMenu && menuIcon && closeIcon && mobileMenuOverlay) {
           
           function closeMenu() {
             if (!mobileMenu || !mobileMenuOverlay || !closeIcon || !menuIcon) return;
             
-            console.log('Starting close animation...');
-            
-            // Remove opening state and add closing state
             mobileMenu.classList.remove('opening');
             mobileMenu.classList.add('closing');
             mobileMenuOverlay.classList.add('closing');
             
-            console.log('Added closing class to:', mobileMenu.className);
-            
-            // Switch icons immediately
             closeIcon.classList.add('hidden');
             menuIcon.classList.remove('hidden');
             
-            // Hide after fade out completes (faster timing for simple fade)
             setTimeout(() => {
               if (!mobileMenu || !mobileMenuOverlay) return;
-              console.log('Hiding menu after animation...');
               mobileMenu.classList.add('hidden');
               mobileMenuOverlay.classList.add('hidden');
               mobileMenu.classList.remove('closing');
@@ -256,15 +283,11 @@ const {
           function openMenu() {
             if (!mobileMenu || !mobileMenuOverlay || !menuIcon || !closeIcon) return;
             
-            console.log('Opening menu...');
-            
-            // Remove hidden and closing states, add opening state
             mobileMenu.classList.remove('hidden');
             mobileMenu.classList.remove('closing');
             mobileMenu.classList.add('opening');
             mobileMenuOverlay.classList.remove('hidden');
             
-            // Switch icons
             menuIcon.classList.add('hidden');
             closeIcon.classList.remove('hidden');
           }
@@ -272,7 +295,6 @@ const {
           mobileMenuButton.addEventListener('click', function() {
             if (!mobileMenu) return;
             const isOpen = !mobileMenu.classList.contains('hidden');
-            console.log('Menu button clicked, isOpen:', isOpen);
             
             if (isOpen) {
               closeMenu();
@@ -281,47 +303,98 @@ const {
             }
           });
           
-          // Close menu when clicking overlay
           mobileMenuOverlay.addEventListener('click', function() {
             if (!mobileMenu || mobileMenu.classList.contains('hidden')) return;
-            console.log('Overlay clicked, closing menu...');
             closeMenu();
           });
         }
       });
     </script>
 
-    <!-- Image Gallery JavaScript -->
+    <!-- Optimized Image Loading -->
     <script>
+      // @ts-nocheck
       document.addEventListener('DOMContentLoaded', function() {
-        // Type definitions
-        interface GalleryImage {
-          src: string;
-          alt: string;
+        // Network-aware loading
+        let isSlowConnection = false;
+        if ('connection' in navigator) {
+          const connection = navigator.connection;
+          isSlowConnection = connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g');
+          
+          if (isSlowConnection) {
+            document.documentElement.classList.add('slow-connection');
+          }
         }
+        
+        // Intersection Observer for lazy loading
+        if ('IntersectionObserver' in window) {
+          const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                img.classList.add('loaded');
+                imageObserver.unobserve(img);
+              }
+            });
+          }, {
+            rootMargin: isSlowConnection ? '10px 0px' : '50px 0px',
+            threshold: 0.1
+          });
 
+          document.querySelectorAll('.image-optimized[loading="lazy"]').forEach(img => {
+            imageObserver.observe(img);
+          });
+        } else {
+          // Fallback for browsers without intersection observer
+          document.querySelectorAll('.image-optimized[loading="lazy"]').forEach(img => {
+            img.addEventListener('load', () => {
+              img.classList.add('loaded');
+            });
+          });
+        }
+        
+        // Prefetch next project images on hover
+        document.querySelectorAll('.project-nav-button').forEach(btn => {
+          btn.addEventListener('mouseenter', () => {
+            if (isSlowConnection) return; // Skip prefetch on slow connections
+            
+            const href = btn.getAttribute('href');
+            if (href) {
+              const link = document.createElement('link');
+              link.rel = 'prefetch';
+              link.href = href;
+              document.head.appendChild(link);
+            }
+          }, { once: true });
+        });
+      });
+    </script>
+
+    <!-- Image Gallery -->
+    <script>
+      // @ts-nocheck
+      document.addEventListener('DOMContentLoaded', function() {
         const modal = document.getElementById('image-gallery-modal');
         const backdrop = document.getElementById('gallery-backdrop');
         const closeBtn = document.getElementById('gallery-close-btn');
         const prevBtn = document.getElementById('gallery-prev');
         const nextBtn = document.getElementById('gallery-next');
-        const galleryImage = document.getElementById('gallery-image') as HTMLImageElement;
+        const galleryImage = document.getElementById('gallery-image');
         const currentSpan = document.getElementById('gallery-current');
         const totalSpan = document.getElementById('gallery-total');
         const loading = document.getElementById('gallery-loading');
         
-        let galleryImages: GalleryImage[] = [];
-        let currentIndex: number = 0;
-        let startX: number = 0;
-        let startY: number = 0;
+        let galleryImages = [];
+        let currentIndex = 0;
+        let startX = 0;
+        let startY = 0;
         
-        // Collect all gallery images and add click handlers
-        function initializeGallery(): void {
-          const clickableImages = document.querySelectorAll('img[data-gallery]') as NodeListOf<HTMLImageElement>;
+        function initializeGallery() {
+          const clickableImages = document.querySelectorAll('img[data-gallery]');
           
-          clickableImages.forEach((img: HTMLImageElement) => {
+          clickableImages.forEach((img) => {
             img.style.cursor = 'pointer';
-            img.addEventListener('click', function(this: HTMLImageElement) {
+            img.addEventListener('click', function() {
               const galleryName = this.getAttribute('data-gallery');
               const imageIndex = parseInt(this.getAttribute('data-index') || '0') || 0;
               if (galleryName) {
@@ -331,11 +404,9 @@ const {
           });
         }
         
-        // Open gallery with specific project images
-        function openGallery(galleryName: string, startIndex: number = 0): void {
-          // Collect all images from the same gallery
-          const images = document.querySelectorAll(`img[data-gallery="${galleryName}"]`) as NodeListOf<HTMLImageElement>;
-          galleryImages = Array.from(images).map((img: HTMLImageElement) => ({
+        function openGallery(galleryName, startIndex = 0) {
+          const images = document.querySelectorAll(`img[data-gallery="${galleryName}"]`);
+          galleryImages = Array.from(images).map((img) => ({
             src: img.src,
             alt: img.alt || ''
           }));
@@ -344,28 +415,23 @@ const {
           
           currentIndex = Math.max(0, Math.min(startIndex, galleryImages.length - 1));
           
-          // Update counter
           if (totalSpan) {
             totalSpan.textContent = galleryImages.length.toString();
           }
           
-          // Show modal
           if (modal) {
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
           }
           
-          // Load first image
           loadImage(currentIndex);
           
-          // Focus management
           if (closeBtn) {
             closeBtn.focus();
           }
         }
         
-        // Load image at specific index
-        function loadImage(index: number): void {
+        function loadImage(index) {
           if (index < 0 || index >= galleryImages.length) return;
           
           currentIndex = index;
@@ -373,7 +439,6 @@ const {
             currentSpan.textContent = (index + 1).toString();
           }
           
-          // Show loading
           if (loading) {
             loading.classList.remove('hidden');
           }
@@ -381,7 +446,6 @@ const {
             galleryImage.style.opacity = '0';
           }
           
-          // Load new image
           const img = new Image();
           img.onload = function() {
             if (galleryImage) {
@@ -405,7 +469,6 @@ const {
           };
           img.src = galleryImages[index].src;
           
-          // Update navigation buttons
           if (prevBtn) {
             prevBtn.style.display = galleryImages.length > 1 ? 'flex' : 'none';
           }
@@ -414,8 +477,7 @@ const {
           }
         }
         
-        // Close gallery
-        function closeGallery(): void {
+        function closeGallery() {
           if (modal) {
             modal.classList.add('hidden');
           }
@@ -424,15 +486,13 @@ const {
           currentIndex = 0;
         }
         
-        // Navigate to previous image
-        function previousImage(): void {
+        function previousImage() {
           if (galleryImages.length <= 1) return;
           const newIndex = currentIndex > 0 ? currentIndex - 1 : galleryImages.length - 1;
           loadImage(newIndex);
         }
         
-        // Navigate to next image
-        function nextImage(): void {
+        function nextImage() {
           if (galleryImages.length <= 1) return;
           const newIndex = currentIndex < galleryImages.length - 1 ? currentIndex + 1 : 0;
           loadImage(newIndex);
@@ -453,7 +513,7 @@ const {
         }
         
         // Keyboard navigation
-        document.addEventListener('keydown', function(e: KeyboardEvent) {
+        document.addEventListener('keydown', function(e) {
           if (!modal || modal.classList.contains('hidden')) return;
           
           switch(e.key) {
@@ -473,16 +533,16 @@ const {
         });
         
         // Touch/swipe support
-        let touchStartTime: number = 0;
+        let touchStartTime = 0;
         
         if (modal) {
-          modal.addEventListener('touchstart', function(e: TouchEvent) {
+          modal.addEventListener('touchstart', function(e) {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
             touchStartTime = Date.now();
           }, { passive: true });
           
-          modal.addEventListener('touchend', function(e: TouchEvent) {
+          modal.addEventListener('touchend', function(e) {
             if (modal.classList.contains('hidden')) return;
             
             const endX = e.changedTouches[0].clientX;
@@ -491,36 +551,29 @@ const {
             const deltaY = endY - startY;
             const touchDuration = Date.now() - touchStartTime;
             
-            // Swipe detection
             const minSwipeDistance = 50;
             const maxSwipeTime = 300;
             
             if (touchDuration < maxSwipeTime) {
               if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaY) < 100) {
-                // Horizontal swipe
                 if (deltaX > 0) {
                   previousImage();
                 } else {
                   nextImage();
                 }
               } else if (deltaY > minSwipeDistance && Math.abs(deltaX) < 100) {
-                // Swipe down to close
                 closeGallery();
               }
             }
           }, { passive: true });
           
-          // Prevent scroll when modal is open
-          modal.addEventListener('touchmove', function(e: TouchEvent) {
+          modal.addEventListener('touchmove', function(e) {
             e.preventDefault();
           }, { passive: false });
         }
         
-        // Initialize after DOM is ready
         initializeGallery();
       });
     </script>
-    
-
   </body>
 </html>

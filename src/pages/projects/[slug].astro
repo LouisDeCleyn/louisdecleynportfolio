@@ -21,43 +21,48 @@ if (!project) {
 const navigation = getProjectNavigation(slug);
 ---
 
-<BaseLayout title={`${project.title} - Louis Decleyn`} description={project.description}>
+<BaseLayout 
+  title={`${project.title} - Louis Decleyn`} 
+  description={project.description}
+  heroImage={project.hero}
+  preloadImage={project.hero}
+>
   <!-- Full-Screen Hero Image -->
   <section class="hero-section">
     <img 
       src={project.hero} 
       alt={`${project.title} - Hero Image`}
-      class="hero-image"
+      class="hero-image image-optimized"
       loading="eager"
+      fetchpriority="high"
       data-gallery={slug}
       data-index="0"
     />
-    
   </section>
 
-<!-- Project Info Section -->
-<section class="content-section">
-  <div class="content-container"> <!-- Changed from content-grid to content-container -->
-    <!-- Single column layout with inline meta -->
-    <div class="project-header">
-      <h1 class="page-title">{project.title}</h1>
-      
-      <!-- Inline meta row -->
-      <div class="project-meta-row">
-        <div class="project-meta-item">
-          <span class="material-symbols-outlined project-meta-icon">schedule</span>
-          <span>{project.timeline}</span>
-        </div>
-        <div class="project-meta-item">
-          <span class="material-symbols-outlined project-meta-icon">construction</span>
-          <span>{project.category}</span>
+  <!-- Project Info Section -->
+  <section class="content-section">
+    <div class="content-container">
+      <!-- Single column layout with inline meta -->
+      <div class="project-header">
+        <h1 class="page-title">{project.title}</h1>
+        
+        <!-- Inline meta row -->
+        <div class="project-meta-row">
+          <div class="project-meta-item">
+            <span class="material-symbols-outlined project-meta-icon">schedule</span>
+            <span>{project.timeline}</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="material-symbols-outlined project-meta-icon">construction</span>
+            <span>{project.category}</span>
+          </div>
         </div>
       </div>
+      
+      <p class="page-description">{project.description}</p>
     </div>
-    
-    <p class="page-description">{project.description}</p>
-  </div>
-</section>
+  </section>
 
   <!-- Modular Content Blocks -->
   {project.contentBlocks && (
@@ -73,7 +78,7 @@ const navigation = getProjectNavigation(slug);
             <img 
               src={imageSrc}
               alt={`${project.title} - Process Image ${index + 1}`}
-              class="photo-image hover:scale-105"
+              class="photo-image hover:scale-105 image-optimized"
               loading="lazy"
               data-gallery={slug}
               data-index={index + 1}
@@ -176,10 +181,3 @@ const navigation = getProjectNavigation(slug);
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  /* Override main padding for full-bleed hero */
-  :global(main) {
-    padding: 0 !important;
-  }
-</style>
