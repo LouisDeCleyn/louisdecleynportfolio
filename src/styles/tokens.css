@@ -1,6 +1,7 @@
 /* ========================================
-   DESIGN TOKENS
+   DESIGN TOKENS - UPDATED
    Core design decisions for the portfolio site
+   Carbon + Apple + Material Design inspired
    ======================================== */
 
 :root {
@@ -13,7 +14,7 @@
   --color-primary-light: #333333;
   --color-primary-dark: #000000;
   
-  /* Neutral Palette - Replaces scattered gray-* usage */
+  /* Neutral Palette - Carbon-inspired systematic grays */
   --color-neutral-0: #ffffff;
   --color-neutral-50: #fafafa;
   --color-neutral-100: #f5f5f5;
@@ -32,7 +33,7 @@
   --color-background: var(--color-neutral-50);
   --color-background-alt: var(--color-neutral-100);
   
-  /* Semantic Text Colors */
+  /* Semantic Text Colors - Clear hierarchy */
   --color-text-primary: var(--color-neutral-900);
   --color-text-secondary: var(--color-neutral-700);
   --color-text-tertiary: var(--color-neutral-600);
@@ -50,7 +51,23 @@
   --color-link-hover: var(--color-primary-light);
   
   /* ========================================
-     TYPOGRAPHY SYSTEM
+     PROJECT ACCENT SYSTEM (Material-inspired)
+     Override these on a per-project basis
+     ======================================== */
+  
+  /* Default accent - neutral */
+  --accent-primary: #2563eb;
+  --accent-primary-light: #3b82f6;
+  --accent-primary-dark: #1d4ed8;
+  --accent-subtle: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+  
+  /* Semantic accent usage */
+  --color-accent: var(--accent-primary);
+  --color-accent-hover: var(--accent-primary-light);
+  --color-accent-subtle: var(--accent-subtle);
+  
+  /* ========================================
+     TYPOGRAPHY SYSTEM (Apple-inspired simplicity)
      ======================================== */
   
   /* Font Families */
@@ -58,24 +75,24 @@
   --font-family-mono: 'Fira Code', 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
   
   /* Font Sizes - Consistent scale */
-  --font-size-xs: 0.75rem;      /* 12px */
-  --font-size-sm: 0.875rem;     /* 14px */
-  --font-size-base: 1rem;       /* 16px */
-  --font-size-lg: 1.125rem;     /* 18px */
-  --font-size-xl: 1.25rem;      /* 20px */
-  --font-size-2xl: 1.5rem;      /* 24px */
-  --font-size-3xl: 1.875rem;    /* 30px */
-  --font-size-4xl: 2.25rem;     /* 36px */
-  --font-size-5xl: 3rem;        /* 48px */
+  --font-size-xs: 0.75rem;      /* 12px - Micro text */
+  --font-size-sm: 0.875rem;     /* 14px - Captions */
+  --font-size-base: 1rem;       /* 16px - Body */
+  --font-size-lg: 1.125rem;     /* 18px - Body large */
+  --font-size-xl: 1.25rem;      /* 20px - Heading 3 */
+  --font-size-2xl: 1.5rem;      /* 24px - Heading 2 */
+  --font-size-3xl: 1.875rem;    /* 30px - Heading 1 */
+  --font-size-4xl: 2.25rem;     /* 36px - Display (rare) */
+  --font-size-5xl: 3rem;        /* 48px - Hero */
   
-  /* Line Heights */
-  --line-height-tight: 1.25;
-  --line-height-snug: 1.375;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.625;
-  --line-height-loose: 2;
+  /* Line Heights - Refined for readability */
+  --line-height-tight: 1.25;      /* Headings */
+  --line-height-snug: 1.375;      /* Subheadings */
+  --line-height-normal: 1.5;      /* UI text */
+  --line-height-relaxed: 1.625;   /* Body copy */
+  --line-height-loose: 2;         /* Spacious reading */
   
-  /* Font Weights */
+  /* Font Weights - Minimal variation */
   --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
@@ -83,7 +100,7 @@
   --font-weight-bold: 700;
   
   /* ========================================
-     SPACING SYSTEM
+     SPACING SYSTEM (8px modular scale - Carbon-inspired)
      ======================================== */
   
   /* Base Spacing Scale */
@@ -101,17 +118,17 @@
   --space-24: 6rem;     /* 96px */
   --space-32: 8rem;     /* 128px */
   
-  /* Semantic Spacing */
-  --spacing-tight: var(--space-2);
-  --spacing-normal: var(--space-4);
-  --spacing-relaxed: var(--space-6);
-  --spacing-loose: var(--space-8);
+  /* Semantic Spacing - Consistent vertical rhythm */
+  --spacing-tight: var(--space-2);       /* 8px - Minimal gap */
+  --spacing-compact: var(--space-4);     /* 16px - Related items */
+  --spacing-normal: var(--space-6);      /* 24px - Standard gap */
+  --spacing-relaxed: var(--space-8);     /* 32px - Breathing room */
   
-  /* Layout Spacing */
-  --spacing-section: var(--space-24);        /* Between major sections */
-  --spacing-component: var(--space-16);      /* Between components */
-  --spacing-element: var(--space-8);         /* Between related elements */
-  --spacing-item: var(--space-6);           /* Between list items */
+  /* Layout Spacing - Major structural breaks */
+  --spacing-element: var(--space-8);     /* 32px - Between related elements */
+  --spacing-component: var(--space-16);  /* 64px - Between components */
+  --spacing-section: var(--space-24);    /* 96px - Between major sections */
+  --spacing-major: var(--space-32);      /* 128px - Page breaks */
   
   /* ========================================
      LAYOUT DIMENSIONS
@@ -138,18 +155,16 @@
   --nav-link-hover-color: var(--color-text-primary);
   --nav-brand-color: var(--color-text-primary);
   
-  /* Project Cards */
+  /* Cards */
   --card-bg: var(--color-surface);
   --card-border: var(--color-border-light);
   --card-border-hover: var(--color-border-medium);
   --card-padding: var(--space-6);
   --card-gap: var(--space-6);
-  --card-border-radius: 0.5rem;
   
   /* Buttons */
   --button-padding-x: var(--space-6);
   --button-padding-y: var(--space-3);
-  --button-border-radius: 0.5rem;
   --button-bg-primary: var(--color-primary);
   --button-text-primary: var(--color-text-inverse);
   --button-bg-secondary: transparent;
@@ -167,14 +182,20 @@
      VISUAL EFFECTS
      ======================================== */
   
-  /* Border Radius */
-  --radius-sm: 0;
-  --radius-md: 0;
-  --radius-lg: 0;
-  --radius-xl: 0;
-  --radius-full: 0;
+  /* Border Radius - FIXED: Choose subtle refinement over pure brutalism */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-xl: 1rem;      /* 16px */
+  --radius-full: 9999px;  /* Pills/circles */
   
-  /* Shadows */
+  /* Semantic radius usage */
+  --radius-card: var(--radius-none);
+  --radius-button: var(--radius-none);
+  --radius-input: var(--radius-none);
+  
+  /* Shadows - Subtle elevation */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
@@ -234,4 +255,45 @@
   --z-index-popover: 60;
   --z-index-tooltip: 70;
   --z-index-toast: 80;
+}
+
+/* ========================================
+   PROJECT-SPECIFIC ACCENT COLORS
+   Material Design-inspired dynamic theming
+   ======================================== */
+
+/* Example project color schemes */
+[data-project="product-design"] {
+  --accent-primary: #8b5cf6;    /* Purple */
+  --accent-primary-light: #a78bfa;
+  --accent-primary-dark: #7c3aed;
+  --accent-subtle: color-mix(in srgb, #8b5cf6 10%, transparent);
+}
+
+[data-project="ui-ux"] {
+  --accent-primary: #06b6d4;    /* Cyan */
+  --accent-primary-light: #22d3ee;
+  --accent-primary-dark: #0891b2;
+  --accent-subtle: color-mix(in srgb, #06b6d4 10%, transparent);
+}
+
+[data-project="strategy"] {
+  --accent-primary: #10b981;    /* Green */
+  --accent-primary-light: #34d399;
+  --accent-primary-dark: #059669;
+  --accent-subtle: color-mix(in srgb, #10b981 10%, transparent);
+}
+
+[data-project="research"] {
+  --accent-primary: #f59e0b;    /* Amber */
+  --accent-primary-light: #fbbf24;
+  --accent-primary-dark: #d97706;
+  --accent-subtle: color-mix(in srgb, #f59e0b 10%, transparent);
+}
+
+[data-project="physical"] {
+  --accent-primary: #ef4444;    /* Red */
+  --accent-primary-light: #f87171;
+  --accent-primary-dark: #dc2626;
+  --accent-subtle: color-mix(in srgb, #ef4444 10%, transparent);
 }

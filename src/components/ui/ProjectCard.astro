@@ -1,0 +1,48 @@
+---
+/**
+ * ProjectCard Component
+ * Displays project preview cards with square aspect ratio
+ */
+
+interface Props {
+  title: string;
+  category: string;
+  hero?: string;
+  slug: string;
+  class?: string;
+}
+
+const { 
+  title, 
+  category, 
+  hero,
+  slug,
+  class: className = '' 
+} = Astro.props;
+---
+
+<article class={className}>
+  <a 
+    href={`/projects/${slug}`} 
+    class="block group transition-all duration-[var(--transition-normal)]"
+  >
+    {hero ? (
+      <img 
+        src={hero} 
+        alt={title}
+        class="aspect-square w-full object-cover border border-[var(--card-border)] rounded-[var(--radius-card)] mb-[var(--spacing-compact)] transition-all duration-[var(--transition-normal)] group-hover:border-[var(--card-border-hover)] group-hover:shadow-[var(--shadow-card-hover)]"
+        loading="lazy"
+      />
+    ) : (
+      <div class="aspect-square w-full flex items-center justify-center bg-[var(--color-background)] border border-[var(--card-border)] rounded-[var(--radius-card)] mb-[var(--spacing-compact)]">
+        <span class="text-[var(--color-text-subtle)] text-sm font-medium">[{category}]</span>
+      </div>
+    )}
+    <h2 class="text-sm font-normal mb-2 text-[var(--color-text-primary)] transition-opacity duration-[var(--transition-normal)] group-hover:opacity-70">
+      {title}
+    </h2>
+    <p class="text-[var(--color-text-subtle)] text-xs">
+      {category}
+    </p>
+  </a>
+</article>

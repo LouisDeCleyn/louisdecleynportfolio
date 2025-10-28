@@ -27,11 +27,27 @@ export const parametricModellingData: ProjectData = {
       type: 'banner-image',
       data: {
         image: '/projects/parametric-modelling/grasshopper-process.png',
-        caption: 'Early prototype testing',
+        caption: 'Grasshopper process',
         overlay: false
       }
     },
-    
+    {
+      type: 'image-grid',
+      layout: 'grid-2-col',
+      data: {
+        aspectRatio: '1',
+        images: [
+          {
+            src: '/projects/parametric-modelling/Screenshot 2025-03-07 163023.png',
+            alt: 'Device worn on wrist',
+          },
+          {
+            src: '/projects/parametric-modelling/Screenshot 2025-03-07 162344.png',
+            alt: 'User testing session'
+          },
+        ]
+      }
+    },
     {
       type: 'image-grid',
       layout: 'grid-3-col',

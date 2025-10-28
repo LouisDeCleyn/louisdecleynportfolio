@@ -1,0 +1,31 @@
+---
+// src/components/layout/Container.astro
+// Reusable container component for consistent width and padding
+interface Props {
+  class?: string;
+  maxWidth?: 'default' | 'wide' | 'full';
+  padding?: 'default' | 'none' | 'large';
+}
+
+const { 
+  class: className = '', 
+  maxWidth = 'default',
+  padding = 'default'
+} = Astro.props;
+
+const maxWidthClasses = {
+  default: 'max-w-[var(--container-max-width)]',
+  wide: 'max-w-screen-2xl',
+  full: 'max-w-full'
+};
+
+const paddingClasses = {
+  default: 'px-8 md:px-10 lg:px-12',
+  none: 'px-0',
+  large: 'px-8 md:px-12 lg:px-16 xl:px-20'
+};
+---
+
+<div class={`w-full mx-auto ${maxWidthClasses[maxWidth]} ${paddingClasses[padding]} ${className}`}>
+  <slot />
+</div>

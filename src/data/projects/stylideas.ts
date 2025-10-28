@@ -6,21 +6,25 @@ export const stylIdeasData: ProjectData = {
   timeline: '1 Year • 2022',
   description: 'During my placement year at Stylideas, I worked on the development of the Clear View Shower Mirror, a heated, fog-free mirror designed for everyday use. I contributed to the product’s evolution from concept through to manufacture, supporting both design and engineering decisions while balancing user needs, technical feasibility, and cost. This experience gave me hands-on exposure to the full product development process within a fast-paced consumer brand, strengthening my skills in prototyping, problem-solving, and collaborating across disciplines to bring a product successfully to market.',
   hero: '/projects/stylideas/hero.jpg',
-  problem: 'Develop innovative mirror concept, capitalising on amazon mirror trends.',
-  process: 'Conducted user research, developed and tested working prototypes.',
-  outcome: 'Clear View mirror is now sold across many major retailors such as QVC and Boots.',
   links: [
     { label: 'View Online', url: 'https://stylpro.co.uk/products/stylpro-anti-fog-heated-bathroom-mirror' },
   ],
 
   contentBlocks: [
     
+
     {
-      type: 'banner-image',
+      type: 'image-grid',
+      layout: 'grid-1-col',
       data: {
-        image: '/projects/stylideas/Extended Stylideas mirror image.jpg',
-        caption: 'Cadence Colourways',
-        overlay: false
+        aspectRatio: '16/9', // or '1', '4/3', '3/2', etc.
+        images: [
+          {
+            src: '/projects/stylideas/Extended Stylideas mirror image.jpg',
+            alt: 'Device worn on wrist',
+          },
+
+        ]
       }
     },
     
@@ -60,7 +64,6 @@ export const stylIdeasData: ProjectData = {
       type: 'banner-image',
       data: {
         image: '/projects/stylideas/image-1.jpeg',
-        caption: 'Cadence Colourways',
         overlay: false
       }
     },
@@ -69,16 +72,15 @@ export const stylIdeasData: ProjectData = {
       data: {
         heading: 'Development Process',
         image: '/projects/stylideas/image-2.jpg',
-        caption: 'Cadence Colourways',
         overlay: false
       }
     },
-    
+
     {
       type: 'image-grid',
-      layout: 'grid-3-col',
+      layout: 'grid-2-col',
       data: {
-        
+        aspectRatio: '4/3', // or '1', '4/3', '3/2', etc.
         images: [
           {
             src: '/projects/stylideas/digisketches.PNG',
@@ -96,36 +98,18 @@ export const stylIdeasData: ProjectData = {
             src: '/projects/stylideas/IMG-20240720-WA0001.jpg',
             alt: 'Wearable form factor iterations'
           },
-          {
-            src: '/projects/stylideas/Shower mirror CAD early mockup image exploded view 2.png',
-            alt: 'Wearable form factor iterations'
-          },
-          {
-            src: '/projects/stylideas/Shower mirror CAD early mockup image.png',
-            alt: 'Wearable form factor iterations'
-          },
-          {
-            src: '/projects/stylideas/StylIdeas_14-06-24-016_LR.jpg',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/stylideas/Untitled_Artwork.webp',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/stylideas/Shower mirror CAD early mockup image back.png',
-            alt: 'User testing session'
-          },
-        
           
         ]
       }
     },
+    
+    
+    
     {
       type: 'image-grid',
       layout: 'grid-3-col',
       data: {
-        heading: 'Further Projects',
+        heading: 'Projects worked on',
         aspectRatio: '1', // or '1', '4/3', '3/2', etc.
         images: [
           {

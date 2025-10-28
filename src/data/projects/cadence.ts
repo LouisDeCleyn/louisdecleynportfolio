@@ -24,7 +24,6 @@ export const cadenceData: ProjectData = {
       type: 'banner-image',
       data: {
         image: '/projects/cadence/hero-2.webp',
-        caption: 'Cadence Colourways',
         overlay: false
       }
     },
@@ -80,47 +79,52 @@ export const cadenceData: ProjectData = {
       }
     },
     {
-      type: 'banner-image',
+      type: 'text-image',
+      layout: 'split-right',
       data: {
-        image: '/projects/cadence/interaction.webp',
-        caption: 'Cadence Colourways',
-        overlay: false
+        heading: 'Material 3 Design System',
+        text: 'Cadence uses the Googls Material 3 Design system for a playful and expressive interface experience. The design system was selected for its modern, energetic feel and its adaptability, enabling it to fit circular screens.',
+        image: '/projects/cadence/Twisting dial.bip.85.png',
+        imageAlt: 'Comparison of current biofeedback solutions'
       }
     },
+
     {
       type: 'banner-image',
       data: {
         image: '/projects/cadence/banner.webp',
-        caption: 'Cadence Colourways',
         overlay: false
+      }
+    },
+
+     {
+      type: 'image-grid',
+      layout: 'grid-1-col',
+      data: {
+        heading: 'Development Process',
+        aspectRatio: '16/9', // or '1', '4/3', '3/2', etc.
+        images: [
+          {
+            src: '/projects/cadence/image-4.webp',
+            alt: 'Device worn on wrist',
+          },
+          {
+            src: '/projects/cadence/process banner.webp',
+            alt: 'Mobile app interface',
+          },
+          {
+            src: '/projects/cadence/IMG_7006.jpg',
+            alt: 'Mobile app interface',
+          },
+          {
+            src: '/projects/cadence/development/development.jpg',
+            alt: 'Mobile app interface',
+          },
+        ]
       }
     },
     
-    {
-      type: 'banner-image',
-      data: {
-        image: '/projects/cadence/image-4.webp',
-        heading: 'Development Process',
-        caption: 'Cadence Colourways',
-        overlay: false
-      }
-    },
-    {
-      type: 'banner-image',
-      data: {
-        image: '/projects/cadence/process banner.webp',
-        caption: 'Cadence Colourways',
-        overlay: false
-      }
-    },
-    {
-      type: 'banner-image',
-      data: {
-        image: '/projects/cadence/development/development.jpg',
-        caption: 'Cadence Colourways',
-        overlay: false
-      }
-    },
+    
 
     
 

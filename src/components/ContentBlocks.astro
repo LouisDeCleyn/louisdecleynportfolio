@@ -1,6 +1,8 @@
 ---
 // src/components/ContentBlocks.astro
-// Renders different content block types for rich project pages
+// FIXED: Works with your Sine Health project structure
+import Container from './layout/Container.astro';
+import Section from './ui/Section.astro';
 
 interface ContentBlock {
   type: string;
@@ -17,893 +19,424 @@ const { blocks } = Astro.props;
 
 {blocks.map((block, index) => {
   switch (block.type) {
+    
+    // TEXT + IMAGE BLOCK
     case 'text-image':
       return (
-        <section class="content-section">
-          <div class={`text-image-block ${block.layout === 'split-right' ? 'reverse' : ''}`}>
-            <div class="text-content">
-              <h2 class="section-title">{block.data.heading}</h2>
-              <p class="text-secondary">{block.data.text}</p>
+        <Section spacing="normal">
+          <Container>
+            <div class={`grid grid-cols-1 md:grid-cols-2 gap-12 items-center ${
+              block.layout === 'split-right' ? 'md:[&>*:first-child]:order-2' : ''
+            }`}>
+              <div class="text-content">
+                <h2 class="heading-2 mb-4">{block.data.heading}</h2>
+                <p class="body-text">{block.data.text}</p>
+              </div>
+              <div class="image-content">
+                <img 
+                  src={block.data.image} 
+                  alt={block.data.imageAlt}
+                  class="w-full h-auto rounded-[var(--radius-card)] object-cover"
+                  loading="lazy"
+                />
+              </div>
             </div>
-            <div class="image-content">
+          </Container>
+        </Section>
+      );
+    
+    // BANNER IMAGE BLOCK
+    case 'banner-image':
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && (
+              <h2 class="heading-2 mb-8">{block.data.heading}</h2>
+            )}
+            <div class="relative w-full overflow-hidden">
               <img 
                 src={block.data.image} 
-                alt={block.data.imageAlt}
-                class="block-image"
+                alt={block.data.caption || 'Project image'}
+                class="w-full h-auto block"
                 loading="lazy"
               />
+              {block.data.overlay && block.data.caption && (
+                <div class="absolute inset-0 flex items-center justify-center bg-black/50 text-white p-4">
+                  <p class="text-lg md:text-xl font-medium text-center">{block.data.caption}</p>
+                </div>
+              )}
             </div>
-          </div>
-        </section>
+            {!block.data.overlay && block.data.caption && (
+              <p class="text-center caption-text mt-4 px-8">{block.data.caption}</p>
+            )}
+          </Container>
+        </Section>
       );
-
+    
+    // IMAGE GRID BLOCK
+    case 'image-grid':
+      const aspectRatio = block.data.aspectRatio || '1'; // Default to square
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+            <div class={
+              block.layout === 'grid-2-col' || block.layout === 'two-column' ? 
+                'grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6' :
+              block.layout === 'grid-2x2' ?
+                'grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6' :
+              block.layout === 'grid-3-col' || block.layout === 'three-column' ? 
+                'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6' :
+              block.layout === 'grid-4-col' || block.layout === 'four-column' ? 
+                'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6' :
+              block.layout === 'masonry' ? 
+                'columns-1 md:columns-2 lg:columns-3 gap-4 md:gap-6' :
+              'grid grid-cols-1 gap-4 md:gap-6'
+            }>
+              {block.data.images.map((image: any) => (
+                <div class={`bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--radius-card)] overflow-hidden hover:border-[var(--card-border-hover)] hover:shadow-[var(--shadow-card-hover)] transition-all ${
+                  block.layout === 'masonry' ? 'break-inside-avoid mb-4 md:mb-6' : ''
+                }`}>
+                  <div 
+                    class="w-full overflow-hidden"
+                    style={block.layout === 'masonry' ? '' : `aspect-ratio: ${aspectRatio}`}
+                  >
+                    <img 
+                      src={image.src} 
+                      alt={image.alt}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  {image.caption && (
+                    <p class="caption-text p-4 m-0">{image.caption}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // METRICS/RESULTS BLOCK
+    case 'metrics-results':
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {block.data.metrics.map((metric: any) => (
+                <div class="text-center p-6 bg-[var(--color-surface)] rounded-[var(--radius-card)] border border-[var(--color-border-light)]">
+                  <div class={`text-3xl font-bold mb-2 flex items-center justify-center gap-2 ${
+                    metric.trend === 'up' ? 'text-green-600' :
+                    metric.trend === 'down' ? 'text-red-600' :
+                    'text-[var(--color-text-muted)]'
+                  }`}>
+                    {metric.value}
+                    {metric.trend && (
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {metric.trend === 'up' && (
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        )}
+                        {metric.trend === 'down' && (
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+                        )}
+                      </svg>
+                    )}
+                  </div>
+                  <p class="caption-text">{metric.label}</p>
+                </div>
+              ))}
+            </div>
+            {block.data.description && (
+              <p class="body-text text-center">{block.data.description}</p>
+            )}
+          </Container>
+        </Section>
+      );
+    
+    // SLIDESHOW BLOCK
     case 'slideshow':
       return (
-        <section class="content-section">
-          <h2 class="section-title">{block.data.heading}</h2>
-          <div class="slideshow-container" data-slideshow={`slideshow-${index}`}>
-            <div class="slideshow-wrapper">
-              {block.data.slides.map((slide: any, slideIndex: number) => (
-                <div class={`slide ${slideIndex === 0 ? 'active' : ''}`}>
-                  <img src={slide.image} alt={slide.caption} class="slide-image" />
-                  <div class="slide-content">
-                    <h3 class="slide-caption">{slide.caption}</h3>
-                    <p class="slide-description">{slide.description}</p>
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+            <div class="slideshow-container max-w-[900px] mx-auto" data-slideshow={`slideshow-${index}`}>
+              <div class="slideshow-wrapper relative aspect-[16/9] overflow-hidden rounded-[var(--radius-card)] bg-[var(--color-background)]">
+                {block.data.slides.map((slide: any, slideIndex: number) => (
+                  <div class={`slide absolute inset-0 transition-opacity duration-500 ${
+                    slideIndex === 0 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                  }`}>
+                    <img src={slide.image} alt={slide.caption} class="w-full h-full object-cover" />
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white">
+                      <h3 class="text-lg font-semibold mb-2 text-white">{slide.caption}</h3>
+                      <p class="text-sm text-white/90">{slide.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div class="flex items-center justify-center gap-4 mt-6">
+                <button class="slide-btn prev-btn w-10 h-10 flex items-center justify-center bg-[var(--color-surface)] border border-[var(--color-border-medium)] rounded-full hover:bg-[var(--color-background)] hover:border-[var(--color-border-strong)] transition-all" data-direction="prev">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                  </svg>
+                </button>
+                <div class="flex gap-2">
+                  {block.data.slides.map((_: any, slideIndex: number) => (
+                    <button 
+                      class={`indicator w-2 h-2 rounded-full transition-all ${
+                        slideIndex === 0 ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border-medium)] hover:bg-[var(--color-primary)]'
+                      }`}
+                      data-slide={slideIndex}
+                    ></button>
+                  ))}
+                </div>
+                <button class="slide-btn next-btn w-10 h-10 flex items-center justify-center bg-[var(--color-surface)] border border-[var(--color-border-medium)] rounded-full hover:bg-[var(--color-background)] hover:border-[var(--color-border-strong)] transition-all" data-direction="next">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // DIAGRAM BLOCK
+    case 'diagram':
+      return (
+        <Section spacing="normal">
+          <Container>
+            <div class="max-w-[800px] mx-auto">
+              {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+              <div class="relative mb-6">
+                <img 
+                  src={block.data.image} 
+                  alt={block.data.heading || 'Diagram'}
+                  class="w-full h-auto rounded-[var(--radius-card)]"
+                  loading="lazy"
+                />
+                {block.data.callouts && block.data.callouts.map((callout: any) => (
+                  <div 
+                    class="absolute cursor-pointer group"
+                    style={`left: ${callout.x}%; top: ${callout.y}%;`}
+                  >
+                    <div class="w-4 h-4 bg-[var(--color-primary)] rounded-full border-2 border-white group-hover:scale-125 transition-transform"></div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-[var(--color-primary)] text-white text-xs whitespace-nowrap rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                      {callout.text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {block.data.description && (
+                <p class="body-text">{block.data.description}</p>
+              )}
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // TEXT COLUMNS BLOCK
+    case 'text-columns':
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+            <div class={`grid grid-cols-1 md:grid-cols-2 ${
+              block.layout === 'three-column' ? 'lg:grid-cols-3' : ''
+            } gap-8`}>
+              {block.data.columns.map((column: any) => (
+                <div>
+                  <h3 class="heading-3 mb-4">{column.subheading}</h3>
+                  <ul class="list-none p-0 flex flex-col gap-3">
+                    {column.items.map((item: string) => (
+                      <li class="body-text before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // QUOTE/TESTIMONIAL BLOCK
+    case 'quote-testimonial':
+      return (
+        <Section spacing="normal">
+          <Container>
+            <div class="max-w-[800px] mx-auto text-center p-12 bg-[var(--color-surface)] rounded-[var(--radius-card)] border-2 border-[var(--color-border-light)]">
+              <blockquote class="mb-6 italic">
+                <p class="body-text--large">"{block.data.quote}"</p>
+              </blockquote>
+              <div class="flex items-center justify-center gap-4">
+                {block.data.image && (
+                  <img 
+                    src={block.data.image} 
+                    alt={block.data.author}
+                    class="w-12 h-12 rounded-full object-cover"
+                    loading="lazy"
+                  />
+                )}
+                <cite class="caption-text not-italic">{block.data.author}</cite>
+              </div>
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // VIDEO/ANIMATION BLOCK
+    case 'animation-showcase':
+    case 'video':
+      return (
+        <Section spacing="normal">
+          <Container>
+            <div class="max-w-[900px] mx-auto">
+              {block.data.heading && <h2 class="heading-2 mb-8 text-center">{block.data.heading}</h2>}
+              <video 
+                class="w-full h-auto rounded-[var(--radius-card)] mb-4"
+                controls={block.data.controls !== false}
+                autoplay={block.data.autoplay || false}
+                loop
+                muted
+              >
+                <source src={block.data.animation || block.data.video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              {block.data.description && (
+                <p class="body-text text-center">{block.data.description}</p>
+              )}
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // PROCESS STEPS BLOCK
+    case 'process-steps':
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-12">{block.data.heading}</h2>}
+            <div class="grid gap-12">
+              {block.data.steps.map((step: any) => (
+                <div class="grid grid-cols-1 md:grid-cols-[auto_1fr_200px] gap-6 items-center">
+                  <div class="text-4xl font-bold text-[var(--color-text-muted)] text-center md:text-left">
+                    {step.number}
+                  </div>
+                  <div>
+                    <h3 class="heading-3 mb-2">{step.title}</h3>
+                    <p class="body-text">{step.description}</p>
+                  </div>
+                  <div class="w-full h-[150px]">
+                    <img 
+                      src={step.image} 
+                      alt={step.title}
+                      class="w-full h-full object-cover rounded-[var(--radius-card)]"
+                      loading="lazy"
+                    />
                   </div>
                 </div>
               ))}
             </div>
-            <div class="slideshow-controls">
-              <button class="slide-btn prev-btn" data-direction="prev">
-                <svg class="slide-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-              </button>
-              <div class="slide-indicators">
-                {block.data.slides.map((_: any, slideIndex: number) => (
-                  <button 
-                    class={`indicator ${slideIndex === 0 ? 'active' : ''}`}
-                    data-slide={slideIndex}
-                  ></button>
-                ))}
-              </div>
-              <button class="slide-btn next-btn" data-direction="next">
-                <svg class="slide-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </section>
+          </Container>
+        </Section>
       );
-
-    case 'banner-image':
+    
+    // PROCESS PHOTOS BLOCK  
+    case 'process-photos':
       return (
-        <section class="banner-image-section">
-          <h2 class="section-title">{block.data.heading}</h2>
-          <div class="banner-container">
-            <img 
-              src={block.data.image} 
-              alt={block.data.caption}
-              class="banner-image"
-              loading="lazy"
-            />
-            {block.data.overlay && (
-              <div class="banner-overlay">
-                <p class="banner-caption">{block.data.caption}</p>
-              </div>
-            )}
-          </div>
-        </section>
-      );
-
-    case 'diagram':
-      return (
-        <section class="content-section">
-          <h2 class="section-title">{block.data.heading}</h2>
-          <div class="diagram-container">
-            <div class="diagram-image-container">
-              <img 
-                src={block.data.image} 
-                alt={block.data.heading}
-                class="diagram-image"
-                loading="lazy"
-              />
-              {block.data.callouts && block.data.callouts.map((callout: any, calloutIndex: number) => (
-                <div 
-                  class="diagram-callout" 
-                  style={`left: ${callout.x}%; top: ${callout.y}%;`}
-                  data-tooltip={callout.text}
-                >
-                  <div class="callout-dot"></div>
-                  <div class="callout-label">{callout.text}</div>
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+            <div class="columns-2 md:columns-3 gap-6">
+              {block.data.photos.map((photo: any) => (
+                <div class="break-inside-avoid mb-6 overflow-hidden rounded-[var(--radius-card)]">
+                  <img 
+                    src={photo.src} 
+                    alt={photo.alt}
+                    class="w-full h-auto block"
+                    loading="lazy"
+                  />
                 </div>
               ))}
             </div>
-            <p class="diagram-description">{block.data.description}</p>
-          </div>
-        </section>
+          </Container>
+        </Section>
       );
-
-    case 'text-columns':
-      return (
-        <section class="content-section">
-          <h2 class="section-title">{block.data.heading}</h2>
-          <div class={`columns-container ${block.layout}`}>
-            {block.data.columns.map((column: any) => (
-              <div class="column">
-                <h3 class="column-heading">{column.subheading}</h3>
-                <ul class="column-list">
-                  {column.items.map((item: string) => (
-                    <li class="column-item">{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-      );
-
-    case 'quote-testimonial':
-      return (
-        <section class="content-section">
-          <div class="testimonial-container">
-            <blockquote class="testimonial-quote">
-              <p>"{block.data.quote}"</p>
-            </blockquote>
-            <div class="testimonial-author">
-              {block.data.image && (
-                <img 
-                  src={block.data.image} 
-                  alt={block.data.author}
-                  class="author-image"
-                  loading="lazy"
-                />
-              )}
-              <cite class="author-name">{block.data.author}</cite>
-            </div>
-          </div>
-        </section>
-      );
-
-    case 'image-grid':
-      return (
-        <section class="content-section">
-          {block.data.heading && <h2 class="section-title">{block.data.heading}</h2>}
-          <div 
-            class={`image-grid ${block.layout}`}
-            style={block.data.aspectRatio ? `--aspect-ratio: ${block.data.aspectRatio}` : undefined}
-          >
-            {block.data.images.map((image: any) => (
-              <div class="grid-item">
-                <div class="image-container">
-                  <img 
-                    src={image.src} 
-                    alt={image.alt}
-                    class="grid-image"
-                    loading="lazy"
-                  />
-                </div>
-                {image.caption && (
-                  <p class="grid-caption">{image.caption}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      );
-
-    case 'metrics-results':
-      return (
-        <section class="content-section">
-          <h2 class="section-title">{block.data.heading}</h2>
-          <div class="metrics-grid">
-            {block.data.metrics.map((metric: any) => (
-              <div class="metric-card">
-                <div class={`metric-value ${metric.trend}`}>
-                  {metric.value}
-                  <svg class="trend-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    {metric.trend === 'up' && (
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                    )}
-                    {metric.trend === 'down' && (
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
-                    )}
-                  </svg>
-                </div>
-                <p class="metric-label">{metric.label}</p>
-              </div>
-            ))}
-          </div>
-          <p class="metrics-description">{block.data.description}</p>
-        </section>
-      );
-
-    case 'animation-showcase':
-      return (
-        <section class="content-section">
-          <h2 class="section-title">{block.data.heading}</h2>
-          <div class="animation-container">
-            <video 
-              class="animation-video"
-              controls={block.data.controls}
-              autoplay={block.data.autoplay}
-              loop
-              muted
-            >
-              <source src={block.data.animation} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            <p class="animation-description">{block.data.description}</p>
-          </div>
-        </section>
-      );
-
-    case 'process-steps':
-      return (
-        <section class="content-section">
-          <h2 class="section-title">{block.data.heading}</h2>
-          <div class="process-steps">
-            {block.data.steps.map((step: any, stepIndex: number) => (
-              <div class="process-step">
-                <div class="step-number">{step.number}</div>
-                <div class="step-content">
-                  <h3 class="step-title">{step.title}</h3>
-                  <p class="step-description">{step.description}</p>
-                </div>
-                <div class="step-image">
-                  <img 
-                    src={step.image} 
-                    alt={step.title}
-                    class="step-img"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      );
-
-    case 'process-photo-grid':
-      return (
-        <section class="content-section">
-          <h2 class="section-title">{block.data.heading}</h2>
-          <div class="process-photo-grid">
-            {block.data.images.map((image: any) => (
-              <div class="process-photo-item">
-                <img 
-                  src={image.src} 
-                  alt={image.alt}
-                  class="process-photo"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        </section>
-      );
-
+    
+    // CALL TO ACTION BLOCK
     case 'call-to-action':
       return (
-        <section class="content-section">
-          <div class="cta-container">
-            <h2 class="cta-heading">{block.data.heading}</h2>
-            <p class="cta-text">{block.data.text}</p>
-            <div class="cta-buttons">
-              {block.data.buttons.map((button: any) => (
-                <a 
-                  href={button.url}
-                  class={`cta-button ${button.primary ? 'primary' : 'secondary'}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {button.text}
-                </a>
-              ))}
+        <Section spacing="normal">
+          <Container>
+            <div class="text-center p-12 md:p-16 bg-[var(--color-surface)] rounded-[var(--radius-card)] border-2 border-[var(--color-border-light)]">
+              <h2 class="heading-2 mb-4">{block.data.heading}</h2>
+              <p class="body-text mb-8">{block.data.text}</p>
+              <div class="flex gap-4 justify-center flex-wrap">
+                {block.data.buttons.map((button: any) => (
+                  <a 
+                    href={button.url} 
+                    class={`px-6 py-3 rounded-[var(--radius-button)] font-medium transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-card-hover)] ${
+                      button.style === 'primary' 
+                        ? 'bg-[var(--button-bg-primary)] text-[var(--button-text-primary)]'
+                        : 'bg-[var(--button-bg-secondary)] text-[var(--button-text-secondary)] border border-[var(--button-border-secondary)]'
+                    }`}
+                    target={button.external ? '_blank' : undefined}
+                    rel={button.external ? 'noopener noreferrer' : undefined}
+                  >
+                    {button.label}
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </Container>
+        </Section>
       );
-
-    case 'text-only':
+    
     default:
-      return (
-        <section class="content-section">
-          <h2 class="section-title">{block.data.heading}</h2>
-          <div class="text-content">
-            <p class="text-secondary">{block.data.text}</p>
-          </div>
-        </section>
-      );
+      return null;
   }
 })}
-
-<style>
-  /* Content Block Styles using design tokens */
-  
-  /* Text-Image Blocks */
-  .text-image-block {
-    display: grid;
-    gap: var(--space-12);
-    align-items: center;
-    grid-template-columns: 1fr;
-  }
-  
-  @media (min-width: 1024px) {
-    .text-image-block {
-      grid-template-columns: 1fr 1fr;
-    }
-    
-    .text-image-block.reverse {
-      direction: rtl;
-    }
-    
-    .text-image-block.reverse > * {
-      direction: ltr;
-    }
-  }
-  
-  .block-image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: var(--radius-lg);
-  }
-  
-  /* Slideshow */
-  .slideshow-container {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .slideshow-wrapper {
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--radius-lg);
-    aspect-ratio: 16 / 10;
-  }
-  
-  .slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity var(--transition-slower);
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .slide.active {
-    opacity: 1;
-  }
-  
-  .slide-image {
-    width: 100%;
-    height: 70%;
-    object-fit: cover;
-  }
-  
-  .slide-content {
-    padding: var(--space-6);
-    background: var(--color-surface);
-    height: 30%;
-  }
-  
-  .slideshow-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: var(--space-4);
-  }
-  
-  .slide-btn {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: var(--radius-full);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border-medium);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition-all);
-  }
-  
-  .slide-btn:hover {
-    background: var(--color-background);
-  }
-  
-  .slide-indicators {
-    display: flex;
-    gap: var(--space-2);
-  }
-  
-  .indicator {
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: var(--radius-full);
-    background: var(--color-border-medium);
-    border: none;
-    transition: var(--transition-all);
-  }
-  
-  .indicator.active {
-    background: var(--color-primary);
-  }
-  
-  /* Banner Image */
-.banner-image-section {
-  margin: var(--spacing-section) auto; /* Changed: added auto for centering */
-  max-width: var(--container-max-width);
-  padding-left: var(--space-4);
-  padding-right: var(--space-4);
-}
-
-.banner-container {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 21 / 9;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  /* Removed max-width and margin since parent handles it */
-}
-  
-  .banner-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .banner-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-8);
-  }
-  
-  .banner-caption {
-    color: var(--color-text-inverse);
-    font-size: var(--font-size-lg);
-    text-align: center;
-    font-weight: var(--font-weight-medium);
-  }
-  
-  /* Diagram */
-  .diagram-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .diagram-image-container {
-    position: relative;
-    margin-bottom: var(--space-6);
-  }
-  
-  .diagram-image {
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-lg);
-  }
-  
-  .diagram-callout {
-    position: absolute;
-    transform: translate(-50%, -50%);
-  }
-  
-  .callout-dot {
-    width: 1rem;
-    height: 1rem;
-    background: var(--color-primary);
-    border-radius: var(--radius-full);
-    cursor: pointer;
-    position: relative;
-  }
-  
-  .callout-label {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--color-primary);
-    color: var(--color-text-inverse);
-    padding: var(--space-2) var(--space-3);
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-sm);
-    white-space: nowrap;
-    opacity: 0;
-    transition: var(--transition-opacity);
-  }
-  
-  .diagram-callout:hover .callout-label {
-    opacity: 1;
-  }
-  
-  /* Columns */
-  .columns-container {
-    display: grid;
-    gap: var(--space-8);
-    grid-template-columns: 1fr;
-  }
-  
-  .columns-container.two-column {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-  
-  .column-heading {
-    font-size: var(--font-size-lg);
-    margin-bottom: var(--space-4);
-    color: var(--color-text-primary);
-  }
-  
-  .column-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .column-item {
-    padding: var(--space-2) 0;
-    border-bottom: 1px solid var(--color-border-light);
-    color: var(--color-text-secondary);
-  }
-  
-  /* Testimonial */
-  .testimonial-container {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-    padding: var(--space-12);
-    background: var(--color-surface);
-    border-radius: var(--radius-lg);
-  }
-  
-  .testimonial-quote {
-    font-size: var(--font-size-lg);
-    font-style: italic;
-    margin-bottom: var(--space-6);
-    color: var(--color-text-primary);
-  }
-  
-  .testimonial-author {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-4);
-  }
-  
-  .author-image {
-    width: 3rem;
-    height: 3rem;
-    border-radius: var(--radius-full);
-    object-fit: cover;
-  }
-  
-  /* Image Grid - UPDATED WITH ASPECT RATIO SUPPORT */
-  .image-grid {
-    gap: var(--space-6);
-  }
-
-  /* Regular grid layouts use CSS Grid */
-  .image-grid:not(.masonry) {
-    display: grid;
-  }
-
-  /* Default auto-fit layout only when no specific column class is present */
-  .image-grid:not(.grid-1-col):not(.grid-2-col):not(.grid-3-col):not(.grid-4-col):not(.masonry) {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  }
-
-  /* Specific column layouts - mobile first, then scale up to max columns */
-  .image-grid.grid-1-col {
-    grid-template-columns: 1fr;
-  }
-
-  .image-grid.grid-2-col {
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 640px) {
-    .image-grid.grid-2-col {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .image-grid.grid-3-col {
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 640px) {
-    .image-grid.grid-3-col {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .image-grid.grid-3-col {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .image-grid.grid-4-col {
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 640px) {
-    .image-grid.grid-4-col {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .image-grid.grid-4-col {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .image-grid.grid-4-col {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  /* MASONRY LAYOUT - FIXED VERSION */
-  .image-grid.masonry {
-    display: block; /* Override CSS Grid */
-    columns: 1;
-    column-gap: var(--space-6);
-  }
-
-  @media (min-width: 640px) {
-    .image-grid.masonry {
-      columns: 2;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .image-grid.masonry {
-      columns: 3;
-    }
-  }
-
-  /* Grid items - works for both regular grids and masonry */
-  .grid-item {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    transition: var(--transition-all);
-    margin-bottom: var(--space-6); /* Vertical spacing for masonry */
-    break-inside: avoid; /* Prevents breaking across columns in masonry */
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Remove bottom margin for last item in regular grid layouts */
-  .image-grid:not(.masonry) .grid-item {
-    margin-bottom: 0;
-  }
-
-  /* Image container handles the aspect ratio */
-  .grid-item .image-container {
-    flex: 1;
-    overflow: hidden;
-    aspect-ratio: var(--aspect-ratio, auto);
-  }
-
-  /* For masonry layout, reset aspect-ratio to auto */
-  .image-grid.masonry .grid-item .image-container {
-    aspect-ratio: auto;
-  }
-
-  .grid-item:hover {
-    border-color: var(--card-border-hover);
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-0.125rem);
-  }
-  
-  .grid-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-  }
-  
-  .grid-caption {
-    padding: var(--space-4);
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-    background: var(--card-bg);
-    flex-shrink: 0; /* Prevent caption from shrinking */
-  }
-  
-  /* Metrics */
-  .metrics-grid {
-    display: grid;
-    gap: var(--space-6);
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    margin-bottom: var(--space-8);
-  }
-  
-  .metric-card {
-    text-align: center;
-    padding: var(--space-6);
-    background: var(--color-surface);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border-light);
-  }
-  
-  .metric-value {
-    font-size: var(--font-size-3xl);
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--space-2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-  }
-  
-  .metric-value.up { color: #059669; }
-  .metric-value.down { color: #dc2626; }
-  .metric-value.stable { color: var(--color-text-muted); }
-  
-  .trend-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-  
-  /* Animation Showcase */
-  .animation-container {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-  .animation-video {
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--space-4);
-  }
-  
-  /* Process Steps */
-  .process-steps {
-    display: grid;
-    gap: var(--space-12);
-  }
-  
-  .process-step {
-    display: grid;
-    gap: var(--space-6);
-    align-items: center;
-    grid-template-columns: auto 1fr auto;
-  }
-  
-  @media (max-width: 768px) {
-    .process-step {
-      grid-template-columns: 1fr;
-      text-align: center;
-    }
-  }
-  
-  .step-number {
-    font-size: var(--font-size-4xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-muted);
-  }
-  
-  .step-image {
-    width: 200px;
-    height: 150px;
-  }
-  
-  .step-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: var(--radius-md);
-  }
-  
-  /* Process Photo Grid - Uses masonry-style columns layout */
-  .process-photo-grid {
-    columns: 2;
-    column-gap: var(--space-6);
-    margin-bottom: var(--space-8);
-  }
-
-  @media (min-width: 768px) {
-    .process-photo-grid {
-      columns: 3;
-    }
-  }
-
-  .process-photo-item {
-    break-inside: avoid;
-    margin-bottom: var(--space-6);
-    overflow: hidden;
-  }
-
-  .process-photo {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  
-  /* Call to Action */
-  .cta-container {
-    text-align: center;
-    padding: var(--space-16);
-    background: var(--color-surface);
-    border-radius: var(--radius-lg);
-    border: 2px solid var(--color-border-light);
-  }
-  
-  .cta-heading {
-    font-size: var(--font-size-2xl);
-    margin-bottom: var(--space-4);
-  }
-  
-  .cta-text {
-    color: var(--color-text-secondary);
-    margin-bottom: var(--space-8);
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .cta-buttons {
-    display: flex;
-    gap: var(--space-4);
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .cta-button {
-    padding: var(--button-padding-y) var(--button-padding-x);
-    border-radius: var(--button-border-radius);
-    text-decoration: none;
-    font-weight: var(--font-weight-medium);
-    transition: var(--transition-all);
-  }
-  
-  .cta-button.primary {
-    background: var(--button-bg-primary);
-    color: var(--button-text-primary);
-  }
-  
-  .cta-button.secondary {
-    background: var(--button-bg-secondary);
-    color: var(--button-text-secondary);
-    border: 1px solid var(--button-border-secondary);
-  }
-  
-  .cta-button:hover {
-    transform: translateY(-0.125rem);
-  }
-</style>
 
 <script>
   // Initialize slideshows
   document.addEventListener('DOMContentLoaded', function() {
     const slideshows = document.querySelectorAll('[data-slideshow]');
     
-    slideshows.forEach((slideshow, index: number) => {
+    slideshows.forEach((slideshow) => {
       let currentSlide = 0;
       const slides = slideshow.querySelectorAll('.slide');
       const indicators = slideshow.querySelectorAll('.indicator');
       const prevBtn = slideshow.querySelector('.prev-btn');
       const nextBtn = slideshow.querySelector('.next-btn');
       
-      if (!prevBtn || !nextBtn) return;
+      if (!prevBtn || !nextBtn || slides.length === 0) return;
       
       function showSlide(index: number) {
-        slides.forEach(slide => slide.classList.remove('active'));
-        indicators.forEach(indicator => indicator.classList.remove('active'));
+        // Hide all slides
+        slides.forEach(slide => {
+          slide.classList.remove('opacity-100', 'pointer-events-auto');
+          slide.classList.add('opacity-0', 'pointer-events-none');
+        });
         
-        slides[index].classList.add('active');
-        indicators[index].classList.add('active');
+        // Reset all indicators
+        indicators.forEach(indicator => {
+          indicator.classList.remove('bg-[var(--color-primary)]');
+          indicator.classList.add('bg-[var(--color-border-medium)]');
+        });
+        
+        // Show current slide
+        slides[index].classList.remove('opacity-0', 'pointer-events-none');
+        slides[index].classList.add('opacity-100', 'pointer-events-auto');
+        
+        // Highlight current indicator
+        if (indicators[index]) {
+          indicators[index].classList.remove('bg-[var(--color-border-medium)]');
+          indicators[index].classList.add('bg-[var(--color-primary)]');
+        }
+        
         currentSlide = index;
       }
       

@@ -1,6 +1,10 @@
 ---
+// src/layouts/BaseLayout.astro
+// REFACTORED: Now composes Navbar and Footer components
 import '../styles/tokens.css';
 import '../styles/global.css';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
 
 export interface Props {
   title: string;
@@ -9,6 +13,7 @@ export interface Props {
   ogType?: string;
   preloadImage?: string;
   heroImage?: string;
+  project?: string;
 }
 
 const { 
@@ -17,7 +22,8 @@ const {
   ogImage = "/og-image.JPG",
   ogType = "website",
   preloadImage,
-  heroImage
+  heroImage,
+  project
 } = Astro.props;
 ---
 
@@ -29,12 +35,12 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     
-    <!-- Performance Optimizations -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     
-    <!-- Critical Image Preloading -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
     {preloadImage && (
       <link rel="preload" as="image" href={preloadImage} />
     )}
@@ -42,538 +48,24 @@ const {
       <link rel="preload" as="image" href={heroImage} />
     )}
     
-    <!-- Critical CSS - Inline for immediate loading feedback -->
-    <style>
-      .hero-image { 
-        width: 100%; 
-        height: 100vh; 
-        object-fit: cover;
-        background: #f5f5f5;
-        image-rendering: -webkit-optimize-contrast;
-      }
-      .image-optimized {
-        background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
-                    linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
-                    linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
-                    linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
-        background-size: 20px 20px;
-        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-      }
-      .image-optimized[src] {
-        background: none;
-      }
-      .image-optimized[loading="eager"] { 
-        opacity: 1; 
-      }
-      .image-optimized[loading="lazy"] { 
-        opacity: 0; 
-        transition: opacity 0.3s ease; 
-      }
-      .image-optimized.loaded { 
-        opacity: 1; 
-      }
-      @media (max-width: 768px) {
-        .hero-image {
-          max-height: 60vh;
-          image-rendering: -webkit-optimize-contrast;
-        }
-      }
-    </style>
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content={ogType} />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(ogImage, Astro.url)} />
-    <meta property="og:site_name" content="Louis DeCleyn - Designer" />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(ogImage, Astro.url)} />
-    
-    <!-- LinkedIn specific -->
-    <meta property="linkedin:owner" content="" />
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <title>{title}</title>
   </head>
-  <body>
-    <header class="nav-sticky">
-      <nav class="content-container">
-        <div class="flex justify-between items-center h-full">
-          <a href="/" class="nav-brand">Louis DeCleyn</a>
-          
-          <!-- Desktop Navigation -->
-          <ul class="nav-links hidden md:flex">
-            <li><a href="/" class="nav-link">Home</a></li>
-            <li><a href="/about" class="nav-link">About</a></li>
-            <li><a href="/contact" class="nav-link">Contact</a></li>
-            <li><a href="/blog" class="nav-link">Journal</a></li>
-          </ul>
-
-          <!-- Mobile Menu Button -->
-          <button class="mobile-menu-button md:hidden" id="mobile-menu-btn">
-            <svg class="w-6 h-6 menu-icon transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-            <svg class="w-6 h-6 close-icon hidden transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
-
-        <!-- Mobile Navigation -->
-        <div class="mobile-menu hidden md:hidden" id="mobile-menu">
-          <ul class="space-y-2">
-            <li><a href="/" class="mobile-nav-link">Home</a></li>
-            <li><a href="/about" class="mobile-nav-link">About</a></li>
-            <li><a href="/contact" class="mobile-nav-link">Contact</a></li>
-            <li><a href="/blog" class="mobile-nav-link">Journal</a></li>
-          </ul>
-        </div>
-      </nav>
-    </header>
+  <body class="flex flex-col min-h-screen">
+    <!-- Navbar Component -->
+    <Navbar />
     
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay hidden" id="mobile-menu-overlay"></div>
-    
-    <!-- Image Gallery Modal -->
-    <div class="image-gallery-modal hidden" id="image-gallery-modal">
-      <div class="gallery-backdrop" id="gallery-backdrop"></div>
-      
-      <div class="gallery-content">
-        <button class="gallery-close-btn" id="gallery-close-btn" aria-label="Close gallery">
-          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-        </button>
-        
-        <div class="gallery-counter" id="gallery-counter">
-          <span id="gallery-current">1</span> of <span id="gallery-total">1</span>
-        </div>
-        
-        <div class="gallery-image-container">
-          <img id="gallery-image" class="gallery-image" alt="" />
-          <div class="gallery-loading" id="gallery-loading">
-            <div class="gallery-spinner"></div>
-          </div>
-        </div>
-        
-        <button class="gallery-nav gallery-nav-prev" id="gallery-prev" aria-label="Previous image">
-          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-          </svg>
-        </button>
-        
-        <button class="gallery-nav gallery-nav-next" id="gallery-next" aria-label="Next image">
-          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <main class="content-container pt-12">
+    <!-- Main Content with project data attribute -->
+    <main 
+      class="flex-1" 
+      {...(project ? { 'data-project': project } : {})}
+    >
       <slot />
     </main>
     
-    <footer class="footer-section">
-      <div class="content-container text-center">
-        <p>&copy; 2025 Designed by Louis DeCleyn. Work in progress.</p>
-      </div>
-    </footer>
-    
-    <!-- Viewport Management -->
-    <script>
-      // @ts-nocheck
-      (function() {
-        'use strict';
-        
-        function updateViewportHeight() {
-          const vh = window.innerHeight * 0.01;
-          const vw = window.innerWidth * 0.01;
-          
-          document.documentElement.style.setProperty('--dynamic-vh', `${vh}px`);
-          document.documentElement.style.setProperty('--dynamic-vw', `${vw}px`);
-          
-          const safeTop = getComputedStyle(document.documentElement).getPropertyValue('--safe-top').trim() || '0px';
-          const safeBottom = getComputedStyle(document.documentElement).getPropertyValue('--safe-bottom').trim() || '0px';
-          const safeLeft = getComputedStyle(document.documentElement).getPropertyValue('--safe-left').trim() || '0px';
-          const safeRight = getComputedStyle(document.documentElement).getPropertyValue('--safe-right').trim() || '0px';
-          
-          if (!safeTop || safeTop === 'env(safe-area-inset-top, 0px)') {
-            document.documentElement.style.setProperty('--safe-top', '0px');
-          }
-          if (!safeBottom || safeBottom === 'env(safe-area-inset-bottom, 0px)') {
-            document.documentElement.style.setProperty('--safe-bottom', '0px');
-          }
-          if (!safeLeft || safeLeft === 'env(safe-area-inset-left, 0px)') {
-            document.documentElement.style.setProperty('--safe-left', '0px');
-          }
-          if (!safeRight || safeRight === 'env(safe-area-inset-right, 0px)') {
-            document.documentElement.style.setProperty('--safe-right', '0px');
-          }
-          
-          const navHeight = 64;
-          const safeTopValue = parseInt(document.documentElement.style.getPropertyValue('--safe-top')) || 0;
-          const availableHeight = window.innerHeight - navHeight - safeTopValue;
-          document.documentElement.style.setProperty('--available-height-dynamic', `${availableHeight}px`);
-        }
-        
-        updateViewportHeight();
-        
-        let resizeTimeout = null;
-        window.addEventListener('resize', function() {
-          if (resizeTimeout !== null) clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(updateViewportHeight, 100);
-        });
-        
-        window.addEventListener('orientationchange', function() {
-          setTimeout(updateViewportHeight, 100);
-        });
-        
-        if (window.innerWidth <= 768) {
-          let scrollTimeout = null;
-          window.addEventListener('scroll', function() {
-            if (scrollTimeout !== null) clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(updateViewportHeight, 150);
-          }, { passive: true });
-        }
-      })();
-    </script>
-    
-    <!-- Mobile Menu -->
-    <script>
-      // @ts-nocheck
-      document.addEventListener('DOMContentLoaded', function() {
-        const mobileMenuButton = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-        const menuIcon = document.querySelector('.menu-icon');
-        const closeIcon = document.querySelector('.close-icon');
-        
-        if (mobileMenuButton && mobileMenu && menuIcon && closeIcon && mobileMenuOverlay) {
-          
-          function closeMenu() {
-            if (!mobileMenu || !mobileMenuOverlay || !closeIcon || !menuIcon) return;
-            
-            mobileMenu.classList.remove('opening');
-            mobileMenu.classList.add('closing');
-            mobileMenuOverlay.classList.add('closing');
-            
-            closeIcon.classList.add('hidden');
-            menuIcon.classList.remove('hidden');
-            
-            setTimeout(() => {
-              if (!mobileMenu || !mobileMenuOverlay) return;
-              mobileMenu.classList.add('hidden');
-              mobileMenuOverlay.classList.add('hidden');
-              mobileMenu.classList.remove('closing');
-              mobileMenuOverlay.classList.remove('closing');
-            }, 200);
-          }
-          
-          function openMenu() {
-            if (!mobileMenu || !mobileMenuOverlay || !menuIcon || !closeIcon) return;
-            
-            mobileMenu.classList.remove('hidden');
-            mobileMenu.classList.remove('closing');
-            mobileMenu.classList.add('opening');
-            mobileMenuOverlay.classList.remove('hidden');
-            
-            menuIcon.classList.add('hidden');
-            closeIcon.classList.remove('hidden');
-          }
-          
-          mobileMenuButton.addEventListener('click', function() {
-            if (!mobileMenu) return;
-            const isOpen = !mobileMenu.classList.contains('hidden');
-            
-            if (isOpen) {
-              closeMenu();
-            } else {
-              openMenu();
-            }
-          });
-          
-          mobileMenuOverlay.addEventListener('click', function() {
-            if (!mobileMenu || mobileMenu.classList.contains('hidden')) return;
-            closeMenu();
-          });
-        }
-      });
-    </script>
+    <!-- Footer Component -->
+    <Footer />
 
-    <!-- Optimized Image Loading -->
-    <script>
-      // @ts-nocheck
-      document.addEventListener('DOMContentLoaded', function() {
-        // Network-aware loading
-        let isSlowConnection = false;
-        if ('connection' in navigator) {
-          const connection = navigator.connection;
-          isSlowConnection = connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g');
-          
-          if (isSlowConnection) {
-            document.documentElement.classList.add('slow-connection');
-          }
-        }
-        
-        // Intersection Observer for lazy loading
-        if ('IntersectionObserver' in window) {
-          const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                const img = entry.target;
-                img.classList.add('loaded');
-                imageObserver.unobserve(img);
-              }
-            });
-          }, {
-            rootMargin: isSlowConnection ? '10px 0px' : '50px 0px',
-            threshold: 0.1
-          });
-
-          document.querySelectorAll('.image-optimized[loading="lazy"]').forEach(img => {
-            imageObserver.observe(img);
-          });
-        } else {
-          // Fallback for browsers without intersection observer
-          document.querySelectorAll('.image-optimized[loading="lazy"]').forEach(img => {
-            img.addEventListener('load', () => {
-              img.classList.add('loaded');
-            });
-          });
-        }
-        
-        // Prefetch next project images on hover
-        document.querySelectorAll('.project-nav-button').forEach(btn => {
-          btn.addEventListener('mouseenter', () => {
-            if (isSlowConnection) return; // Skip prefetch on slow connections
-            
-            const href = btn.getAttribute('href');
-            if (href) {
-              const link = document.createElement('link');
-              link.rel = 'prefetch';
-              link.href = href;
-              document.head.appendChild(link);
-            }
-          }, { once: true });
-        });
-      });
-    </script>
-
-    <!-- Image Gallery -->
-    <script>
-      // @ts-nocheck
-      document.addEventListener('DOMContentLoaded', function() {
-        const modal = document.getElementById('image-gallery-modal');
-        const backdrop = document.getElementById('gallery-backdrop');
-        const closeBtn = document.getElementById('gallery-close-btn');
-        const prevBtn = document.getElementById('gallery-prev');
-        const nextBtn = document.getElementById('gallery-next');
-        const galleryImage = document.getElementById('gallery-image');
-        const currentSpan = document.getElementById('gallery-current');
-        const totalSpan = document.getElementById('gallery-total');
-        const loading = document.getElementById('gallery-loading');
-        
-        let galleryImages = [];
-        let currentIndex = 0;
-        let startX = 0;
-        let startY = 0;
-        
-        function initializeGallery() {
-          const clickableImages = document.querySelectorAll('img[data-gallery]');
-          
-          clickableImages.forEach((img) => {
-            img.style.cursor = 'pointer';
-            img.addEventListener('click', function() {
-              const galleryName = this.getAttribute('data-gallery');
-              const imageIndex = parseInt(this.getAttribute('data-index') || '0') || 0;
-              if (galleryName) {
-                openGallery(galleryName, imageIndex);
-              }
-            });
-          });
-        }
-        
-        function openGallery(galleryName, startIndex = 0) {
-          const images = document.querySelectorAll(`img[data-gallery="${galleryName}"]`);
-          galleryImages = Array.from(images).map((img) => ({
-            src: img.src,
-            alt: img.alt || ''
-          }));
-          
-          if (galleryImages.length === 0) return;
-          
-          currentIndex = Math.max(0, Math.min(startIndex, galleryImages.length - 1));
-          
-          if (totalSpan) {
-            totalSpan.textContent = galleryImages.length.toString();
-          }
-          
-          if (modal) {
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-          }
-          
-          loadImage(currentIndex);
-          
-          if (closeBtn) {
-            closeBtn.focus();
-          }
-        }
-        
-        function loadImage(index) {
-          if (index < 0 || index >= galleryImages.length) return;
-          
-          currentIndex = index;
-          if (currentSpan) {
-            currentSpan.textContent = (index + 1).toString();
-          }
-          
-          if (loading) {
-            loading.classList.remove('hidden');
-          }
-          if (galleryImage) {
-            galleryImage.style.opacity = '0';
-          }
-          
-          const img = new Image();
-          img.onload = function() {
-            if (galleryImage) {
-              galleryImage.src = img.src;
-              galleryImage.alt = galleryImages[index].alt;
-            }
-            if (loading) {
-              loading.classList.add('hidden');
-            }
-            if (galleryImage) {
-              galleryImage.style.opacity = '1';
-            }
-          };
-          img.onerror = function() {
-            if (loading) {
-              loading.classList.add('hidden');
-            }
-            if (galleryImage) {
-              galleryImage.style.opacity = '1';
-            }
-          };
-          img.src = galleryImages[index].src;
-          
-          if (prevBtn) {
-            prevBtn.style.display = galleryImages.length > 1 ? 'flex' : 'none';
-          }
-          if (nextBtn) {
-            nextBtn.style.display = galleryImages.length > 1 ? 'flex' : 'none';
-          }
-        }
-        
-        function closeGallery() {
-          if (modal) {
-            modal.classList.add('hidden');
-          }
-          document.body.style.overflow = '';
-          galleryImages = [];
-          currentIndex = 0;
-        }
-        
-        function previousImage() {
-          if (galleryImages.length <= 1) return;
-          const newIndex = currentIndex > 0 ? currentIndex - 1 : galleryImages.length - 1;
-          loadImage(newIndex);
-        }
-        
-        function nextImage() {
-          if (galleryImages.length <= 1) return;
-          const newIndex = currentIndex < galleryImages.length - 1 ? currentIndex + 1 : 0;
-          loadImage(newIndex);
-        }
-        
-        // Event listeners
-        if (closeBtn) {
-          closeBtn.addEventListener('click', closeGallery);
-        }
-        if (backdrop) {
-          backdrop.addEventListener('click', closeGallery);
-        }
-        if (prevBtn) {
-          prevBtn.addEventListener('click', previousImage);
-        }
-        if (nextBtn) {
-          nextBtn.addEventListener('click', nextImage);
-        }
-        
-        // Keyboard navigation
-        document.addEventListener('keydown', function(e) {
-          if (!modal || modal.classList.contains('hidden')) return;
-          
-          switch(e.key) {
-            case 'Escape':
-              e.preventDefault();
-              closeGallery();
-              break;
-            case 'ArrowLeft':
-              e.preventDefault();
-              previousImage();
-              break;
-            case 'ArrowRight':
-              e.preventDefault();
-              nextImage();
-              break;
-          }
-        });
-        
-        // Touch/swipe support
-        let touchStartTime = 0;
-        
-        if (modal) {
-          modal.addEventListener('touchstart', function(e) {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            touchStartTime = Date.now();
-          }, { passive: true });
-          
-          modal.addEventListener('touchend', function(e) {
-            if (modal.classList.contains('hidden')) return;
-            
-            const endX = e.changedTouches[0].clientX;
-            const endY = e.changedTouches[0].clientY;
-            const deltaX = endX - startX;
-            const deltaY = endY - startY;
-            const touchDuration = Date.now() - touchStartTime;
-            
-            const minSwipeDistance = 50;
-            const maxSwipeTime = 300;
-            
-            if (touchDuration < maxSwipeTime) {
-              if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaY) < 100) {
-                if (deltaX > 0) {
-                  previousImage();
-                } else {
-                  nextImage();
-                }
-              } else if (deltaY > minSwipeDistance && Math.abs(deltaX) < 100) {
-                closeGallery();
-              }
-            }
-          }, { passive: true });
-          
-          modal.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-          }, { passive: false });
-        }
-        
-        initializeGallery();
-      });
-    </script>
+    <!-- Custom Cursor Script -->
+    <script is:inline src="/scripts/cursor.js"></script>
   </body>
 </html>

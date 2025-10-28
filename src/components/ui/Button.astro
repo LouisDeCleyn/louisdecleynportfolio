@@ -1,0 +1,51 @@
+---
+// src/components/ui/Button.astro
+// Reusable button component with variants
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  class?: string;
+  type?: 'button' | 'submit' | 'reset';
+  target?: string;
+  rel?: string;
+}
+
+const { 
+  variant = 'primary',
+  size = 'md',
+  href,
+  class: className = '',
+  type = 'button',
+  target,
+  rel
+} = Astro.props;
+
+const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-[var(--transition-normal)] rounded-[var(--radius-button)]';
+
+const variantClasses = {
+  primary: 'bg-[var(--button-bg-primary)] text-[var(--button-text-primary)] hover:bg-[var(--color-neutral-800)] hover:shadow-[var(--shadow-card-hover)]',
+  secondary: 'bg-transparent text-[var(--button-text-secondary)] border border-[var(--button-border-secondary)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-background-alt)]',
+  ghost: 'bg-transparent text-[var(--color-text-primary)] hover:bg-[var(--color-background-alt)]'
+};
+
+const sizeClasses = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg'
+};
+
+const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+
+const Element = href ? 'a' : 'button';
+---
+
+<Element
+  class={classes}
+  href={href}
+  type={!href ? type : undefined}
+  target={target}
+  rel={rel}
+>
+  <slot />
+</Element>

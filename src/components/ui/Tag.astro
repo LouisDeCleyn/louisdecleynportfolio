@@ -1,0 +1,34 @@
+---
+// src/components/ui/Tag.astro
+// Reusable tag component for categories, skills, etc.
+interface Props {
+  variant?: 'default' | 'accent' | 'subtle';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const { 
+  variant = 'default',
+  size = 'md',
+  class: className = ''
+} = Astro.props;
+
+const baseClasses = 'inline-flex items-center justify-center font-medium rounded-full transition-colors duration-[var(--transition-normal)]';
+
+const variantClasses = {
+  default: 'bg-[var(--color-background)] text-[var(--color-text-secondary)] border border-[var(--color-border-medium)]',
+  accent: 'bg-[var(--color-accent-subtle)] text-[var(--color-accent)] border border-[var(--color-accent)]',
+  subtle: 'bg-transparent text-[var(--color-text-muted)]'
+};
+
+const sizeClasses = {
+  sm: 'px-2 py-1 text-xs',
+  md: 'px-3 py-1.5 text-sm'
+};
+
+const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+---
+
+<span class={classes}>
+  <slot />
+</span>

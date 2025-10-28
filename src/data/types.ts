@@ -16,13 +16,7 @@ export interface ProjectData {
   description: string;
   hero: string;
   links: ProjectLink[];
-  // New modular content system
   contentBlocks?: ContentBlock[];
-  // Legacy support for existing simple projects
-  problem?: string;
-  process?: string;
-  outcome?: string;
-  images?: string[];
 }
 
 export type ProjectSlug = 
@@ -31,7 +25,5 @@ export type ProjectSlug =
   | 'cadence' 
   | 'parametric-modelling' 
   | 'hearth'
-  | 'art-projects'
-  | 'making-projects'
   
 export type ProjectDataMap = Record<ProjectSlug, ProjectData>;

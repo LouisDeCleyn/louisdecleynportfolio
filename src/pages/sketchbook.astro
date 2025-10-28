@@ -1,0 +1,332 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/layout/Container.astro';
+import Section from '../components/ui/Section.astro';
+
+// Define your sketches - you can add more later
+const sketchesData = [
+  {
+    src: '/images/sketchbook/oldman.png',
+    alt: 'Product sketch exploration',
+    caption: 'Early concept for a modular storage system',
+    date: '2019',
+    category: 'art' // Add category product
+  },
+  {
+    src: '/images/sketchbook/rob-art.jpg',
+    alt: 'Character design sketches',
+    caption: 'Character studies and expressions',
+    date: '2020',
+    category: 'art'
+  },
+  {
+    src: '/images/sketchbook/IMG_5919.JPG',
+    alt: 'Mechanical design',
+    caption: 'GEORGY LIETGI INSPIRED',
+    date: '2023',
+    category: 'art'
+  },
+  {
+    src: '/images/sketchbook/dracula.jpg',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2020',
+    category: 'art'
+  },
+  {
+    src: '/images/sketchbook/IMG_1461.JPG',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2016',
+    category: 'art'
+  },
+  {
+    src: '/images/sketchbook/IMG_1622.JPG',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2019',
+    category: 'product'
+  },
+  {
+    src: '/images/sketchbook/IMG_3901.JPG',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2018',
+    category: 'art'
+  },
+  {
+    src: '/images/sketchbook/braun_tp1.JPG',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2020',
+    category: 'product'
+  },
+  {
+    src: '/images/sketchbook/washer.jpg',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2021',
+    category: 'product'
+  },
+  {
+    src: '/images/sketchbook/veiled_lady.jpg',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2019',
+    category: 'art'
+  },
+  {
+    src: '/images/sketchbook/abstract_me.jpg',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2017',
+    category: 'art'
+  },
+  {
+    src: '/images/sketchbook/inhaler_sketches.jpg',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2019',
+    category: 'product'
+  },
+  {
+    src: '/images/sketchbook/Alevel Final design pdf-32.jpg',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2019',
+    category: 'product'
+  },
+  {
+    src: '/images/sketchbook/Alevel Final design pdf-36.jpg',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2019',
+    category: 'product'
+  },
+  {
+    src: '/images/sketchbook/IMG_4103.jpg',
+    alt: 'Mechanical design',
+    caption: 'Mechanism exploration for rotating assembly',
+    date: '2020',
+    category: 'product'
+  },
+  // Add more sketches here
+];
+
+// Sort sketches by date (newest first)
+const sketches = sketchesData.sort((a, b) => {
+  return new Date(b.date).getTime() - new Date(a.date).getTime();
+});
+
+// Helper function to format date for display
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', { 
+    year: 'numeric'
+
+  });
+};
+---
+
+<BaseLayout title="Sketchbook - Louis Decleyn" description="A collection of sketches, explorations, and ideas that haven't made it into full projects yet.">
+  <Container>
+    <!-- Page Header -->
+    <Section spacing="large">
+      <div class="text-center max-w-4xl mx-auto reveal-up">
+        <h1 class="heading-1">Sketchbook</h1>
+        <p class="body-text--large">
+          A collection of sketches, explorations, and ideas that haven't made it into full projects yet. 
+          Raw creativity, experimentation, and the messy process of thinking through design.
+        </p>
+      </div>
+    </Section>
+
+    <!-- Filter Toggle -->
+    <Section spacing="small">
+      <div class="flex justify-center gap-4 reveal-up">
+        <button 
+          class="filter-btn active" 
+          data-filter="product"
+        >
+          Product Sketches
+        </button>
+        
+        <button 
+          class="filter-btn" 
+          data-filter="art"
+        >
+          Art
+        </button>
+        
+      </div>
+    </Section>
+
+    <!-- Masonry Grid -->
+    <Section spacing="normal">
+      <div class="sketchbook-grid">
+        {sketches.map((sketch, index) => (
+          <div 
+            class={`sketch-item reveal-stagger-${Math.min(index + 1, 10)}`}
+            data-category={sketch.category}
+            data-index={index}
+          >
+            <div class="sketch-card group relative overflow-hidden bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--radius-card)] hover:border-[var(--card-border-hover)] hover:shadow-[var(--shadow-card-hover)] transition-all duration-[var(--transition-normal)]">
+              <!-- Image -->
+              <div class="sketch-image-wrapper relative overflow-hidden">
+                <img 
+                  src={sketch.src}
+                  alt={sketch.alt}
+                  class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                
+                <!-- Hover Overlay -->
+                <div class="absolute inset-0 bg-black/0 transition-all duration-300"></div>
+              </div>
+              
+              <!-- Caption -->
+              <div class="p-4">
+                <p class="text-sm font-medium text-[var(--color-text-primary)] mb-1">
+                  {}
+                </p>
+                <p class="text-xs text-[var(--color-text-muted)]">
+                  {formatDate(sketch.date)}
+                </p>
+              </div>
+
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <!-- CTA Section -->
+    <Section spacing="large">
+      <div class="text-center max-w-4xl mx-auto reveal-up">
+        <h2 class="heading-2">Want to see more?</h2>
+        <p class="body-text mb-8">
+          These sketches are just the beginning. Check out my full projects to see 
+          how these ideas develop into finished work.
+        </p>
+        <a 
+          href="/" 
+          class="inline-block px-6 py-3 bg-[var(--color-primary)] text-[var(--color-text-inverse)] rounded-[var(--radius-button)] hover:opacity-90 transition-opacity duration-[var(--transition-normal)]"
+        >
+          View Projects
+        </a>
+      </div>
+    </Section>
+  </Container>
+
+  <!-- Load External Script -->
+  <script is:inline src="/scripts/reveal.js"></script>
+
+  <!-- Filter Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const filterBtns = document.querySelectorAll<HTMLElement>('.filter-btn');
+      const sketchItems = document.querySelectorAll<HTMLElement>('.sketch-item');
+
+      // Initialize - show only product sketches on load
+      sketchItems.forEach(item => {
+        const category = item.getAttribute('data-category');
+        if (category !== 'product') {
+          item.style.display = 'none';
+          item.style.opacity = '0';
+        }
+      });
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.getAttribute('data-filter');
+
+          // Update active button
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          // Filter items
+          sketchItems.forEach(item => {
+            const category = item.getAttribute('data-category');
+            
+            if (category === filter) {
+              item.style.display = 'block';
+              // Trigger reflow for animation
+              setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+              }, 10);
+            } else {
+              item.style.opacity = '0';
+              item.style.transform = 'translateY(20px)';
+              setTimeout(() => {
+                item.style.display = 'none';
+              }, 300);
+            }
+          });
+        });
+      });
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  /* Filter buttons */
+  .filter-btn {
+    padding: 0.5rem 1.5rem;
+    border: 2px solid var(--card-border);
+    background: var(--card-bg);
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-button);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--card-border-hover);
+    color: var(--color-text-primary);
+  }
+
+  .filter-btn.active {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+    border-color: var(--color-primary);
+  }
+
+  /* Masonry-style grid */
+  .sketchbook-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 768px) {
+    .sketchbook-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .sketchbook-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Sketch items transition */
+  .sketch-item {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Let images maintain their natural aspect ratio */
+  .sketch-image-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sketch-image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

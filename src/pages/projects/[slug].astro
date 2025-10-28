@@ -1,9 +1,15 @@
 ---
 // src/pages/projects/[slug].astro
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/layout/Container.astro';
+import Section from '../../components/ui/Section.astro';
 import ContentBlocks from '../../components/ContentBlocks.astro';
+import ProjectHero from '../../components/project/ProjectHero.astro';
+import ProjectMeta from '../../components/project/ProjectMeta.astro';
+import ProjectLinks from '../../components/project/ProjectLinks.astro';
+import ProjectNavigation from '../../components/project/ProjectNavigation.astro';
 import { projectOrder, getProject, getProjectNavigation } from '../../data/projects';
-import type { ProjectSlug, ProjectLink } from '../../data/types';
+import type { ProjectSlug } from '../../data/types';
 
 export async function getStaticPaths() {
   return projectOrder.map(slug => ({ params: { slug } }));
@@ -17,8 +23,10 @@ if (!project) {
   return Astro.redirect('/404');
 }
 
-// Get navigation
+// Get navigation - convert null to undefined
 const navigation = getProjectNavigation(slug);
+const prevProject = navigation.prev ?? undefined;
+const nextProject = navigation.next ?? undefined;
 ---
 
 <BaseLayout 
@@ -27,157 +35,56 @@ const navigation = getProjectNavigation(slug);
   heroImage={project.hero}
   preloadImage={project.hero}
 >
-  <!-- Full-Screen Hero Image -->
-  <section class="hero-section">
-    <img 
-      src={project.hero} 
-      alt={`${project.title} - Hero Image`}
-      class="hero-image image-optimized"
-      loading="eager"
-      fetchpriority="high"
-      data-gallery={slug}
-      data-index="0"
-    />
-  </section>
+  <!-- Full-Width Hero Image -->
+  <ProjectHero 
+    image={project.hero}
+    title={project.title}
+    slug={slug}
+  />
 
-  <!-- Project Info Section -->
-  <section class="content-section">
-    <div class="content-container">
-      <!-- Single column layout with inline meta -->
-      <div class="project-header">
-        <h1 class="page-title">{project.title}</h1>
+  <!-- Project Header -->
+  <Container>
+    <Section spacing="large">
+      <div class="max-w-6xl">
+        <h1 class="heading-1 mb-4">{project.title}</h1>
         
-        <!-- Inline meta row -->
-        <div class="project-meta-row">
-          <div class="project-meta-item">
-            <span class="material-symbols-outlined project-meta-icon">schedule</span>
-            <span>{project.timeline}</span>
+        <ProjectMeta 
+          timeline={project.timeline}
+          category={project.category}
+          class="mb-8"
+        />
+        
+        <!-- Two Column Layout: Description + Links -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
+          <!-- Left: Description (2 columns width) -->
+          <div class="lg:col-span-3">
+            <p class="body-text--large">{project.description}</p>
           </div>
-          <div class="project-meta-item">
-            <span class="material-symbols-outlined project-meta-icon">construction</span>
-            <span>{project.category}</span>
-          </div>
+          
+          <!-- Right: Links & Resources (1 column width) -->
+          {project.links && project.links.length > 0 && (
+            <div class="lg:col-span-1">
+              <h3 class="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-primary)] mb-4">
+                Links & Resources
+              </h3>
+              <ProjectLinks links={project.links} />
+            </div>
+          )}
         </div>
       </div>
-      
-      <p class="page-description">{project.description}</p>
-    </div>
-  </section>
+    </Section>
+  </Container>
 
   <!-- Modular Content Blocks -->
   {project.contentBlocks && (
     <ContentBlocks blocks={project.contentBlocks} />
   )}
 
-  <!-- Legacy Photo Grid (for projects without content blocks) -->
-  {!project.contentBlocks && project.images && (
-    <section class="photo-grid">
-      {project.images.map((imageSrc: string, index: number) => (
-        <div class="cursor-pointer">
-          <div class="photo-container">
-            <img 
-              src={imageSrc}
-              alt={`${project.title} - Process Image ${index + 1}`}
-              class="photo-image hover:scale-105 image-optimized"
-              loading="lazy"
-              data-gallery={slug}
-              data-index={index + 1}
-            />
-          </div>
-        </div>
-      ))}
-    </section>
-  )}
-
-  <!-- Legacy Project Details Grid (for projects without content blocks) -->
-  {!project.contentBlocks && (project.problem || project.process || project.outcome) && (
-    <section class="content-section">
-      <div class="details-grid">
-        {project.problem && (
-          <div>
-            <h2 class="section-title">Problem</h2>
-            <p class="text-secondary">{project.problem}</p>
-          </div>
-        )}
-
-        {project.process && (
-          <div>
-            <h2 class="section-title">Process</h2>
-            <p class="text-secondary">{project.process}</p>
-          </div>
-        )}
-
-        {project.outcome && (
-          <div>
-            <h2 class="section-title">Outcome</h2>
-            <p class="text-secondary">{project.outcome}</p>
-          </div>
-        )}
-      </div>
-    </section>
-  )}
-
-  <!-- Project Links -->
-  {project.links && project.links.length > 0 && (
-    <section class="content-section">
-      <h2 class="section-title">Links & Resources</h2>
-      <div class="flex flex-wrap gap-4">
-        {project.links.map((link: ProjectLink) => (
-          <a 
-            href={link.url} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            class="link-button"
-          >
-            <span>{link.label}</span>
-            <svg class="link-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-            </svg>
-          </a>
-        ))}
-      </div>
-    </section>
-  )}
-
-  <!-- Enhanced Navigation with Next/Previous Projects -->
-  <section class="content-section navigation-section">
-    <div class="project-navigation">
-      <!-- Back to Portfolio -->
-      <a href="/" class="nav-back">
-        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-        </svg>
-        Back to Portfolio
-      </a>
-
-      <!-- Project Navigation -->
-      <div class="project-nav-buttons">
-        <!-- Previous Project -->
-        {navigation.prev && (
-          <a href={`/projects/${navigation.prev.slug}`} class="project-nav-button project-nav-prev">
-            <svg class="project-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-            <div class="project-nav-content">
-              <span class="project-nav-label">Previous</span>
-              <span class="project-nav-title">{navigation.prev.data.title}</span>
-            </div>
-          </a>
-        )}
-
-        <!-- Next Project -->
-        {navigation.next && (
-          <a href={`/projects/${navigation.next.slug}`} class="project-nav-button project-nav-next">
-            <div class="project-nav-content">
-              <span class="project-nav-label">Next</span>
-              <span class="project-nav-title">{navigation.next.data.title}</span>
-            </div>
-            <svg class="project-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </a>
-        )}
-      </div>
-    </div>
-  </section>
+  <!-- Navigation -->
+  <Section>
+    <ProjectNavigation 
+      prev={prevProject}
+      next={nextProject}
+    />
+  </Section>
 </BaseLayout>

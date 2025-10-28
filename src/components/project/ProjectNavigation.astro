@@ -1,0 +1,144 @@
+---
+// src/components/project/ProjectNavigation.astro
+// Modern split-screen navigation with hero image buttons
+import type { ProjectData, ProjectSlug } from '../../data/types';
+
+export interface Props {
+  prev?: {
+    slug: ProjectSlug;
+    data: ProjectData;
+  };
+  next?: {
+    slug: ProjectSlug;
+    data: ProjectData;
+  };
+}
+
+const { prev, next } = Astro.props;
+---
+
+<nav class="project-navigation w-full">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+    
+    <!-- Previous Project -->
+    {prev ? (
+      <a 
+        href={`/projects/${prev.slug}`}
+        class="project-nav-card group relative overflow-hidden aspect-[16/6] md:aspect-[16/6] bg-[var(--color-neutral-900)] flex items-end"
+      >
+        <!-- Hero Image Background -->
+        <div class="absolute inset-0">
+          <img 
+            src={prev.data.hero} 
+            alt={prev.data.title}
+            class="w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500 ease-out"
+          />
+          <!-- Gradient Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 p-8 md:p-12 w-full">
+          <div class="flex items-center gap-2 mb-3 text-[var(--color-text-inverse)]">
+            <!-- Arrow Icon -->
+            <svg 
+              class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <h3 class="text-2xl md:text-3xl font-medium text-[var(--color-text-inverse)] group-hover:text-[var(--color-accent)] transition-colors duration-300">
+            {prev.data.title}
+            </h3>
+          </div>
+          
+          
+          
+          <p class="text-sm text-[var(--color-text-inverse)] opacity-70 mt-2 line-clamp-2">
+            {prev.data.description}
+          </p>
+        </div>
+      </a>
+    ) : (
+      <div class="project-nav-card--empty hidden md:block aspect-[4/3] bg-[var(--color-neutral-100)]"></div>
+    )}
+    
+    <!-- Next Project -->
+    {next ? (
+      <a 
+        href={`/projects/${next.slug}`}
+        class="project-nav-card group relative overflow-hidden aspect-[16/6] md:aspect-[16/6] bg-[var(--color-neutral-900)] flex items-end"
+      >
+        <!-- Hero Image Background -->
+        <div class="absolute inset-0">
+          <img 
+            src={next.data.hero} 
+            alt={next.data.title}
+            class="w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-500 ease-out"
+          />
+          <!-- Gradient Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 p-8 md:p-12 w-full text-right">
+          <div class="flex items-center justify-end gap-2 mb-3 text-[var(--color-text-inverse)]">
+            <h3 class="text-2xl md:text-3xl font-medium text-[var(--color-text-inverse)] group-hover:text-[var(--color-accent)] transition-colors duration-300">
+            {next.data.title}
+            </h3>
+            <!-- Arrow Icon -->
+            <svg 
+              class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+          
+          
+          
+          <p class="text-sm text-[var(--color-text-inverse)] opacity-70 mt-2 line-clamp-2">
+            {next.data.description}
+          </p>
+        </div>
+      </a>
+    ) : (
+      <div class="project-nav-card--empty hidden md:block aspect-[4/3] bg-[var(--color-neutral-100)]"></div>
+    )}
+    
+  </div>
+</nav>
+
+<style>
+  .project-nav-card {
+    position: relative;
+  }
+  
+  /* Ensure proper stacking */
+  .project-nav-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 5;
+  }
+  
+  .project-nav-card:hover::before {
+    opacity: 1;
+  }
+  
+  /* Line clamp utility for description */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

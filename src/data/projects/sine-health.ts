@@ -64,42 +64,51 @@ export const sineHealthData: ProjectData = {
         ]
       }
     },
+
     {
-      type: 'banner-image',
+      type: 'image-grid',
+      layout: 'grid-1-col',
       data: {
-        image: '/projects/sine-health/diagram.png',
-        caption: 'Early prototype testing',
-        overlay: false
+        aspectRatio: '16/9',
+        images: [
+          {
+            src: '/projects/sine-health/IMG_7058.jpg',
+            alt: 'Layed out sketches',
+          },
+          {
+            src: '/projects/sine-health/IMG_3592.JPG',
+            alt: 'Layed out sketches',
+          },
+          
+          {
+            src: '/projects/sine-health/Sine on Table.jpg',
+            alt: 'sine lay on table',
+          },
+        ]
       }
     },
     
     {
       type: 'image-grid',
-      layout: 'grid-2x2',
-      data: {
-        heading: 'Final Product',
-        images: [
-          {
-            src: '/projects/sine-health/image-2.png',
-            alt: 'Device worn on wrist',
-            caption: 'Builds resilience during training'
-          },
-          {
-            src: '/projects/sine-health/image-3.png',
-            alt: 'Mobile app interface',
-            caption: 'Improves recovery and sleep'
-          },
-        ]
-      }
-    },
-
-    {
-      type: 'banner-image',
+      layout: 'grid-1-col',
       data: {
         heading: 'Prototype',
-        image: '/projects/sine-health/prototype-2.JPG',
-        caption: 'Early prototype testing',
-        overlay: false
+        aspectRatio: '16/9',
+        images: [
+          {
+            src: '/projects/sine-health/prototype construction.png',
+            alt: 'User testing session'
+          },
+          {
+            src: '/projects/sine-health/IMG_4422.JPG',
+            alt: 'prototype building',
+          },
+          {
+            src: '/projects/sine-health/prototype-2.JPG',
+            alt: 'Device worn on wrist',
+          },
+          
+        ]
       }
     },
     
@@ -117,69 +126,14 @@ export const sineHealthData: ProjectData = {
 
     {
       type: 'image-grid',
-      layout: 'masonry',
+      layout: 'grid-2-col',
       data: {
-        heading: 'Development Process',
+        heading: 'Pitching',
+        aspectRatio: '16/9',
         images: [
           {
-            src: '/projects/sine-health/early sketches.png',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/sine-health/sketch-page-1.jpg',
-            alt: 'Early prototype testing'
-          },
-          {
-            src: '/projects/sine-health/sketch-page-2.jpg',
-            alt: 'Circuit board development'
-          },
-          {
-            src: '/projects/sine-health/prototype-1.jpg',
-            alt: 'Wearable form factor iterations'
-          },
-          {
-            src: '/projects/sine-health/sketch.png',
-            alt: 'Wearable form factor iterations'
-          },
-          {
-            src: '/projects/sine-health/prototype-2 - Copy.JPG',
-            alt: 'Wearable form factor iterations'
-          },
-          {
-            src: '/projects/sine-health/test-results.jpg',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/sine-health/single-sketch.png',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/sine-health/Screenshot 2025-08-20 161139.png',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/sine-health/Sine procreate drawing.jpg',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/sine-health/Screenshot 2025-08-13 120942.png',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/sine-health/Product Explanation page sketch.png',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/sine-health/flow-lines.png',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/sine-health/prototype construction.png',
-            alt: 'User testing session'
-          },
-          {
-            src: '/projects/sine-health/IMG_3405.JPG',
-            alt: 'User testing session'
+            src: '/projects/sine-health/presenting2.JPG',
+            alt: 'Device worn on wrist',
           },
           {
             src: '/projects/sine-health/image-5.JPG',

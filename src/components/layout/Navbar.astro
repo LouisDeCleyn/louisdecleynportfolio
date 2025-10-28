@@ -1,0 +1,172 @@
+---
+// src/components/layout/Navbar.astro
+// Navigation component with fullscreen menu for both mobile and desktop
+import Container from './Container.astro';
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-[var(--color-surface)] border-b border-[var(--nav-border)]">
+  <Container>
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo/Name -->
+      <a href="/" class="text-lg font-medium text-[var(--color-text-primary)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]">
+        Louis DeCleyn
+      </a>
+
+      <!-- Menu Button (both mobile and desktop) -->
+      <button 
+        id="menu-button"
+        class="p-2 text-[var(--color-text-primary)] hover:bg-[var(--color-background)] rounded-md transition-colors duration-[var(--transition-normal)]"
+        aria-label="Toggle menu"
+      >
+        <svg 
+          class="w-6 h-6" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </Container>
+</nav>
+
+<!-- Fullscreen Menu (mobile and desktop) -->
+<div 
+  id="fullscreen-menu"
+  class="fixed inset-0 z-50 bg-[var(--color-surface)] opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out overflow-y-auto"
+>
+  <!-- Close button in same position as hamburger -->
+  <div class="fixed top-0 left-0 right-0 z-50">
+    <Container>
+      <div class="flex items-center justify-end h-16">
+        <button 
+          id="menu-close"
+          class="p-2 text-[var(--color-text-primary)] hover:bg-[var(--color-background)] rounded-md transition-colors duration-[var(--transition-normal)]"
+          aria-label="Close menu"
+        >
+          <svg 
+            class="w-6 h-6" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </Container>
+  </div>
+
+  <!-- Menu items centered -->
+  <div class="flex flex-col items-center justify-center min-h-screen py-20">
+    <ul class="flex flex-col items-center gap-8 md:gap-12">
+      <li>
+        <a 
+          href="/" 
+          class="text-3xl md:text-5xl font-medium text-[var(--color-text-primary)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]"
+        >
+          Home
+        </a>
+      </li>
+      <li>
+        <a 
+          href="/about" 
+          class="text-3xl md:text-5xl font-medium text-[var(--color-text-primary)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]"
+        >
+          About
+        </a>
+      </li>
+      <li>
+        <a 
+          href="/contact" 
+          class="text-3xl md:text-5xl font-medium text-[var(--color-text-primary)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]"
+        >
+          Contact
+        </a>
+      </li>
+      <li>
+        <a 
+          href="/sketchbook" 
+          class="text-3xl md:text-5xl font-medium text-[var(--color-text-primary)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]"
+        >
+          Sketchbook
+        </a>
+      </li>
+      <li>
+        <a 
+          href="/blog" 
+          class="text-3xl md:text-5xl font-medium text-[var(--color-text-primary)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]"
+        >
+          Journal
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Spacer to prevent content from hiding under fixed nav -->
+<div class="h-16"></div>
+
+<script>
+  // Fullscreen menu toggle (works for both mobile and desktop)
+  function initMenu() {
+    const menuButton = document.getElementById('menu-button');
+    const fullscreenMenu = document.getElementById('fullscreen-menu');
+    const closeButton = document.getElementById('menu-close');
+
+    // Check if all elements exist
+    if (!menuButton || !fullscreenMenu || !closeButton) {
+      console.warn('Menu elements not found');
+      return;
+    }
+
+    // Toggle menu function
+    function toggleMenu(open: boolean) {
+      if (!fullscreenMenu) return;
+      
+      if (open) {
+        // Open menu - fade in
+        fullscreenMenu.classList.remove('opacity-0', 'pointer-events-none');
+        fullscreenMenu.classList.add('opacity-100', 'pointer-events-auto');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      } else {
+        // Close menu - fade out
+        fullscreenMenu.classList.remove('opacity-100', 'pointer-events-auto');
+        fullscreenMenu.classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = ''; // Restore scrolling
+      }
+    }
+
+    // Open button click handler
+    menuButton.addEventListener('click', () => {
+      toggleMenu(true);
+    });
+
+    // Close button click handler
+    closeButton.addEventListener('click', () => {
+      toggleMenu(false);
+    });
+
+    // Close menu when clicking on a link
+    const menuLinks = fullscreenMenu.querySelectorAll('a');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        toggleMenu(false);
+      });
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && fullscreenMenu.classList.contains('opacity-100')) {
+        toggleMenu(false);
+      }
+    });
+  }
+
+  // Initialize on page load
+  initMenu();
+
+  // Re-initialize after navigation (for SPA-like behavior)
+  document.addEventListener('astro:after-swap', initMenu);
+</script>
