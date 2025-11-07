@@ -14,9 +14,10 @@ export const cadenceData: ProjectData = {
       type: 'text-image',
       layout: 'split-right',
       data: {
+        aspectRatio: '9/5',
         heading: 'The Opportunity',
         text: 'Traditional exercise timers are rigid and distracting, often breaking focus instead of supporting it. For flow-based exercise, where rhythm and continuity matter, users need a simple, intuitive way to pace movement and rest without relying on sound or constant clock-checking.',
-        image: '/projects/cadence/eUyc3vvgALpPpVYZrYGYZX.jpg',
+        image: '/projects/cadence/in-context-1.png',
         imageAlt: 'Comparison of current biofeedback solutions'
       }
     },

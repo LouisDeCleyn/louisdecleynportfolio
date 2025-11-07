@@ -16,22 +16,13 @@ export const sineHealthData: ProjectData = {
       type: 'text-image',
       layout: 'split-right',
       data: {
-        heading: 'The problem',
+        heading: 'One in five UK Police Officers have experienced PTSD',
         text: 'Police officers and other emergency service workers are required to cycle rapidly between moments of rest and intense stress. The unpredictable and often traumatic nature of their work places sustained pressure on their bodies and minds, leaving them vulnerable to burnout, reduced performance, and long-term mental health challenges.',
         image: '/projects/sine-health/problem.jpeg',
         imageAlt: 'Comparison of current biofeedback solutions'
       }
     },
 
-    {
-      type: 'banner-image',
-      data: {
-        image: '/projects/sine-health/police-officer.jpeg',
-        caption: 'One in five UK Police Officers have experienced PTSD',
-        overlay: true
-      }
-    },
-    
     
     {
       type: 'text-image',
