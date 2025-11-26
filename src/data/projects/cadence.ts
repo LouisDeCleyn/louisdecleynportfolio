@@ -3,7 +3,7 @@ import type { ProjectData } from '../types';
 export const cadenceData: ProjectData = {
     title: 'Cadence',
     category: 'Product Concept',
-    timeline: '1 months • 2025',
+    timeline: '2 months • 2025',
     description: 'Cadence is a flow-based exercise timer I designed to help users find rhythm in their workouts. Using a simple LED sequence, it guides periods of movement and rest without distraction, creating a more intuitive alternative to conventional timers. The project explored how light and pacing can shape focus, flow, and performance.',
     hero: '/projects/cadence/hero.png',
     links: [],
@@ -25,6 +25,13 @@ export const cadenceData: ProjectData = {
       type: 'banner-image',
       data: {
         image: '/projects/cadence/hero-2.webp',
+        overlay: false
+      }
+    },
+    {
+      type: 'banner-image',
+      data: {
+        image: '/projects/cadence/image-4.webp',
         overlay: false
       }
     },
@@ -84,7 +91,7 @@ export const cadenceData: ProjectData = {
       layout: 'split-right',
       data: {
         heading: 'Material 3 Design System',
-        text: 'Cadence uses the Googls Material 3 Design system for a playful and expressive interface experience. The design system was selected for its modern, energetic feel and its adaptability, enabling it to fit circular screens.',
+        text: 'Cadence uses the Google Material 3 Design system for a playful and expressive interface experience. The design system was selected for its modern, energetic feel and its adaptability, enabling it to fit circular screens.',
         image: '/projects/cadence/Twisting dial.bip.85.png',
         imageAlt: 'Comparison of current biofeedback solutions'
       }
@@ -106,19 +113,23 @@ export const cadenceData: ProjectData = {
         aspectRatio: '16/9', // or '1', '4/3', '3/2', etc.
         images: [
           {
-            src: '/projects/cadence/image-4.webp',
-            alt: 'Device worn on wrist',
-          },
-          {
-            src: '/projects/cadence/process banner.webp',
+            src: '/projects/cadence/IMG_7169jpgbw.jpg',
             alt: 'Mobile app interface',
           },
           {
-            src: '/projects/cadence/IMG_7006.jpg',
+            src: '/projects/cadence/IMG_2386.jpg',
             alt: 'Mobile app interface',
           },
           {
-            src: '/projects/cadence/development/development.jpg',
+            src: '/projects/cadence/IMG_7144bw.jpg',
+            alt: 'Mobile app interface',
+          },
+          {
+            src: '/projects/cadence/IMG_7158bw.jpg',
+            alt: 'Mobile app interface',
+          },
+          {
+            src: '/projects/cadence/WhatsApp Image 2025-11-19 at 15.57.43.jpeg',
             alt: 'Mobile app interface',
           },
         ]

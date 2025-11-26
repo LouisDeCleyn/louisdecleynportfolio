@@ -30,7 +30,7 @@ export const sineHealthData: ProjectData = {
       data: {
         heading: 'The Solution Gap',
         text: 'Existing therapeutic device solutions take up audio or visual sensory channels, limiting their use during activities like driving, training, or exercising. Most devices require constant attention and can\'t provide subtle, continuous guidance for stress management.',
-        image: '/projects/sine-health/problem-analysis.jpg',
+        image: '/projects/sine-health/problem-analysis.png',
         imageAlt: 'Comparison of current biofeedback solutions'
       }
     },
@@ -55,6 +55,16 @@ export const sineHealthData: ProjectData = {
         ]
       }
     },
+    {
+      type: 'text-image',
+      layout: 'split-right',
+      data: {
+        heading: 'Delivering Custom Support',
+        text: 'Sine Health monitors heart rate and calculates the optimal breathing rate for increasing heart rate variability (HRV), Improving resilience to stress and recovery from trauma.',
+        image: '/projects/sine-health/image-3.png',
+        imageAlt: 'Comparison of current biofeedback solutions'
+      }
+    },
 
     {
       type: 'image-grid',
@@ -72,20 +82,9 @@ export const sineHealthData: ProjectData = {
           },
           
           {
-            src: '/projects/sine-health/Sine on Table.jpg',
+            src: '/projects/sine-health/Sine being worn.jpg',
             alt: 'sine lay on table',
           },
-        ]
-      }
-    },
-    
-    {
-      type: 'image-grid',
-      layout: 'grid-1-col',
-      data: {
-        heading: 'Prototype',
-        aspectRatio: '16/9',
-        images: [
           {
             src: '/projects/sine-health/prototype construction.png',
             alt: 'User testing session'
@@ -98,10 +97,10 @@ export const sineHealthData: ProjectData = {
             src: '/projects/sine-health/prototype-2.JPG',
             alt: 'Device worn on wrist',
           },
-          
         ]
       }
     },
+    
     
     {
       type: 'metrics-results',
@@ -111,7 +110,7 @@ export const sineHealthData: ProjectData = {
           { value: '12%', label: 'Improvement in HRV scores within 5 minutes', trend: 'up' },
           { value: '4%', label: 'Decrease in heart rate within 5 minutes', trend: 'down' },
         ],
-        description: 'Results from lab-conditions study with 4 participants using prototype devices'
+        description: 'Results from lab-conditions study with 4 participants using prototype devices.'
       }
     },
 
@@ -119,7 +118,7 @@ export const sineHealthData: ProjectData = {
       type: 'image-grid',
       layout: 'grid-2-col',
       data: {
-        heading: 'Pitching',
+        heading: 'Award Winning Presentations',
         aspectRatio: '16/9',
         images: [
           {
