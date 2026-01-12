@@ -13,6 +13,13 @@ export interface Project extends ProjectData {
 }
 
 export const projectData: Record<string, ProjectData> = {
+  
+  'hearth-lamp': {
+  title: 'Hearth Lamp',
+  category: 'Product Design Design',
+  description: 'End-to-end design of a learning platform focused on user engagement.',
+  hero: '/projects/hearth-lamp/hero.png'
+  },
   'sine-health': {
     title: 'Sine Health',
     category: 'Physical Product Design',
@@ -38,7 +45,7 @@ export const projectData: Record<string, ProjectData> = {
     hero: '/projects/parametric-modelling/hero.png'
   },
   'hearth': {
-    title: 'Hearth',
+    title: 'Hearth Tealight',
     category: 'Brand Design',
     description: 'End-to-end design of a learning platform focused on user engagement.',
     hero: '/projects/hearth/hero.png'

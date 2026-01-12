@@ -22,6 +22,7 @@ const { blocks } = Astro.props;
     
     // TEXT + IMAGE BLOCK
     case 'text-image':
+      const textImageAspectRatio = block.data.aspectRatio; // e.g., "16/9", "4/3", "1"
       return (
         <Section spacing="normal">
           <Container>
@@ -33,12 +34,17 @@ const { blocks } = Astro.props;
                 <p class="body-text">{block.data.text}</p>
               </div>
               <div class="image-content">
-                <img 
-                  src={block.data.image} 
-                  alt={block.data.imageAlt}
-                  class="w-full h-auto rounded-[var(--radius-card)] object-cover"
-                  loading="lazy"
-                />
+                <div 
+                  class="w-full overflow-hidden rounded-[var(--radius-card)]"
+                  style={textImageAspectRatio ? `aspect-ratio: ${textImageAspectRatio}` : ''}
+                >
+                  <img 
+                    src={block.data.image} 
+                    alt={block.data.imageAlt}
+                    class={`w-full object-cover ${textImageAspectRatio ? 'h-full' : 'h-auto'}`}
+                    loading="lazy"
+                  />
+                </div>
               </div>
             </div>
           </Container>

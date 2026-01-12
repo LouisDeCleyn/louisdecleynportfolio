@@ -20,10 +20,13 @@ export interface ProjectData {
 }
 
 export type ProjectSlug = 
-  | 'sine-health' 
+  | 'sine-health'    
   | 'stylideas' 
   | 'cadence' 
   | 'parametric-modelling' 
   | 'hearth'
+  | 'nasa'
+  | 'fixperts'
+  | 'bedside-table'
   
 export type ProjectDataMap = Record<ProjectSlug, ProjectData>;

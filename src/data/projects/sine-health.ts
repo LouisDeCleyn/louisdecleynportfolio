@@ -11,29 +11,6 @@ export const sineHealthData: ProjectData = {
   ],
   
   contentBlocks: [
-    
-    {
-      type: 'text-image',
-      layout: 'split-right',
-      data: {
-        heading: 'One in five UK Police Officers have experienced PTSD',
-        text: 'Police officers and other emergency service workers are required to cycle rapidly between moments of rest and intense stress. The unpredictable and often traumatic nature of their work places sustained pressure on their bodies and minds, leaving them vulnerable to burnout, reduced performance, and long-term mental health challenges.',
-        image: '/projects/sine-health/problem.jpeg',
-        imageAlt: 'Comparison of current biofeedback solutions'
-      }
-    },
-
-    
-    {
-      type: 'text-image',
-      layout: 'split-left',
-      data: {
-        heading: 'The Solution Gap',
-        text: 'Existing therapeutic device solutions take up audio or visual sensory channels, limiting their use during activities like driving, training, or exercising. Most devices require constant attention and can\'t provide subtle, continuous guidance for stress management.',
-        image: '/projects/sine-health/problem-analysis.png',
-        imageAlt: 'Comparison of current biofeedback solutions'
-      }
-    },
     {
       type: 'image-grid',
       layout: 'grid-3-col',
@@ -55,6 +32,30 @@ export const sineHealthData: ProjectData = {
         ]
       }
     },
+    
+    {
+      type: 'text-image',
+      layout: 'split-right',
+      data: {
+        heading: 'One In five UK Police Officers Have Experienced PTSD',
+        text: 'Police officers and other emergency service workers are required to cycle rapidly between moments of rest and intense stress. The unpredictable and often traumatic nature of their work places sustained pressure on their bodies and minds, leaving them vulnerable to burnout, reduced performance, and long-term mental health challenges.',
+        image: '/projects/sine-health/problem.jpeg',
+        imageAlt: 'Comparison of current biofeedback solutions'
+      }
+    },
+
+    
+    {
+      type: 'text-image',
+      layout: 'split-left',
+      data: {
+        heading: 'The Solution Gap',
+        text: 'Existing therapeutic device solutions take up audio or visual sensory channels, limiting their use during activities like driving, training, or exercising. Most devices require constant attention and can\'t provide subtle, continuous guidance for stress management.',
+        image: '/projects/sine-health/problem-analysis.png',
+        imageAlt: 'Comparison of current biofeedback solutions'
+      }
+    },
+    
     {
       type: 'text-image',
       layout: 'split-right',

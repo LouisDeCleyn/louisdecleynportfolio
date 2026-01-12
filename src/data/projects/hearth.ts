@@ -1,7 +1,7 @@
 import type { ProjectData } from '../types';
 
 export const hearthData: ProjectData = {
-    title: 'Hearth',
+    title: 'Hearth Tealight',
     category: 'Brand Design',
     timeline: '1 Month • 2024',
     description: 'Designed branded products for small-batch manufacture as personal gifts for friends and family.',

@@ -7,6 +7,8 @@ import { stylIdeasData } from './stylideas';
 import { sineHealthData } from './sine-health';
 import { cadenceData } from './cadence';
 import { hearthData } from './hearth';
+import { nasaData } from './nasa';
+import { hearthLampData } from './hearth-lamp';
 
 // Simple mapping - include inline definitions for projects not yet separated
 const projectRegistry: ProjectDataMap = {
@@ -15,14 +17,18 @@ const projectRegistry: ProjectDataMap = {
   'sine-health': sineHealthData,
   'cadence': cadenceData,
   'hearth': hearthData,
+  'nasa': nasaData,
+  'hearth-lamp': hearthLampData,
 };
 
 export const projectOrder: ProjectSlug[] = [
+  'hearth-lamp',
   'sine-health', 
   'stylideas', 
   'cadence', 
   'parametric-modelling', 
   'hearth',
+  'nasa',
 ];
 
 // Utility functions
