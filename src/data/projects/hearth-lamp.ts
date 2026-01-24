@@ -65,6 +65,10 @@ export const hearthLampData: ProjectData = {
             src: '/projects/hearth-lamp/threelamps.png',
             alt: 'Device worn on wrist',
           },
+          {
+            src: '/projects/hearth-lamp/Logo Banner.png',
+            alt: 'Device worn on wrist',
+          },
           
         ]
       }
