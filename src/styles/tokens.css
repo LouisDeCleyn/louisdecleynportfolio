@@ -42,6 +42,7 @@
   --color-text-inverse: var(--color-neutral-0);
   
   /* Semantic Border Colors */
+  --color-border: var(--color-neutral-200);        /* default border */
   --color-border-light: var(--color-neutral-200);
   --color-border-medium: var(--color-neutral-300);
   --color-border-strong: var(--color-neutral-400);

@@ -1,0 +1,166 @@
+---
+// src/pages/projects/index.astro
+// Projects archive — grid + list view with persistent toggle
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/layout/Container.astro';
+import Section from '../../components/layout/Section.astro';
+import { Image } from 'astro:assets';
+import { getAllProjects } from '../../data/projects/index';
+
+const projects = getAllProjects();
+---
+
+<BaseLayout title="Projects — Louis DeCleyn">
+  <Container class="py-4">
+    <Section spacing="large">
+
+      <!-- Header row: descriptor + view toggle -->
+      <div class="flex items-center justify-between mb-8 gap-4">
+        <p class="body-text text-[var(--color-text-secondary)] max-w-2xl">
+          All projects — industrial design, product strategy and digital experiences.
+        </p>
+
+        <!-- View toggle buttons -->
+        <div class="flex gap-1 shrink-0" role="group" aria-label="View mode">
+
+          <!-- Grid icon -->
+          <button
+            id="btn-grid"
+            aria-label="Grid view"
+            aria-pressed="true"
+            class="p-2 rounded-md text-[var(--color-text-secondary)] hover:bg-[var(--color-background)] transition-colors duration-[var(--transition-normal)] aria-pressed:text-[var(--color-text-primary)] aria-pressed:bg-[var(--color-background)]"
+          >
+            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <rect x="2" y="2" width="7" height="7" rx="1"/>
+              <rect x="11" y="2" width="7" height="7" rx="1"/>
+              <rect x="2" y="11" width="7" height="7" rx="1"/>
+              <rect x="11" y="11" width="7" height="7" rx="1"/>
+            </svg>
+          </button>
+
+          <!-- List icon -->
+          <button
+            id="btn-list"
+            aria-label="List view"
+            aria-pressed="false"
+            class="p-2 rounded-md text-[var(--color-text-secondary)] hover:bg-[var(--color-background)] transition-colors duration-[var(--transition-normal)] aria-pressed:text-[var(--color-text-primary)] aria-pressed:bg-[var(--color-background)]"
+          >
+            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <rect x="2" y="3" width="16" height="2.5" rx="1"/>
+              <rect x="2" y="8.75" width="16" height="2.5" rx="1"/>
+              <rect x="2" y="14.5" width="16" height="2.5" rx="1"/>
+            </svg>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Grid view -->
+      <div
+        id="view-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+      >
+        {projects.map((project, index) => (
+          <article>
+            <a href={`/projects/${project.slug}`} class="block">
+              <div class="aspect-[4/3] overflow-hidden">
+                <Image
+                  src={project.data.hero}
+                  width={800}
+                  height={600}
+                  alt={project.data.title}
+                  class="w-full h-full object-cover"
+                  loading={index < 3 ? 'eager' : 'lazy'}
+                />
+              </div>
+              <div class="pt-3 pb-1">
+                <h3 class="text-sm font-medium text-[var(--color-text-primary)] leading-snug">{project.data.title}</h3>
+                <p class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] mb-0.5">{project.data.category}</p>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <!-- List view (hidden by default, shown via JS) -->
+      <div id="view-list" class="hidden flex-col">
+
+        <!-- Column headers -->
+        <div class="list-row pb-3 border-b border-[var(--color-border-light)]">
+          <span class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)]">Project</span>
+          <span class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)]">Year</span>
+          <span class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)]">About</span>
+        </div>
+
+        {projects.map((project) => {
+          const year = project.data.timeline.match(/\d{4}/)?.[0] ?? '';
+          return (
+            <a
+              href={`/projects/${project.slug}`}
+              class="list-row group py-7 items-start border-b border-[var(--color-border-light)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]"
+            >
+              <div>
+                <h2 class="text-base font-medium text-[var(--color-text-primary)] leading-snug mb-1">{project.data.title}</h2>
+                <p class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)]">{project.data.category}</p>
+              </div>
+              <span class="text-sm text-[var(--color-text-muted)]">{year}</span>
+              <p class="text-sm text-[var(--color-text-secondary)] line-clamp-2 leading-relaxed">{project.data.description}</p>
+            </a>
+          );
+        })}
+      </div>
+
+    </Section>
+  </Container>
+</BaseLayout>
+
+<script>
+  const STORAGE_KEY = 'projects-view';
+
+  function initViewToggle() {
+    const gridBtn  = document.getElementById('btn-grid');
+    const listBtn  = document.getElementById('btn-list');
+    const viewGrid = document.getElementById('view-grid');
+    const viewList = document.getElementById('view-list');
+
+    if (!gridBtn || !listBtn || !viewGrid || !viewList) return;
+
+    // Non-null refs for use inside nested function (TS can't narrow through closures)
+    const _gridBtn  = gridBtn!;
+    const _listBtn  = listBtn!;
+    const _viewGrid = viewGrid!;
+    const _viewList = viewList!;
+
+    function setView(mode: 'grid' | 'list') {
+      const isGrid = mode === 'grid';
+
+      _viewGrid.classList.toggle('hidden', !isGrid);
+      _viewGrid.classList.toggle('grid', isGrid);
+      _viewList.classList.toggle('hidden', isGrid);
+      _viewList.classList.toggle('flex', !isGrid);
+
+      _gridBtn.setAttribute('aria-pressed', String(isGrid));
+      _listBtn.setAttribute('aria-pressed', String(!isGrid));
+
+      localStorage.setItem(STORAGE_KEY, mode);
+    }
+
+    // Restore from localStorage
+    const saved = (localStorage.getItem(STORAGE_KEY) ?? 'grid') as 'grid' | 'list';
+    setView(saved);
+
+    gridBtn.addEventListener('click', () => setView('grid'));
+    listBtn.addEventListener('click', () => setView('list'));
+  }
+
+  initViewToggle();
+  document.addEventListener('astro:after-swap', initViewToggle);
+</script>
+
+<style>
+  .list-row {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) 5rem minmax(0, 3fr);
+    gap: 2rem;
+  }
+</style>

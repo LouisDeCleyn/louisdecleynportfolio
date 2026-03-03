@@ -3,87 +3,101 @@
 // Homepage with hero carousel
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/layout/Container.astro';
-import Section from '../components/ui/Section.astro';
+import Section from '../components/layout/Section.astro';
 import Button from '../components/ui/Button.astro';
-import ProjectCard from '../components/ui/ProjectCard.astro';
+import ProjectCard from '../components/project/ProjectCard.astro';
 import { Image } from 'astro:assets';
 import aboutPhoto from '../assets/about-photo.jpg';
-import { projects } from '../data/homepage-projects';
+import { getAllProjects } from '../data/projects/index';
+
+const projects = getAllProjects();
 
 // Hero carousel images
 const heroImages = [
-  {
-    src: '/images/hero/home-hero.jpg',
-    alt: 'Design Work 1'
-  },
-  {
-    src: '/images/hero/home-hero1.jpg',
-    alt: 'Design Work 2'
-  },
-  {
-    src: '/images/hero/home-hero2.jpg',
-    alt: 'Design Work 3'
-  },
-  {
-    src: '/images/hero/home-hero3.jpg',
-    alt: 'Design Work 4'
-  },
-  {
-    src: '/images/hero/home-hero4.jpg',
-    alt: 'Design Work 4'
-  },
-  {
-    src: '/images/hero/home-hero5.png',
-    alt: 'Design Work 4'
-  },
-  // Add more images as needed
+  { src: '/images/hero/home-hero.jpg',  alt: 'Design Work 1' },
+  { src: '/images/hero/home-hero1.jpg', alt: 'Design Work 2' },
+  { src: '/images/hero/home-hero2.jpg', alt: 'Design Work 3' },
+  { src: '/images/hero/home-hero4.jpg', alt: 'Design Work 5' },
+  { src: '/images/hero/home-hero5.jpg', alt: 'Design Work 6' },
+  { src: '/images/hero/home-hero6.png', alt: 'Design Work 7' },
+  { src: '/images/hero/home-hero7.jpg', alt: 'Design Work 8' },
+  { src: '/images/hero/home-hero8.JPG', alt: 'Design Work 8' },
+  { src: '/images/hero/home-hero9.jpg', alt: 'Design Work 8' },
 ];
+
+// Tile size config — drives the asymmetric grid layout
+const FEATURED = new Set(['hearth-lamp']);
+const WIDE     = new Set(['cadence', 'parametric-modelling', 'hearth']);
 ---
 
 <BaseLayout title="Louis DeCleyn - Designer">
-  <!-- Hero Carousel - Full Width -->
-  <div class="hero-carousel relative w-full h-[60vh] overflow-hidden">
-    <!-- Slides Container -->
+
+  <!-- Hero Carousel — Full Viewport -->
+  <div class="hero-carousel relative w-full overflow-hidden -mt-16" style="height: calc(100dvh + 4rem)">
+
+    <!-- Slides -->
     <div class="slides-container relative w-full h-full">
       {heroImages.map((image, index) => (
-        <div 
-          class={`hero-slide absolute inset-0 transition-opacity duration-1000 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+        <div
+          class={`hero-slide absolute inset-0 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
           data-slide-index={index}
         >
-          <img 
+          <Image
             src={image.src}
+            width={1920}
+            height={1080}
             alt={image.alt}
             class="w-full h-full object-cover"
+            loading={index === 0 ? 'eager' : 'lazy'}
+            fetchpriority={index === 0 ? 'high' : 'auto'}
           />
         </div>
       ))}
     </div>
 
-    <!-- Navigation Dots -->
-    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-      {heroImages.map((_, index) => (
-        <div
-          class={`carousel-dot w-2 h-2 rounded-full transition-all duration-300 ${index === 0 ? 'bg-white w-6' : 'bg-white/50'}`}
-          data-dot-index={index}
-          aria-label={`Go to slide ${index + 1}`}
-        />
-      ))}
+    <!-- Top gradient — keeps nav text readable over light images -->
+    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/30 to-transparent z-10 pointer-events-none"></div>
+
+    <!-- Nav dots + animated scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-4">
+      <div class="flex gap-2">
+        {heroImages.map((_, index) => (
+          <div
+            class={`carousel-dot w-2 h-2 rounded-full transition-all duration-300 ${index === 0 ? 'bg-white w-6' : 'bg-white/50'}`}
+            data-dot-index={index}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+      <div class="scroll-line w-px h-8 bg-white/60" />
     </div>
+
   </div>
 
   <Container class="py-4">
     <!-- Projects Gallery -->
     <Section spacing="large">
-      <h2 class="heading-1 mb-12">Industrial Designer specialising in insight-driven concept development, computer-aided design and prototyping.</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[var(--spacing-compact)]">
-        {projects.map((project) => (
-          <ProjectCard
-            title={project.title}
-            category={project.category}
-            hero={project.hero}
-            slug={project.slug}
-          />
-        ))}
+      <p class="body-text text-[var(--color-text-secondary)] mb-8 max-w-2xl">
+        Industrial Designer specialising in insight-driven concept development, computer-aided design and prototyping.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-12 auto-rows-[280px] sm:auto-rows-[240px] md:auto-rows-[280px] xl:auto-rows-[320px]">
+        {projects.map((project, index) => {
+          const isFeatured = FEATURED.has(project.slug);
+          const isWide     = WIDE.has(project.slug);
+          const spanClass  = isFeatured ? 'sm:row-span-2 sm:col-span-2'
+                           : isWide     ? 'xl:col-span-2'
+                           : '';
+          return (
+            <ProjectCard
+              title={project.data.title}
+              category={project.data.category}
+              hero={project.data.hero}
+              slug={project.slug}
+              loading={index < 4 ? 'eager' : 'lazy'}
+              class={`${spanClass} reveal-stagger-${index + 1}`}
+            />
+          );
+        })}
       </div>
     </Section>
   </Container>
@@ -92,114 +106,160 @@ const heroImages = [
   <Section spacing="large" background="alt">
     <Container>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-        
+
         <!-- Photo -->
         <div class="order-1">
-          <Image 
+          <Image
             src={aboutPhoto}
             alt="Louis working on a project"
             class="w-full h-auto object-cover object-center block rounded-[var(--radius-card)]"
             width={3000}
             height={2000}
+            loading="lazy"
           />
         </div>
-        
+
         <!-- Content -->
         <div class="order-2 flex flex-col gap-4">
           <h2 class="heading-2">About Me</h2>
-          
+
           <p class="body-text--large">
             Hello, I'm Louis, a multidisciplinary designer with an entrepreneurial mindset and a deep interest in human behaviour.
           </p>
-          
+
           <p class="body-text">
             My work lives at the intersection of physical, digital, and visual design, shaped by curiosity and a drive to build things that matter.
             Often, I've found myself in early-stage or fast-moving environments where momentum matters. I've been lucky to learn from experienced founders and designers, building a network around the shared goal of turning ideas into reality.
           </p>
-          
+
           <p class="body-text">
             I'm drawn to projects where I can take ownership, bring big ideas to life, and grow alongside ambitious teams.
             Working on something exciting and need someone who can think like a designer and execute like a founder? I'd love to hear from you.
           </p>
-          
+
           <Button href="/about" variant="primary" class="mt-4">
             More about my background
           </Button>
         </div>
-        
+
       </div>
     </Container>
   </Section>
+
+  <!-- Load reveal animations -->
+  <script is:inline src="/scripts/reveal.js"></script>
+
 </BaseLayout>
 
 <script>
   // Hero Carousel Auto-Slide
   let currentSlide = 0;
-  let autoSlideInterval: ReturnType<typeof setInterval>;
   const slides = document.querySelectorAll('.hero-slide');
-  const dots = document.querySelectorAll('.carousel-dot');
-  const slideInterval = 5000; // 5 seconds per slide
+  const dots   = document.querySelectorAll('.carousel-dot');
+  const slideInterval = 5000;
 
   function showSlide(index: number) {
-    // Hide all slides
     slides.forEach(slide => {
       slide.classList.remove('opacity-100');
       slide.classList.add('opacity-0');
     });
-
-    // Reset all dots
     dots.forEach(dot => {
       dot.classList.remove('bg-white', 'w-6');
       dot.classList.add('bg-white/50');
     });
-
-    // Show current slide
     slides[index].classList.remove('opacity-0');
     slides[index].classList.add('opacity-100');
-
-    // Highlight current dot
     dots[index].classList.remove('bg-white/50');
     dots[index].classList.add('bg-white', 'w-6');
-
     currentSlide = index;
   }
 
   function nextSlide() {
-    const next = (currentSlide + 1) % slides.length;
-    showSlide(next);
+    showSlide((currentSlide + 1) % slides.length);
   }
 
-  function startAutoSlide() {
-    autoSlideInterval = setInterval(nextSlide, slideInterval);
-  }
-
-  // Initialize carousel
   function initCarousel() {
-    // Start auto-sliding
-    startAutoSlide();
+    setInterval(nextSlide, slideInterval);
   }
 
-  // Initialize on page load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initCarousel);
   } else {
     initCarousel();
   }
 
-  // Re-initialize after navigation (for SPA-like behavior)
   document.addEventListener('astro:after-swap', initCarousel);
 </script>
 
-<style>
-  .hero-carousel {
-    position: relative;
+<script>
+  // Hero snap: when the user starts scrolling down from the top, smoothly jump
+  // past the carousel to the projects section. Reactivates when back at the top.
+  function initHeroSnap() {
+    const nav  = document.getElementById('main-nav');
+    const hero = document.querySelector('.hero-carousel') as HTMLElement | null;
+
+    // Restore opaque nav when navigating to non-hero pages
+    if (!hero) {
+      nav?.classList.remove('nav-transparent');
+      return;
+    }
+
+    function updateNav() {
+      const inHero = window.scrollY < hero!.offsetHeight - 10;
+      nav?.classList.toggle('nav-transparent', inHero);
+    }
+
+    // Set immediately on load (page starts at top = transparent)
+    updateNav();
+
+    let snapEnabled = true;
+    let isSnapping  = false;
+
+    window.addEventListener('scroll', () => {
+      updateNav();
+
+      const scrollY    = window.scrollY;
+      const heroHeight = hero!.offsetHeight;
+
+      // Back at top — re-arm for the next downward scroll
+      if (scrollY < 20) {
+        snapEnabled = true;
+        isSnapping  = false;
+      }
+
+      // User has scrolled down intentionally — carry them past the hero
+      if (snapEnabled && !isSnapping && scrollY > 60 && scrollY < heroHeight * 0.5) {
+        isSnapping  = true;
+        snapEnabled = false;
+        window.scrollTo({ top: heroHeight, behavior: 'smooth' });
+      }
+    }, { passive: true });
   }
 
+  initHeroSnap();
+  document.addEventListener('astro:after-swap', initHeroSnap);
+</script>
+
+<style>
   .hero-slide {
     transition: opacity 1s ease-in-out;
   }
 
   .carousel-dot {
     transition: all 0.3s ease;
+  }
+
+  /* Scroll indicator — draws down then erases upward, looping */
+  .scroll-line {
+    animation: scroll-draw 2.5s ease-in-out infinite;
+  }
+
+  @keyframes scroll-draw {
+    0%   { clip-path: inset(0 0 100% 0); opacity: 0; }
+    8%   { clip-path: inset(0 0 100% 0); opacity: 1; }
+    45%  { clip-path: inset(0 0 0% 0);   opacity: 1; }
+    65%  { clip-path: inset(0 0 0% 0);   opacity: 0.8; }
+    95%  { clip-path: inset(100% 0 0 0); opacity: 0; }
+    100% { clip-path: inset(100% 0 0 0); opacity: 0; }
   }
 </style>

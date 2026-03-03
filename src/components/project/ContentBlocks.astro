@@ -1,0 +1,473 @@
+---
+// src/components/project/ContentBlocks.astro
+import Container from '../layout/Container.astro';
+import Section from '../layout/Section.astro';
+import type { ContentBlock } from '../../data/types';
+import { Image } from 'astro:assets';
+
+interface Props {
+  blocks: ContentBlock[];
+}
+
+const { blocks } = Astro.props;
+---
+
+{blocks.map((block, index) => {
+  switch (block.type) {
+    
+    // TEXT + IMAGE BLOCK
+    case 'text-image':
+      const textImageAspectRatio = block.data.aspectRatio; // e.g., "16/9", "4/3", "1"
+      return (
+        <Section spacing="normal">
+          <Container>
+            <div class={`grid grid-cols-1 md:grid-cols-2 gap-12 items-center ${
+              block.layout === 'split-right' ? 'md:[&>*:first-child]:order-2' : ''
+            }`}>
+              <div class="text-content">
+                <h2 class="heading-2 mb-4">{block.data.heading}</h2>
+                <p class="body-text">{block.data.text}</p>
+              </div>
+              <div class="image-content">
+                <div 
+                  class="w-full overflow-hidden rounded-[var(--radius-card)]"
+                  style={textImageAspectRatio ? `aspect-ratio: ${textImageAspectRatio}` : ''}
+                >
+                  <Image
+                    src={block.data.image}
+                    alt={block.data.imageAlt}
+                    width={1200}
+                    height={800}
+                    class={`w-full object-cover ${textImageAspectRatio ? 'h-full' : 'h-auto'}`}
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // BANNER IMAGE BLOCK
+    case 'banner-image':
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && (
+              <h2 class="heading-2 mb-8">{block.data.heading}</h2>
+            )}
+            <div class="relative w-full overflow-hidden">
+              <Image
+                src={block.data.image}
+                alt={block.data.caption || 'Project image'}
+                width={1920}
+                height={1080}
+                class="w-full h-auto block"
+                loading="lazy"
+              />
+              {block.data.overlay && block.data.caption && (
+                <div class="absolute inset-0 flex items-center justify-center bg-black/50 text-white p-4">
+                  <p class="text-lg md:text-xl font-medium text-center">{block.data.caption}</p>
+                </div>
+              )}
+            </div>
+            {!block.data.overlay && block.data.caption && (
+              <p class="text-center caption-text mt-4 px-8">{block.data.caption}</p>
+            )}
+          </Container>
+        </Section>
+      );
+    
+    // IMAGE GRID BLOCK
+    case 'image-grid':
+      const aspectRatio = block.data.aspectRatio || '1'; // Default to square
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+            <div class={
+              block.layout === 'grid-2-col' || block.layout === 'two-column' ? 
+                'grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6' :
+              block.layout === 'grid-2x2' ?
+                'grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6' :
+              block.layout === 'grid-3-col' || block.layout === 'three-column' ? 
+                'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6' :
+              block.layout === 'grid-4-col' || block.layout === 'four-column' ? 
+                'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6' :
+              block.layout === 'masonry' ? 
+                'columns-1 md:columns-2 lg:columns-3 gap-4 md:gap-6' :
+              'grid grid-cols-1 gap-4 md:gap-6'
+            }>
+              {block.data.images.map((image: any) => (
+                <div class={`bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--radius-card)] overflow-hidden hover:border-[var(--card-border-hover)] hover:shadow-[var(--shadow-card-hover)] transition-all ${
+                  block.layout === 'masonry' ? 'break-inside-avoid mb-4 md:mb-6' : ''
+                }`}>
+                  <div 
+                    class="w-full overflow-hidden"
+                    style={block.layout === 'masonry' ? '' : `aspect-ratio: ${aspectRatio}`}
+                  >
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      width={1200}
+                      height={900}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  {image.caption && (
+                    <p class="caption-text p-4 m-0">{image.caption}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // METRICS/RESULTS BLOCK
+    case 'metrics-results':
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {block.data.metrics.map((metric: any) => (
+                <div class="text-center p-6 bg-[var(--color-surface)] rounded-[var(--radius-card)] border border-[var(--color-border-light)]">
+                  <div class={`text-3xl font-bold mb-2 flex items-center justify-center gap-2 ${
+                    metric.trend === 'up' ? 'text-green-600' :
+                    metric.trend === 'down' ? 'text-red-600' :
+                    'text-[var(--color-text-muted)]'
+                  }`}>
+                    {metric.value}
+                    {metric.trend && (
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {metric.trend === 'up' && (
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        )}
+                        {metric.trend === 'down' && (
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+                        )}
+                      </svg>
+                    )}
+                  </div>
+                  <p class="caption-text">{metric.label}</p>
+                </div>
+              ))}
+            </div>
+            {block.data.description && (
+              <p class="body-text text-center">{block.data.description}</p>
+            )}
+          </Container>
+        </Section>
+      );
+    
+    // SLIDESHOW BLOCK
+    case 'slideshow':
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+            <div class="slideshow-container max-w-[900px] mx-auto" data-slideshow={`slideshow-${index}`}>
+              <div class="slideshow-wrapper relative aspect-[16/9] overflow-hidden rounded-[var(--radius-card)] bg-[var(--color-background)]">
+                {block.data.slides.map((slide: any, slideIndex: number) => (
+                  <div class={`slide absolute inset-0 transition-opacity duration-500 ${
+                    slideIndex === 0 ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                  }`}>
+                    <Image src={slide.image} alt={slide.caption} width={1600} height={900} class="w-full h-full object-cover" />
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white">
+                      <h3 class="text-lg font-semibold mb-2 text-white">{slide.caption}</h3>
+                      <p class="text-sm text-white/90">{slide.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div class="flex items-center justify-center gap-4 mt-6">
+                <button class="slide-btn prev-btn w-10 h-10 flex items-center justify-center bg-[var(--color-surface)] border border-[var(--color-border-medium)] rounded-full hover:bg-[var(--color-background)] hover:border-[var(--color-border-strong)] transition-all" data-direction="prev">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                  </svg>
+                </button>
+                <div class="flex gap-2">
+                  {block.data.slides.map((_: any, slideIndex: number) => (
+                    <button 
+                      class={`indicator w-2 h-2 rounded-full transition-all ${
+                        slideIndex === 0 ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border-medium)] hover:bg-[var(--color-primary)]'
+                      }`}
+                      data-slide={slideIndex}
+                    ></button>
+                  ))}
+                </div>
+                <button class="slide-btn next-btn w-10 h-10 flex items-center justify-center bg-[var(--color-surface)] border border-[var(--color-border-medium)] rounded-full hover:bg-[var(--color-background)] hover:border-[var(--color-border-strong)] transition-all" data-direction="next">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // DIAGRAM BLOCK
+    case 'diagram':
+      return (
+        <Section spacing="normal">
+          <Container>
+            <div class="max-w-[800px] mx-auto">
+              {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+              <div class="relative mb-6">
+                <Image
+                  src={block.data.image}
+                  alt={block.data.heading || 'Diagram'}
+                  width={1200}
+                  height={800}
+                  class="w-full h-auto rounded-[var(--radius-card)]"
+                  loading="lazy"
+                />
+                {block.data.callouts && block.data.callouts.map((callout: any) => (
+                  <div 
+                    class="absolute cursor-pointer group"
+                    style={`left: ${callout.x}%; top: ${callout.y}%;`}
+                  >
+                    <div class="w-4 h-4 bg-[var(--color-primary)] rounded-full border-2 border-white group-hover:scale-125 transition-transform"></div>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-[var(--color-primary)] text-white text-xs whitespace-nowrap rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                      {callout.text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {block.data.description && (
+                <p class="body-text">{block.data.description}</p>
+              )}
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // TEXT COLUMNS BLOCK
+    case 'text-columns':
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+            <div class={`grid grid-cols-1 md:grid-cols-2 ${
+              block.layout === 'three-column' ? 'lg:grid-cols-3' : ''
+            } gap-8`}>
+              {block.data.columns.map((column: any) => (
+                <div>
+                  <h3 class="heading-3 mb-4">{column.subheading}</h3>
+                  <ul class="list-none p-0 flex flex-col gap-3">
+                    {column.items.map((item: string) => (
+                      <li class="body-text before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // QUOTE/TESTIMONIAL BLOCK
+    case 'quote-testimonial':
+      return (
+        <Section spacing="normal">
+          <Container>
+            <div class="max-w-[800px] mx-auto text-center p-12 bg-[var(--color-surface)] rounded-[var(--radius-card)] border-2 border-[var(--color-border-light)]">
+              <blockquote class="mb-6 italic">
+                <p class="body-text--large">"{block.data.quote}"</p>
+              </blockquote>
+              <div class="flex items-center justify-center gap-4">
+                {block.data.image && (
+                  <Image
+                    src={block.data.image}
+                    alt={block.data.author}
+                    width={96}
+                    height={96}
+                    class="w-12 h-12 rounded-full object-cover"
+                    loading="lazy"
+                  />
+                )}
+                <cite class="caption-text not-italic">{block.data.author}</cite>
+              </div>
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // VIDEO/ANIMATION BLOCK
+    case 'animation-showcase':
+    case 'video':
+      return (
+        <Section spacing="normal">
+          <Container>
+            <div class="max-w-[900px] mx-auto">
+              {block.data.heading && <h2 class="heading-2 mb-8 text-center">{block.data.heading}</h2>}
+              <video 
+                class="w-full h-auto rounded-[var(--radius-card)] mb-4"
+                controls={block.data.controls !== false}
+                autoplay={block.data.autoplay || false}
+                loop
+                muted
+              >
+                <source src={block.data.animation || block.data.video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              {block.data.description && (
+                <p class="body-text text-center">{block.data.description}</p>
+              )}
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // PROCESS STEPS BLOCK
+    case 'process-steps':
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-12">{block.data.heading}</h2>}
+            <div class="grid gap-12">
+              {block.data.steps.map((step: any) => (
+                <div class="grid grid-cols-1 md:grid-cols-[auto_1fr_200px] gap-6 items-center">
+                  <div class="text-4xl font-bold text-[var(--color-text-muted)] text-center md:text-left">
+                    {step.number}
+                  </div>
+                  <div>
+                    <h3 class="heading-3 mb-2">{step.title}</h3>
+                    <p class="body-text">{step.description}</p>
+                  </div>
+                  <div class="w-full h-[150px]">
+                    <Image
+                      src={step.image}
+                      alt={step.title}
+                      width={400}
+                      height={300}
+                      class="w-full h-full object-cover rounded-[var(--radius-card)]"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // PROCESS PHOTOS BLOCK  
+    case 'process-photos':
+      return (
+        <Section spacing="normal">
+          <Container>
+            {block.data.heading && <h2 class="heading-2 mb-8">{block.data.heading}</h2>}
+            <div class="columns-2 md:columns-3 gap-6">
+              {block.data.photos.map((photo: any) => (
+                <div class="break-inside-avoid mb-6 overflow-hidden rounded-[var(--radius-card)]">
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    width={800}
+                    height={1000}
+                    class="w-full h-auto block"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    // CALL TO ACTION BLOCK
+    case 'call-to-action':
+      return (
+        <Section spacing="normal">
+          <Container>
+            <div class="text-center p-12 md:p-16 bg-[var(--color-surface)] rounded-[var(--radius-card)] border-2 border-[var(--color-border-light)]">
+              <h2 class="heading-2 mb-4">{block.data.heading}</h2>
+              <p class="body-text mb-8">{block.data.text}</p>
+              <div class="flex gap-4 justify-center flex-wrap">
+                {block.data.buttons.map((button: any) => (
+                  <a 
+                    href={button.url} 
+                    class={`px-6 py-3 rounded-[var(--radius-button)] font-medium transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-card-hover)] ${
+                      button.style === 'primary' 
+                        ? 'bg-[var(--button-bg-primary)] text-[var(--button-text-primary)]'
+                        : 'bg-[var(--button-bg-secondary)] text-[var(--button-text-secondary)] border border-[var(--button-border-secondary)]'
+                    }`}
+                    target={button.external ? '_blank' : undefined}
+                    rel={button.external ? 'noopener noreferrer' : undefined}
+                  >
+                    {button.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </Container>
+        </Section>
+      );
+    
+    default:
+      return null;
+  }
+})}
+
+<script>
+  // Initialize slideshows
+  document.addEventListener('DOMContentLoaded', function() {
+    const slideshows = document.querySelectorAll('[data-slideshow]');
+    
+    slideshows.forEach((slideshow) => {
+      let currentSlide = 0;
+      const slides = slideshow.querySelectorAll('.slide');
+      const indicators = slideshow.querySelectorAll('.indicator');
+      const prevBtn = slideshow.querySelector('.prev-btn');
+      const nextBtn = slideshow.querySelector('.next-btn');
+      
+      if (!prevBtn || !nextBtn || slides.length === 0) return;
+      
+      function showSlide(index: number) {
+        // Hide all slides
+        slides.forEach(slide => {
+          slide.classList.remove('opacity-100', 'pointer-events-auto');
+          slide.classList.add('opacity-0', 'pointer-events-none');
+        });
+        
+        // Reset all indicators
+        indicators.forEach(indicator => {
+          indicator.classList.remove('bg-[var(--color-primary)]');
+          indicator.classList.add('bg-[var(--color-border-medium)]');
+        });
+        
+        // Show current slide
+        slides[index].classList.remove('opacity-0', 'pointer-events-none');
+        slides[index].classList.add('opacity-100', 'pointer-events-auto');
+        
+        // Highlight current indicator
+        if (indicators[index]) {
+          indicators[index].classList.remove('bg-[var(--color-border-medium)]');
+          indicators[index].classList.add('bg-[var(--color-primary)]');
+        }
+        
+        currentSlide = index;
+      }
+      
+      prevBtn.addEventListener('click', () => {
+        const prevIndex = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
+        showSlide(prevIndex);
+      });
+      
+      nextBtn.addEventListener('click', () => {
+        const nextIndex = currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
+        showSlide(nextIndex);
+      });
+      
+      indicators.forEach((indicator: Element, index: number) => {
+        indicator.addEventListener('click', () => showSlide(index));
+      });
+    });
+  });
+</script>

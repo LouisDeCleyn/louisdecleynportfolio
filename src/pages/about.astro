@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/layout/Container.astro';
-import Section from '../components/ui/Section.astro';
+import Section from '../components/layout/Section.astro';
 import Button from '../components/ui/Button.astro';
+import { Image } from 'astro:assets';
 ---
 
 <BaseLayout title="About - Louis Decleyn">
@@ -22,10 +23,14 @@ import Button from '../components/ui/Button.astro';
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         <!-- Photo -->
         <div class="reveal-left">
-          <img 
-            src="/images/about/profile-main.jpg" 
-            alt="Louis Decleyn in his design studio" 
+          <Image
+            src="/images/about/profile-main.jpg"
+            alt="Louis Decleyn in his design studio"
+            width={900}
+            height={1200}
             class="w-full h-auto object-cover object-center block rounded-[var(--radius-card)]"
+            loading="eager"
+            fetchpriority="high"
           />
         </div>
         
@@ -38,24 +43,33 @@ import Button from '../components/ui/Button.astro';
             
             <!-- Timeline Item 1 -->
             <div class="relative pb-12 reveal-delay-1 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
+              <div class="text-sm text-[var(--color-text-muted)] mb-1">January 2026 - Present</div>
+              <h3 class="text-lg font-medium mb-2 text-[var(--color-text-primary)]">Team Consulting</h3>
+              <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                Medical device design consultancy, working across the full product development cycle from early-stage concept through to detailed design and manufacture.
+              </p>
+            </div>
+
+            <!-- Timeline Item 2 -->
+            <div class="relative pb-12 reveal-delay-2 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
               <div class="text-sm text-[var(--color-text-muted)] mb-1">March 2025 - July 2025</div>
               <h3 class="text-lg font-medium mb-2 text-[var(--color-text-primary)]">Innovate Design</h3>
               <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                 Delivered product design services across 35+ client projects. Turned early ideas into viable solutions, created pitch visuals, explored AI tools, and supported IP filings.
               </p>
             </div>
-            
-            <!-- Timeline Item 2 -->
-            <div class="relative pb-12 reveal-delay-2 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
+
+            <!-- Timeline Item 3 -->
+            <div class="relative pb-12 reveal-delay-3 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
               <div class="text-sm text-[var(--color-text-muted)] mb-1">November 2024 - January 2025</div>
               <h3 class="text-lg font-medium mb-2 text-[var(--color-text-primary)]">Lindus Health</h3>
               <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                 Improved internal processes, built tools to speed up workflows, and supported go-to-market efforts.
               </p>
             </div>
-            
-            <!-- Timeline Item 3 -->
-            <div class="relative pb-12 reveal-delay-3 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
+
+            <!-- Timeline Item 4 -->
+            <div class="relative pb-12 reveal-delay-4 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
               <div class="text-sm text-[var(--color-text-muted)] mb-1">2023 - 2024</div>
               <h3 class="text-lg font-medium mb-2 text-[var(--color-text-primary)]">Freelance Designer</h3>
               <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
@@ -63,7 +77,7 @@ import Button from '../components/ui/Button.astro';
               </p>
             </div>
 
-            <!-- Timeline Item 4 -->
+            <!-- Timeline Item 5 -->
             <div class="relative pb-0 reveal-delay-4 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
               <div class="text-sm text-[var(--color-text-muted)] mb-1">2022 - 2023</div>
               <h3 class="text-lg font-medium mb-2 text-[var(--color-text-primary)]">Stylideas</h3>
@@ -232,7 +246,7 @@ import Button from '../components/ui/Button.astro';
       <h2 class="heading-2 text-center mb-8 reveal-up">More About Me</h2>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-4">
         <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-1">
-          <img src="/images/about/image-1.JPG" alt="Louis working on a design project" class="w-full h-full object-cover" />
+          <Image src="/images/about/image-1.JPG" alt="Louis working on a design project" width={400} height={400} class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
             <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
               Collecting feedback on prototypes at a tradeshow in London
@@ -241,7 +255,7 @@ import Button from '../components/ui/Button.astro';
         </div>
         
         <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-2">
-          <img src="/images/about/image-2.jpg" alt="Louis sketching ideas" class="w-full h-full object-cover" />
+          <Image src="/images/about/image-2.jpg" alt="Louis sketching ideas" width={400} height={400} class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
             <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
               Sketching out new ideas and concepts
@@ -250,7 +264,7 @@ import Button from '../components/ui/Button.astro';
         </div>
         
         <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-3">
-          <img src="/images/about/image-3.JPG" alt="Boxing Competition" class="w-full h-full object-cover" />
+          <Image src="/images/about/image-3.JPG" alt="Boxing Competition" width={400} height={400} class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
             <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
               Competed for Brunel University in the 2022 BUCs Boxing
@@ -259,7 +273,7 @@ import Button from '../components/ui/Button.astro';
         </div>
         
         <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-4">
-          <img src="/images/about/image-4.jpg" alt="Design work" class="w-full h-full object-cover" />
+          <Image src="/images/about/image-4.jpg" alt="Design work" width={400} height={400} class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
             <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
               Participating in UI/UX co-design workshop
@@ -268,7 +282,7 @@ import Button from '../components/ui/Button.astro';
         </div>
         
         <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-5">
-          <img src="/images/about/image-5.png" alt="Awards ceremony" class="w-full h-full object-cover" />
+          <Image src="/images/about/image-5.png" alt="Awards ceremony" width={400} height={400} class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
             <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
               Attending the 2025 Brunel University Alumni Awards
@@ -277,7 +291,7 @@ import Button from '../components/ui/Button.astro';
         </div>
 
         <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-5">
-          <img src="/images/about/image-6.jpg" alt="Awards ceremony" class="w-full h-full object-cover" />
+          <Image src="/images/about/image-6.jpg" alt="Awards ceremony" width={400} height={400} class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
             <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
               Presenting ideas

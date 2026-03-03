@@ -1,7 +1,6 @@
 // src/data/projects/index.ts
-import type { ProjectDataMap, ProjectSlug, ProjectData } from '../types';
+import type { ProjectData } from '../types';
 
-// Import individual project data (only the ones that exist)
 import { parametricModellingData } from './parametric-modelling';
 import { stylIdeasData } from './stylideas';
 import { sineHealthData } from './sine-health';
@@ -10,48 +9,43 @@ import { hearthData } from './hearth';
 import { nasaData } from './nasa';
 import { hearthLampData } from './hearth-lamp';
 
-// Simple mapping - include inline definitions for projects not yet separated
-const projectRegistry: ProjectDataMap = {
-  'parametric-modelling': parametricModellingData,
-  'stylideas': stylIdeasData,
+const projectRegistry = {
+  'hearth-lamp': hearthLampData,
   'sine-health': sineHealthData,
+  'stylideas': stylIdeasData,
   'cadence': cadenceData,
+  'parametric-modelling': parametricModellingData,
   'hearth': hearthData,
   'nasa': nasaData,
-  'hearth-lamp': hearthLampData,
-};
+} satisfies Record<string, ProjectData>;
 
+// Derived from registry keys — no manual maintenance needed
+export type ProjectSlug = keyof typeof projectRegistry;
+
+// Controls display order on the homepage and prev/next navigation
 export const projectOrder: ProjectSlug[] = [
   'hearth-lamp',
-  'sine-health', 
-  'stylideas', 
-  'cadence', 
-  'parametric-modelling', 
+  'sine-health',
+  'stylideas',
+  'cadence',
+  'parametric-modelling',
   'hearth',
-  'nasa',
 ];
 
-// Utility functions
 export function getProject(slug: string): ProjectData | null {
-  return projectRegistry[slug as ProjectSlug] || null;
+  return (projectRegistry as Record<string, ProjectData>)[slug] ?? null;
 }
 
 export function getProjectNavigation(currentSlug: string) {
   const currentIndex = projectOrder.indexOf(currentSlug as ProjectSlug);
   if (currentIndex === -1) return { prev: null, next: null };
-  
+
   const prevIndex = (currentIndex - 1 + projectOrder.length) % projectOrder.length;
   const nextIndex = (currentIndex + 1) % projectOrder.length;
-  
+
   return {
-    prev: {
-      slug: projectOrder[prevIndex],
-      data: projectRegistry[projectOrder[prevIndex]]
-    },
-    next: {
-      slug: projectOrder[nextIndex], 
-      data: projectRegistry[projectOrder[nextIndex]]
-    }
+    prev: { slug: projectOrder[prevIndex], data: projectRegistry[projectOrder[prevIndex]] },
+    next: { slug: projectOrder[nextIndex], data: projectRegistry[projectOrder[nextIndex]] },
   };
 }
 

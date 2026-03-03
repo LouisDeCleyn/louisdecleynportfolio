@@ -4,7 +4,7 @@
 import Container from './Container.astro';
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-[var(--color-surface)] border-b border-[var(--nav-border)]">
+<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-[var(--color-surface)] border-b border-[var(--nav-border)] transition-colors duration-[var(--transition-normal)]">
   <Container>
     <div class="flex items-center justify-between h-16">
       <!-- Logo/Name -->
@@ -62,24 +62,24 @@ import Container from './Container.astro';
   <div class="flex flex-col items-center justify-center min-h-screen py-20">
     <ul class="flex flex-col items-center gap-8 md:gap-12">
       <li>
-        <a 
-          href="/" 
+        <a
+          href="/projects"
           class="text-3xl md:text-5xl font-medium text-[var(--color-text-primary)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]"
         >
-          Home
+          Projects
         </a>
       </li>
       <li>
-        <a 
-          href="/about" 
+        <a
+          href="/about"
           class="text-3xl md:text-5xl font-medium text-[var(--color-text-primary)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]"
         >
           About
         </a>
       </li>
       <li>
-        <a 
-          href="/contact" 
+        <a
+          href="/contact"
           class="text-3xl md:text-5xl font-medium text-[var(--color-text-primary)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]"
         >
           Contact
@@ -107,6 +107,20 @@ import Container from './Container.astro';
 
 <!-- Spacer to prevent content from hiding under fixed nav -->
 <div class="h-16"></div>
+
+<style>
+  /* Transparent state — active over the homepage hero carousel */
+  #main-nav.nav-transparent {
+    background-color: transparent;
+    border-color: transparent;
+  }
+  #main-nav.nav-transparent a,
+  #main-nav.nav-transparent button {
+    color: var(--color-text-inverse);
+    background-color: transparent;
+    -webkit-tap-highlight-color: transparent;
+  }
+</style>
 
 <script>
   // Fullscreen menu toggle (works for both mobile and desktop)

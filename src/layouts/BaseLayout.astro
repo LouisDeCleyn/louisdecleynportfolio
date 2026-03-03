@@ -16,15 +16,17 @@ export interface Props {
   project?: string;
 }
 
-const { 
-  title, 
+const {
+  title,
   description = "Personal portfolio showcasing design work",
-  ogImage = "/og-image.JPG",
+  ogImage,
   ogType = "website",
   preloadImage,
   heroImage,
   project
 } = Astro.props;
+
+const resolvedOgImage = ogImage ?? heroImage ?? "/og-image.JPG";
 ---
 
 <!DOCTYPE html>
@@ -37,9 +39,11 @@ const {
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- Material Symbols — loaded async so it never blocks rendering -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" as="style" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /></noscript>
 
     {preloadImage && (
       <link rel="preload" as="image" href={preloadImage} />
@@ -49,6 +53,18 @@ const {
     )}
     
     <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:image" content={resolvedOgImage} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
   </head>
   <body class="flex flex-col min-h-screen">
     <!-- Navbar Component -->

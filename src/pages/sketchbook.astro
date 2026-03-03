@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/layout/Container.astro';
-import Section from '../components/ui/Section.astro';
+import Section from '../components/layout/Section.astro';
+import { Image } from 'astro:assets';
 
 // Define your sketches - you can add more later
 const sketchesData = [
@@ -128,9 +129,20 @@ const sketchesData = [
 ];
 
 // Sort sketches by date (newest first)
-const sketches = sketchesData.sort((a, b) => {
-  return new Date(b.date).getTime() - new Date(a.date).getTime();
-});
+const sorted = [...sketchesData].sort((a, b) =>
+  new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+
+// Interleave into 3-column order so dates read top-to-bottom across all columns.
+// CSS columns fills col 1 → col 2 → col 3, so to get newest items at the top
+// of every column we put sorted items 0,3,6… first, then 1,4,7…, then 2,5,8…
+const COLS = 3;
+const sketches: typeof sorted = [];
+for (let col = 0; col < COLS; col++) {
+  for (let row = 0; row * COLS + col < sorted.length; row++) {
+    sketches.push(sorted[row * COLS + col]);
+  }
+}
 
 // Helper function to format date for display
 const formatDate = (dateString: string) => {
@@ -187,11 +199,13 @@ const formatDate = (dateString: string) => {
             <div class="sketch-card group relative overflow-hidden bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--radius-card)] hover:border-[var(--card-border-hover)] hover:shadow-[var(--shadow-card-hover)] transition-all duration-[var(--transition-normal)]">
               <!-- Image -->
               <div class="sketch-image-wrapper relative overflow-hidden">
-                <img 
+                <Image
                   src={sketch.src}
                   alt={sketch.alt}
+                  width={1200}
+                  height={1200}
                   class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
+                  loading={index === 0 ? 'eager' : 'lazy'}
                 />
                 
                 <!-- Hover Overlay -->
@@ -308,31 +322,32 @@ const formatDate = (dateString: string) => {
     border-color: var(--color-primary);
   }
 
-  /* Masonry-style grid */
+  /* Masonry grid — CSS columns so images fill natural height with equal gaps */
   .sketchbook-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--space-6);
+    columns: 1;
+    column-gap: var(--space-6);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
     .sketchbook-grid {
-      grid-template-columns: repeat(2, 1fr);
+      columns: 2;
     }
   }
 
   @media (min-width: 1024px) {
     .sketchbook-grid {
-      grid-template-columns: repeat(3, 1fr);
+      columns: 3;
     }
   }
 
-  /* Sketch items transition */
+  /* Each item sits in the column flow — break-inside prevents splitting a card across columns */
   .sketch-item {
+    break-inside: avoid;
+    margin-bottom: var(--space-6);
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
 
-  /* Let images maintain their natural aspect ratio */
+  /* Images maintain natural aspect ratio */
   .sketch-image-wrapper {
     position: relative;
     overflow: hidden;

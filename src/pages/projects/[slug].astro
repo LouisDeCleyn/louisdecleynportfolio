@@ -2,14 +2,13 @@
 // src/pages/projects/[slug].astro
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Container from '../../components/layout/Container.astro';
-import Section from '../../components/ui/Section.astro';
-import ContentBlocks from '../../components/ContentBlocks.astro';
+import Section from '../../components/layout/Section.astro';
+import ContentBlocks from '../../components/project/ContentBlocks.astro';
 import ProjectHero from '../../components/project/ProjectHero.astro';
 import ProjectMeta from '../../components/project/ProjectMeta.astro';
 import ProjectLinks from '../../components/project/ProjectLinks.astro';
 import ProjectNavigation from '../../components/project/ProjectNavigation.astro';
 import { projectOrder, getProject, getProjectNavigation } from '../../data/projects';
-import type { ProjectSlug } from '../../data/types';
 
 export async function getStaticPaths() {
   return projectOrder.map(slug => ({ params: { slug } }));
@@ -29,11 +28,12 @@ const prevProject = navigation.prev ?? undefined;
 const nextProject = navigation.next ?? undefined;
 ---
 
-<BaseLayout 
-  title={`${project.title} - Louis Decleyn`} 
+<BaseLayout
+  title={`${project.title} - Louis Decleyn`}
   description={project.description}
   heroImage={project.hero}
   preloadImage={project.hero}
+  project={project.theme}
 >
   <!-- Full-Width Hero Image -->
   <ProjectHero 

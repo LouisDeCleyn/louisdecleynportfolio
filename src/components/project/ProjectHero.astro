@@ -1,6 +1,7 @@
 ---
 // src/components/project/ProjectHero.astro
 // Full-width hero image for project pages
+import { Image } from 'astro:assets';
 
 interface Props {
   image: string;
@@ -14,8 +15,10 @@ const { image, title, slug, class: className = '' } = Astro.props;
 
 <section class={`w-full -mt-[var(--nav-height)] ${className}`}>
   <div class="relative w-full h-[calc(66vh)] overflow-hidden">
-    <img 
+    <Image
       src={image}
+      width={1920}
+      height={1080}
       alt={`${title} - Hero Image`}
       class="w-full h-full object-cover transition-transform duration-[var(--transition-slow)] hover:scale-105"
       loading="eager"
