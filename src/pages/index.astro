@@ -115,14 +115,14 @@ const heroImages = [
           }
 
           return (
-            <div class={`relative overflow-hidden h-full ${spanClass} ${revealClass}`}>
+            <a href="/projects" class={`relative overflow-hidden h-full block ${spanClass} ${revealClass}`}>
               <img
                 src={item.src}
                 alt={item.alt}
                 class="w-full h-full object-cover"
                 loading={index < 4 ? 'eager' : 'lazy'}
               />
-            </div>
+            </a>
           );
         })}
       </div>
@@ -239,6 +239,14 @@ const heroImages = [
     // Set immediately on load (page starts at top = transparent)
     updateNav();
 
+    // Snap conflicts with mobile momentum scroll — only run on pointer devices
+    const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+    if (isTouch) {
+      window.addEventListener('scroll', updateNav, { passive: true });
+      return;
+    }
+
     let snapEnabled = true;
     let isSnapping  = false;
 
@@ -273,6 +281,9 @@ const heroImages = [
   function initAboutSnap() {
     const about = document.getElementById('about-section') as HTMLElement | null;
     if (!about) return;
+
+    // Skip snap on touch devices — same reason as hero snap
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
 
     let snapEnabled = true;
     let isSnapping  = false;
