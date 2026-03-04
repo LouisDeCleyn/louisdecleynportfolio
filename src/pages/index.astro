@@ -8,9 +8,23 @@ import Button from '../components/ui/Button.astro';
 import ProjectCard from '../components/project/ProjectCard.astro';
 import { Image } from 'astro:assets';
 import aboutPhoto from '../assets/about-photo.jpg';
-import { getAllProjects } from '../data/projects/index';
+import { getProject } from '../data/projects/index';
+import type { ProjectSlug } from '../data/projects/index';
 
-const projects = getAllProjects();
+type FeaturedItem =
+  | { type: 'project'; slug: ProjectSlug; spanClass?: string }
+  | { type: 'image';   src: string; alt: string; spanClass?: string };
+
+const featuredItems: FeaturedItem[] = [
+  { type: 'project', slug: 'sine-health',           spanClass: 'sm:row-span-2 sm:col-span-2' },
+  { type: 'project', slug: 'hearth-lamp',           spanClass: 'xl:col-span-2' },
+  { type: 'project', slug: 'stylideas',           spanClass: 'sm:row-span-2 sm:col-span-2' },
+  { type: 'image',   src: '/images/featured/featured-1.png', alt: 'Design work' },
+  { type: 'image',   src: '/images/featured/featured-2.png', alt: 'Design work' },
+  { type: 'project', slug: 'cadence',               spanClass: 'xl:col-span-2' },
+  { type: 'image',   src: '/images/featured/featured-4.png', alt: 'Design work', spanClass: 'sm:row-span-2 sm:col-span-2' },
+  { type: 'image',   src: '/images/featured/featured-wide.png', alt: 'Design work', spanClass: 'xl:col-span-2' }
+];
 
 // Hero carousel images
 const heroImages = [
@@ -21,13 +35,10 @@ const heroImages = [
   { src: '/images/hero/home-hero5.jpg', alt: 'Design Work 6' },
   { src: '/images/hero/home-hero6.png', alt: 'Design Work 7' },
   { src: '/images/hero/home-hero7.jpg', alt: 'Design Work 8' },
-  { src: '/images/hero/home-hero8.JPG', alt: 'Design Work 8' },
-  { src: '/images/hero/home-hero9.jpg', alt: 'Design Work 8' },
+  { src: '/images/hero/home-hero8.JPG', alt: 'Design Work 9' },
+  { src: '/images/hero/home-hero9.jpg', alt: 'Design Work 10' },
 ];
 
-// Tile size config — drives the asymmetric grid layout
-const FEATURED = new Set(['hearth-lamp']);
-const WIDE     = new Set(['cadence', 'parametric-modelling', 'hearth']);
 ---
 
 <BaseLayout title="Louis DeCleyn - Designer">
@@ -77,33 +88,49 @@ const WIDE     = new Set(['cadence', 'parametric-modelling', 'hearth']);
   <Container class="py-4">
     <!-- Projects Gallery -->
     <Section spacing="large">
-      <p class="body-text text-[var(--color-text-secondary)] mb-8 max-w-2xl">
-        Industrial Designer specialising in insight-driven concept development, computer-aided design and prototyping.
-      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start mb-8">
+        <h1 class="heading-1">Featured</h1>
+        <p class="body-text--large">
+          Industrial Designer specialising in insight-driven concept development, computer-aided design and prototyping.
+        </p>
+      </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-12 auto-rows-[280px] sm:auto-rows-[240px] md:auto-rows-[280px] xl:auto-rows-[320px]">
-        {projects.map((project, index) => {
-          const isFeatured = FEATURED.has(project.slug);
-          const isWide     = WIDE.has(project.slug);
-          const spanClass  = isFeatured ? 'sm:row-span-2 sm:col-span-2'
-                           : isWide     ? 'xl:col-span-2'
-                           : '';
+        {featuredItems.map((item, index) => {
+          const spanClass   = item.spanClass ?? '';
+          const revealClass = `reveal-stagger-${Math.min(index + 1, 10)}`;
+
+          if (item.type === 'project') {
+            const data = getProject(item.slug);
+            if (!data) return null;
+            return (
+              <ProjectCard
+                title={data.title}
+                category={data.category}
+                hero={data.hero}
+                slug={item.slug}
+                loading={index < 4 ? 'eager' : 'lazy'}
+                class={`${spanClass} ${revealClass}`}
+              />
+            );
+          }
+
           return (
-            <ProjectCard
-              title={project.data.title}
-              category={project.data.category}
-              hero={project.data.hero}
-              slug={project.slug}
-              loading={index < 4 ? 'eager' : 'lazy'}
-              class={`${spanClass} reveal-stagger-${index + 1}`}
-            />
+            <div class={`relative overflow-hidden h-full ${spanClass} ${revealClass}`}>
+              <img
+                src={item.src}
+                alt={item.alt}
+                class="w-full h-full object-cover"
+                loading={index < 4 ? 'eager' : 'lazy'}
+              />
+            </div>
           );
         })}
       </div>
     </Section>
   </Container>
 
-  <!-- About Section - Full Width Background -->
-  <Section spacing="large" background="alt">
+  <!-- About Section - Full Viewport Height -->
+  <Section id="about-section" spacing="large" background="alt" class="min-h-[100dvh] flex flex-col justify-center">
     <Container>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
 
@@ -238,6 +265,45 @@ const WIDE     = new Set(['cadence', 'parametric-modelling', 'hearth']);
 
   initHeroSnap();
   document.addEventListener('astro:after-swap', initHeroSnap);
+</script>
+
+<script>
+  // About snap: once the user has scrolled completely past the projects section
+  // and crosses into the about section, snap it into full view.
+  function initAboutSnap() {
+    const about = document.getElementById('about-section') as HTMLElement | null;
+    if (!about) return;
+
+    let snapEnabled = true;
+    let isSnapping  = false;
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+      const scrollY      = window.scrollY;
+      const scrollingDown = scrollY > lastScrollY;
+      lastScrollY        = scrollY;
+
+      const aboutTop = about.offsetTop;
+
+      // Re-arm when user scrolls back well above the about section
+      if (scrollY < aboutTop - window.innerHeight * 0.7) {
+        snapEnabled = true;
+        isSnapping  = false;
+      }
+
+      // Snap to about top when first crossing into it while scrolling down
+      if (snapEnabled && !isSnapping && scrollingDown
+          && scrollY >= aboutTop - 30
+          && scrollY < aboutTop + about.offsetHeight * 0.4) {
+        isSnapping  = true;
+        snapEnabled = false;
+        window.scrollTo({ top: aboutTop, behavior: 'smooth' });
+      }
+    }, { passive: true });
+  }
+
+  initAboutSnap();
+  document.addEventListener('astro:after-swap', initAboutSnap);
 </script>
 
 <style>

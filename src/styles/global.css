@@ -16,6 +16,7 @@
   body {
     color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -42,7 +43,7 @@
 /* Typography component classes */
 @layer components {
   .heading-1 {
-    font-size: var(--font-size-3xl);
+    font-size: var(--font-size-5xl);
     font-weight: var(--font-weight-medium);
     line-height: var(--line-height-tight);
     color: var(--color-text-primary);
@@ -95,6 +96,23 @@
     color: var(--color-accent);
     font-weight: var(--font-weight-semibold);
     font-size: var(--font-size-2xl);
+  }
+
+  .project-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-snug);
+  }
+
+  .project-title--list {
+    font-size: var(--font-size-base);
+  }
+
+  .project-category {
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
   }
 }
 

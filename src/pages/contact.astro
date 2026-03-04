@@ -2,17 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/layout/Container.astro';
 import Section from '../components/layout/Section.astro';
-import Button from '../components/ui/Button.astro';
 ---
 
 <BaseLayout title="Contact - Louis Decleyn">
   <Container>
     <!-- Page Header -->
     <Section spacing="large">
-      <div class="text-center max-w-4xl mx-auto reveal-up">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start reveal-up">
         <h1 class="heading-1">Let's Connect</h1>
         <p class="body-text--large">
-          I'd love to hear about your project or just have a conversation about design. 
+          I'd love to hear about your project or just have a conversation about design.
           Find me on these platforms or drop me a line directly.
         </p>
       </div>
@@ -103,21 +102,6 @@ import Button from '../components/ui/Button.astro';
       </div>
     </Section>
   </Container>
-
-  <!-- Call to Action - Full Width Background -->
-  <Section spacing="large" background="alt">
-    <Container>
-      <div class="text-center max-w-4xl mx-auto reveal-up">
-        <h2 class="heading-2">Prefer email?</h2>
-        <p class="body-text mb-8">
-          I typically respond within 24 hours. For project inquiries, feel free to include a brief overview of what you're working on.
-        </p>
-        <Button href="mailto:louisdecleyn@icloud.com" variant="primary" size="lg">
-          Send Email
-        </Button>
-      </div>
-    </Container>
-  </Section>
 
   <!-- Load External Script -->
   <script is:inline src="/scripts/reveal.js"></script>

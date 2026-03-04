@@ -14,14 +14,17 @@ const projects = getAllProjects();
   <Container class="py-4">
     <Section spacing="large">
 
-      <!-- Header row: descriptor + view toggle -->
-      <div class="flex items-center justify-between mb-8 gap-4">
-        <p class="body-text text-[var(--color-text-secondary)] max-w-2xl">
-          All projects — industrial design, product strategy and digital experiences.
+      <!-- Page header -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start reveal-up mb-8">
+        <h1 class="heading-1">Projects</h1>
+        <p class="body-text--large">
+          Industrial design, product strategy and digital experiences.
         </p>
+      </div>
 
-        <!-- View toggle buttons -->
-        <div class="flex gap-1 shrink-0" role="group" aria-label="View mode">
+      <!-- View toggle -->
+      <div class="flex justify-end mb-8">
+        <div class="flex gap-1" role="group" aria-label="View mode">
 
           <!-- Grid icon -->
           <button
@@ -74,8 +77,8 @@ const projects = getAllProjects();
                 />
               </div>
               <div class="pt-3 pb-1">
-                <h3 class="text-sm font-medium text-[var(--color-text-primary)] leading-snug">{project.data.title}</h3>
-                <p class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] mb-0.5">{project.data.category}</p>
+                <h2 class="project-title">{project.data.title}</h2>
+                <p class="project-category mb-0.5">{project.data.category}</p>
               </div>
             </a>
           </article>
@@ -100,8 +103,8 @@ const projects = getAllProjects();
               class="list-row group py-7 items-start border-b border-[var(--color-border-light)] hover:opacity-70 transition-opacity duration-[var(--transition-normal)]"
             >
               <div>
-                <h2 class="text-base font-medium text-[var(--color-text-primary)] leading-snug mb-1">{project.data.title}</h2>
-                <p class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)]">{project.data.category}</p>
+                <h2 class="project-title project-title--list mb-1">{project.data.title}</h2>
+                <p class="project-category">{project.data.category}</p>
               </div>
               <span class="text-sm text-[var(--color-text-muted)]">{year}</span>
               <p class="text-sm text-[var(--color-text-secondary)] line-clamp-2 leading-relaxed">{project.data.description}</p>

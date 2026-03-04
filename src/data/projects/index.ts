@@ -50,5 +50,11 @@ export function getProjectNavigation(currentSlug: string) {
 }
 
 export function getAllProjects(): Array<{ slug: ProjectSlug; data: ProjectData }> {
-  return projectOrder.map(slug => ({ slug, data: projectRegistry[slug] }));
+  return projectOrder
+    .map(slug => ({ slug, data: projectRegistry[slug] }))
+    .sort((a, b) => {
+      const yearA = parseInt(a.data.timeline.match(/\d{4}/)?.[0] ?? '0', 10);
+      const yearB = parseInt(b.data.timeline.match(/\d{4}/)?.[0] ?? '0', 10);
+      return yearB - yearA;
+    });
 }

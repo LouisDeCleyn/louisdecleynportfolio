@@ -2,15 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/layout/Container.astro';
 import Section from '../components/layout/Section.astro';
-import Button from '../components/ui/Button.astro';
-import { Image } from 'astro:assets';
 ---
 
 <BaseLayout title="About - Louis Decleyn">
   <Container>
     <!-- Page Header -->
-    <Section spacing="large">
-      <div class="text-center max-w-4xl mx-auto reveal-up">
+    <Section>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start reveal-up">
         <h1 class="heading-1">About Me</h1>
         <p class="body-text--large">
           Adaptable designer with a strong bias toward action and problem-solving. Proven track record across product development, user research, and strategy.
@@ -18,310 +16,229 @@ import { Image } from 'astro:assets';
       </div>
     </Section>
 
-    <!-- Main About Section - Photo + Experience -->
-    <Section spacing="normal">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-        <!-- Photo -->
-        <div class="reveal-left">
-          <Image
-            src="/images/about/profile-main.jpg"
-            alt="Louis Decleyn in his design studio"
-            width={900}
-            height={1200}
-            class="w-full h-auto object-cover object-center block rounded-[var(--radius-card)]"
-            loading="eager"
-            fetchpriority="high"
-          />
-        </div>
-        
-        <!-- Experience Timeline Section -->
-        <div class="flex flex-col gap-4 reveal-right">
-          <h2 class="heading-2 reveal-up">Experience</h2>
-          
-          <!-- Timeline Container with continuous border -->
-          <div class="relative border-l-2 border-[var(--color-border-light)] pl-6">
-            
-            <!-- Timeline Item 1 -->
-            <div class="relative pb-12 reveal-delay-1 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
-              <div class="text-sm text-[var(--color-text-muted)] mb-1">January 2026 - Present</div>
-              <h3 class="text-lg font-medium mb-2 text-[var(--color-text-primary)]">Team Consulting</h3>
-              <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                Medical device design consultancy, working across the full product development cycle from early-stage concept through to detailed design and manufacture.
-              </p>
-            </div>
-
-            <!-- Timeline Item 2 -->
-            <div class="relative pb-12 reveal-delay-2 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
-              <div class="text-sm text-[var(--color-text-muted)] mb-1">March 2025 - July 2025</div>
-              <h3 class="text-lg font-medium mb-2 text-[var(--color-text-primary)]">Innovate Design</h3>
-              <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                Delivered product design services across 35+ client projects. Turned early ideas into viable solutions, created pitch visuals, explored AI tools, and supported IP filings.
-              </p>
-            </div>
-
-            <!-- Timeline Item 3 -->
-            <div class="relative pb-12 reveal-delay-3 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
-              <div class="text-sm text-[var(--color-text-muted)] mb-1">November 2024 - January 2025</div>
-              <h3 class="text-lg font-medium mb-2 text-[var(--color-text-primary)]">Lindus Health</h3>
-              <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                Improved internal processes, built tools to speed up workflows, and supported go-to-market efforts.
-              </p>
-            </div>
-
-            <!-- Timeline Item 4 -->
-            <div class="relative pb-12 reveal-delay-4 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
-              <div class="text-sm text-[var(--color-text-muted)] mb-1">2023 - 2024</div>
-              <h3 class="text-lg font-medium mb-2 text-[var(--color-text-primary)]">Freelance Designer</h3>
-              <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                Developed product visualisation and marketing assets for B2C and lifestyle-focused launches. Delivered brand-aligned illustrations, packaging designs, and digital touchpoints.
-              </p>
-            </div>
-
-            <!-- Timeline Item 5 -->
-            <div class="relative pb-0 reveal-delay-4 before:content-[''] before:absolute before:left-[-26px] before:top-[0.4em] before:w-3 before:h-[2px] before:bg-[var(--color-border-light)]">
-              <div class="text-sm text-[var(--color-text-muted)] mb-1">2022 - 2023</div>
-              <h3 class="text-lg font-medium mb-2 text-[var(--color-text-primary)]">Stylideas</h3>
-              <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                Designed consumer products end-to-end, from sketch to shelf. Led early design research and produced launch visuals, packaging, and strategy insights
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Section>
   </Container>
 
-    <!-- Education Section -->
-    <Section spacing="large" background="alt">
-      <div class="max-w-[var(--container-max-width)] mx-auto px-[var(--container-padding)]"></div>
-        <h2 class="heading-2 text-center mb-12 reveal-up">Education</h2>
-        
-        <div class="max-w-4xl mx-auto px-8">
-          <div class="bg-[var(--card-bg)] border-2 border-[var(--card-border)] rounded-[var(--radius-card)] p-8 hover:border-[var(--card-border-hover)] hover:shadow-[var(--shadow-card-hover)] transition-all duration-[var(--transition-normal)] reveal-up">
-            
-            <!-- University Header -->
-            <div class="flex items-start justify-between mb-6">
-              <div>
-                <h3 class="text-2xl font-medium text-[var(--color-text-primary)] mb-2">Brunel University London</h3>
-                <p class="text-lg text-[var(--color-text-secondary)] mb-1">BA Industrial Design and Technology</p>
-                <p class="text-sm text-[var(--color-text-muted)]">2020 - 2024</p>
-              </div>
-              <div class="text-right">
-                <div class="inline-block px-4 py-2 bg-[var(--color-accent-subtle)]">
-                  <span class="text-sm font-semibold text-[var(--color-accent)]">First Class Honours</span>
-                </div>
-              </div>
-            </div>
+  
 
-            <!-- Selected Modules -->
-            <div class="mt-6 pt-6 border-t border-[var(--color-border-light)]">
-              <h4 class="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-primary)] mb-4">Selected Modules</h4>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div class="flex items-center gap-2">
-                  <span class="text-[var(--color-accent)] text-sm">•</span>
-                  <span class="text-sm text-[var(--color-text-secondary)]">Human Factors</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-[var(--color-accent)] text-sm">•</span>
-                  <span class="text-sm text-[var(--color-text-secondary)]">Advanced Design Innovation</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-[var(--color-accent)] text-sm">•</span>
-                  <span class="text-sm text-[var(--color-text-secondary)]">Design and Innovation, Management and Process</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-[var(--color-accent)] text-sm">•</span>
-                  <span class="text-sm text-[var(--color-text-secondary)]">Interaction and User Experience Design</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-[var(--color-accent)] text-sm">•</span>
-                  <span class="text-sm text-[var(--color-text-secondary)]">Industrial Design and Technology (CORE)</span>
-                </div>
-               
-              </div>
-            </div>
-          </div>
+  <!-- Full-width grey timeline strip -->
+  <div class="bg-[var(--color-background)]">
+    <div class="max-w-[var(--container-max-width)] mx-auto px-8 md:px-10 lg:px-12">
+      <!-- Experience Header -->
+      <div class="pt-12 md:pt-16 pb-8 flex items-center justify-between">
+        <h2 class="heading-2">Experience</h2>
+        <div class="flex gap-2">
+          <button id="timeline-prev" aria-label="Scroll to previous"
+            class="w-9 h-9 flex items-center justify-center border border-[var(--color-border-medium)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)] transition-colors duration-[var(--transition-normal)]">
+            ←
+          </button>
+          <button id="timeline-next" aria-label="Scroll to next"
+            class="w-9 h-9 flex items-center justify-center border border-[var(--color-border-medium)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-strong)] hover:text-[var(--color-text-primary)] transition-colors duration-[var(--transition-normal)]">
+            →
+          </button>
         </div>
       </div>
-    </Section>
+    <div id="timeline-track" class="overflow-x-auto select-none pb-8" style="cursor: grab; scrollbar-width: none; -webkit-overflow-scrolling: touch;">
+      <div class="relative flex min-w-max">
+
+          <!-- Connecting line spanning all items -->
+          <div class="absolute left-0 right-0 h-px bg-[var(--color-border-light)]" style="top: 12px;"></div>
+
+          <!-- Team Consulting -->
+          <div class="timeline-card relative w-[280px] pr-12 pt-10">
+            <div class="absolute left-0 w-2 h-2 rounded-full bg-[var(--color-border-light)]" style="top: 8px;"></div>
+            <div class="h-8 mb-4 flex items-center">
+              <img src="/images/logos/team-consulting.svg" alt="Team Consulting" class="h-full w-auto object-contain" />
+            </div>
+            <p class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Jan 2026 – Present</p>
+            <h3 class="text-base font-medium text-[var(--color-text-primary)] leading-snug mb-3">Team Consulting</h3>
+            <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              Medical device design consultancy, working across the full product development cycle from early-stage concept through to detailed design and manufacture.
+            </p>
+          </div>
+
+          <!-- Innovate Design -->
+          <div class="timeline-card relative w-[280px] pr-12 pt-10">
+            <div class="absolute left-0 w-2 h-2 rounded-full bg-[var(--color-border-light)]" style="top: 8px;"></div>
+            <div class="h-8 mb-4 flex items-center">
+              <img src="/images/logos/innovate-design.svg" alt="Innovate Design" class="h-full w-auto object-contain" />
+            </div>
+            <p class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Mar 2025 – Jul 2025</p>
+            <h3 class="text-base font-medium text-[var(--color-text-primary)] leading-snug mb-3">Innovate Design</h3>
+            <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              Delivered product design services across 35+ client projects. Turned early ideas into viable solutions, created pitch visuals, explored AI tools, and supported IP filings.
+            </p>
+          </div>
+
+          <!-- Lindus Health -->
+          <div class="timeline-card relative w-[280px] pr-12 pt-10">
+            <div class="absolute left-0 w-2 h-2 rounded-full bg-[var(--color-border-light)]" style="top: 8px;"></div>
+            <div class="h-8 mb-4 flex items-center">
+              <img src="/images/logos/lindus-health.svg" alt="Lindus Health" class="h-full w-auto object-contain" />
+            </div>
+            <p class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Nov 2024 – Jan 2025</p>
+            <h3 class="text-base font-medium text-[var(--color-text-primary)] leading-snug mb-3">Lindus Health</h3>
+            <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              Improved internal processes, built tools to speed up workflows, and supported go-to-market efforts.
+            </p>
+          </div>
+
+          <!-- Freelance Designer -->
+          <div class="timeline-card relative w-[280px] pr-12 pt-10">
+            <div class="absolute left-0 w-2 h-2 rounded-full bg-[var(--color-border-light)]" style="top: 8px;"></div>
+            <div class="h-8 mb-4"></div>
+            <p class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] mb-2">2023 – 2024</p>
+            <h3 class="text-base font-medium text-[var(--color-text-primary)] leading-snug mb-3">Freelance Designer</h3>
+            <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              Developed product visualisation and marketing assets for B2C and lifestyle-focused launches. Delivered brand-aligned illustrations, packaging designs, and digital touchpoints.
+            </p>
+          </div>
+
+          <!-- Brunel University London -->
+          <div class="timeline-card relative w-[280px] pr-12 pt-10">
+            <div class="absolute left-0 w-2 h-2 rounded-full bg-[var(--color-border-light)]" style="top: 8px;"></div>
+            <div class="h-8 mb-4 flex items-center">
+              <img src="/images/logos/brunel.svg" alt="Brunel University London" class="h-full w-auto object-contain" />
+            </div>
+            <p class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] mb-2">2020 – 2024</p>
+            <h3 class="text-base font-medium text-[var(--color-text-primary)] leading-snug mb-3">Brunel University London</h3>
+            <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              BA Industrial Design and Technology — First Class Honours. Studied human-centred design, rapid prototyping, CAD, and design strategy.
+            </p>
+          </div>
+
+          <!-- Stylideas -->
+          <div class="timeline-card relative w-[280px] pr-12 pt-10">
+            <div class="absolute left-0 w-2 h-2 rounded-full bg-[var(--color-border-light)]" style="top: 8px;"></div>
+            <div class="h-8 mb-4 flex items-center">
+              <img src="/images/logos/stylideas.svg" alt="Stylideas" class="h-full w-auto object-contain" />
+            </div>
+            <p class="text-[10px] uppercase tracking-widest text-[var(--color-text-muted)] mb-2">2022 – 2023</p>
+            <h3 class="text-base font-medium text-[var(--color-text-primary)] leading-snug mb-3">Stylideas</h3>
+            <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              Designed consumer products end-to-end, from sketch to shelf. Led early design research and produced launch visuals, packaging, and strategy insights.
+            </p>
+          </div>
+
+      </div>
+    </div>
+    </div>
+  </div>
 
   <Container>
-    <!-- Skills Section -->
-    <Section spacing="large">
-      <h2 class="heading-2 text-center mb-12 reveal-up">Skills & Expertise</h2>
-      
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <!-- Software Skills -->
-        <div class="reveal-delay-1">
-          <h3 class="heading-3 mb-6">Software</h3>
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-2 gap-6 mb-4">
-            <div class="flex flex-col items-center transition-transform duration-[var(--transition-normal)] hover:-translate-y-1 reveal-stagger-1">
-              <img src="/images/software/solidworks-icon.svg" alt="SolidWorks" class="w-12 h-12 object-contain mb-2" />
-              <span class="text-xs font-medium text-center text-[var(--color-text-secondary)] leading-tight">SolidWorks</span>
-            </div>
-            <div class="flex flex-col items-center transition-transform duration-[var(--transition-normal)] hover:-translate-y-1 reveal-stagger-2">
-              <img src="/images/software/rhino-icon.svg" alt="Rhino" class="w-12 h-12 object-contain mb-2" />
-              <span class="text-xs font-medium text-center text-[var(--color-text-secondary)] leading-tight">Rhino</span>
-            </div>
-            <div class="flex flex-col items-center transition-transform duration-[var(--transition-normal)] hover:-translate-y-1 reveal-stagger-3">
-              <img src="/images/software/grasshopper-icon.svg" alt="Grasshopper" class="w-12 h-12 object-contain mb-2" />
-              <span class="text-xs font-medium text-center text-[var(--color-text-secondary)] leading-tight">Grasshopper</span>
-            </div>
-            <div class="flex flex-col items-center transition-transform duration-[var(--transition-normal)] hover:-translate-y-1 reveal-stagger-4">
-              <img src="/images/software/keyshot-icon.svg" alt="KeyShot" class="w-12 h-12 object-contain mb-2" />
-              <span class="text-xs font-medium text-center text-[var(--color-text-secondary)] leading-tight">KeyShot</span>
-            </div>
-            <div class="flex flex-col items-center transition-transform duration-[var(--transition-normal)] hover:-translate-y-1 reveal-stagger-5">
-              <img src="/images/software/photoshop-icon.svg" alt="Photoshop" class="w-12 h-12 object-contain mb-2" />
-              <span class="text-xs font-medium text-center text-[var(--color-text-secondary)] leading-tight">Photoshop</span>
-            </div>
-            <div class="flex flex-col items-center transition-transform duration-[var(--transition-normal)] hover:-translate-y-1 reveal-stagger-6">
-              <img src="/images/software/illustrator-icon.svg" alt="Illustrator" class="w-12 h-12 object-contain mb-2" />
-              <span class="text-xs font-medium text-center text-[var(--color-text-secondary)] leading-tight">Illustrator</span>
-            </div>
-            <div class="flex flex-col items-center transition-transform duration-[var(--transition-normal)] hover:-translate-y-1 reveal-stagger-7">
-              <img src="/images/software/indesign-icon.svg" alt="InDesign" class="w-12 h-12 object-contain mb-2" />
-              <span class="text-xs font-medium text-center text-[var(--color-text-secondary)] leading-tight">InDesign</span>
-            </div>
-            <div class="flex flex-col items-center transition-transform duration-[var(--transition-normal)] hover:-translate-y-1 reveal-stagger-8">
-              <img src="/images/software/xd-icon.svg" alt="Adobe XD" class="w-12 h-12 object-contain mb-2" />
-              <span class="text-xs font-medium text-center text-[var(--color-text-secondary)] leading-tight">Adobe XD</span>
-            </div>
-            <div class="flex flex-col items-center transition-transform duration-[var(--transition-normal)] hover:-translate-y-1 reveal-stagger-9">
-              <img src="/images/software/blender-icon.svg" alt="Blender" class="w-12 h-12 object-contain mb-2" />
-              <span class="text-xs font-medium text-center text-[var(--color-text-secondary)] leading-tight">Blender</span>
-            </div>
-            <div class="flex flex-col items-center transition-transform duration-[var(--transition-normal)] hover:-translate-y-1 reveal-stagger-10">
-              <img src="/images/software/figma-icon.svg" alt="Figma" class="w-12 h-12 object-contain mb-2" />
-              <span class="text-xs font-medium text-center text-[var(--color-text-secondary)] leading-tight">Figma</span>
-            </div>
-          </div>
-        </div>
+      <!-- Skills Section -->
+      <Section>
+        <h2 class="heading-2 mb-12 reveal-up">Skills & Expertise</h2>
         
-        <!-- Design Skills -->
-        <div class="reveal-delay-2">
-          <h3 class="heading-3 mb-6">Design</h3>
-          <ul class="list-none p-0 flex flex-col gap-3">
-            <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
-              Human-Centered Design & User Research
-            </li>
-            <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
-              Product Design & Industrial Design
-            </li>
-            <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
-              UI/UX Design & Interaction Design
-            </li>
-            <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
-              Rapid Prototyping
-            </li>
-            <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
-              Electronics Integration & Arduino-based Prototyping
-            </li>
-          </ul>
-        </div>
-        
-        <!-- Soft Skills -->
-        <div class="reveal-delay-3">
-          <h3 class="heading-3 mb-6">Soft Skills</h3>
-          <ul class="list-none p-0 flex flex-col gap-3">
-            <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
-              Project Management
-            </li>
-            <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
-              Cross-Functional Teamwork
-            </li>
-            <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
-              Agile & Iterative Development Processes
-            </li>
-            <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
-              Communication & Stakeholder Engagement
-            </li>
-          </ul>
-        </div>
-      </div>
-    </Section>
-
-    <!-- Photo Grid Section -->
-    <Section spacing="large">
-      <h2 class="heading-2 text-center mb-8 reveal-up">More About Me</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-4">
-        <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-1">
-          <Image src="/images/about/image-1.JPG" alt="Louis working on a design project" width={400} height={400} class="w-full h-full object-cover" />
-          <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
-            <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
-              Collecting feedback on prototypes at a tradeshow in London
-            </p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <!-- Design Skills -->
+          <div class="reveal-delay-1">
+            <ul class="list-none p-0 flex flex-col gap-3">
+              <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                Human-Centered Design & User Research
+              </li>
+              <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                Product Design & Industrial Design
+              </li>
+              <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                UI/UX Design & Interaction Design
+              </li>
+              <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                Rapid Prototyping
+              </li>
+              <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                Electronics Integration & Arduino-based Prototyping
+              </li>
+            </ul>
+          </div>
+          
+          <!-- Soft Skills -->
+          <div class="reveal-delay-2">
+            <ul class="list-none p-0 flex flex-col gap-3">
+              <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                Project Management
+              </li>
+              <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                Cross-Functional Teamwork
+              </li>
+              <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                Agile & Iterative Development Processes
+              </li>
+              <li class="text-sm text-[var(--color-text-secondary)] py-1 before:content-['•'] before:mr-2 before:text-[var(--color-text-muted)]">
+                Communication & Stakeholder Engagement
+              </li>
+            </ul>
           </div>
         </div>
-        
-        <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-2">
-          <Image src="/images/about/image-2.jpg" alt="Louis sketching ideas" width={400} height={400} class="w-full h-full object-cover" />
-          <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
-            <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
-              Sketching out new ideas and concepts
-            </p>
-          </div>
-        </div>
-        
-        <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-3">
-          <Image src="/images/about/image-3.JPG" alt="Boxing Competition" width={400} height={400} class="w-full h-full object-cover" />
-          <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
-            <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
-              Competed for Brunel University in the 2022 BUCs Boxing
-            </p>
-          </div>
-        </div>
-        
-        <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-4">
-          <Image src="/images/about/image-4.jpg" alt="Design work" width={400} height={400} class="w-full h-full object-cover" />
-          <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
-            <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
-              Participating in UI/UX co-design workshop
-            </p>
-          </div>
-        </div>
-        
-        <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-5">
-          <Image src="/images/about/image-5.png" alt="Awards ceremony" width={400} height={400} class="w-full h-full object-cover" />
-          <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
-            <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
-              Attending the 2025 Brunel University Alumni Awards
-            </p>
-          </div>
-        </div>
-
-        <div class="relative overflow-hidden w-full aspect-square rounded-[var(--radius-card)] hover:scale-102 transition-transform duration-[var(--transition-normal)] reveal-stagger-5">
-          <Image src="/images/about/image-6.jpg" alt="Awards ceremony" width={400} height={400} class="w-full h-full object-cover" />
-          <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 hover:opacity-100 p-4 transition-opacity duration-[var(--transition-normal)]">
-            <p class="text-[var(--color-text-inverse)] text-center text-sm font-medium leading-tight">
-              Presenting ideas
-            </p>
-          </div>
-        </div>
-
-      </div>
-      <p class="body-text text-center reveal-up">
-        Photos of me working, collaborating, and exploring various interests
-      </p>
-    </Section>
-  </Container>
-
-  <!-- Call to Action - Full Width Background -->
-  <Section spacing="large" background="alt">
-    <Container>
-      <div class="text-center max-w-4xl mx-auto reveal-up">
-        <h2 class="heading-2">Let's Work Together</h2>
-        <p class="body-text mb-8">
-          I'm always interested in new challenges and collaborations. Whether you have 
-          a specific project in mind or just want to chat about design, feel free to reach out.
-        </p>
-        <Button href="/contact" variant="primary" size="lg">
-          Get In Touch
-        </Button>
-      </div>
+      </Section>
     </Container>
-  </Section>
+
 
   <!-- Load External Script -->
   <script is:inline src="/scripts/reveal.js"></script>
+
+<script>
+  function initTimeline() {
+    const track   = document.getElementById('timeline-track') as HTMLElement | null;
+    const prevBtn = document.getElementById('timeline-prev');
+    const nextBtn = document.getElementById('timeline-next');
+    if (!track) return;
+
+    // Drag-to-scroll
+    let isDragging = false;
+    let startX     = 0;
+    let scrollStart = 0;
+
+    track.addEventListener('mousedown', (e) => {
+      isDragging  = true;
+      startX      = e.pageX - track.offsetLeft;
+      scrollStart = track.scrollLeft;
+      track.style.cursor = 'grabbing';
+    });
+    track.addEventListener('mouseup', () => {
+      isDragging = false;
+      track.style.cursor = 'grab';
+    });
+    track.addEventListener('mouseleave', () => {
+      isDragging = false;
+      track.style.cursor = 'grab';
+    });
+    track.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const x = e.pageX - track.offsetLeft;
+      track.scrollLeft = scrollStart - (x - startX) * 1.2;
+    });
+
+    // Arrow navigation — snap to the exact next/previous card boundary
+    // Measure from the DOM so border-box sizing is accounted for automatically
+    const firstCard = track.querySelector('.timeline-card') as HTMLElement | null;
+    const CARD_W    = firstCard?.offsetWidth ?? 280;
+    const CARD_N    = track.querySelectorAll('.timeline-card').length;
+
+    prevBtn?.addEventListener('click', () => {
+      // ceil with small tolerance handles floating-point scrollLeft values
+      const idx = Math.ceil(track.scrollLeft / CARD_W - 0.01);
+      track.scrollTo({ left: Math.max(0, (idx - 1) * CARD_W), behavior: 'smooth' });
+    });
+    nextBtn?.addEventListener('click', () => {
+      const idx = Math.floor(track.scrollLeft / CARD_W + 0.01);
+      track.scrollTo({ left: Math.min((CARD_N - 1) * CARD_W, (idx + 1) * CARD_W), behavior: 'smooth' });
+    });
+
+    // Hide arrows when all items fit without scrolling
+    const btnContainer = prevBtn?.parentElement as HTMLElement | null;
+    function updateArrows() {
+      if (!btnContainer || !track) return;
+      btnContainer.style.visibility = track.scrollWidth > track.clientWidth ? 'visible' : 'hidden';
+    }
+    updateArrows();
+    window.addEventListener('resize', updateArrows);
+  }
+
+  initTimeline();
+  document.addEventListener('astro:after-swap', initTimeline);
+</script>
+
+<style>
+  #timeline-track::-webkit-scrollbar { display: none; }
+</style>
 </BaseLayout>

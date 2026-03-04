@@ -5,12 +5,14 @@ interface Props {
   spacing?: 'small' | 'normal' | 'large' | 'none';
   background?: 'default' | 'alt' | 'none';
   class?: string;
+  id?: string;
 }
 
-const { 
+const {
   spacing = 'normal',
   background = 'none',
-  class: className = ''
+  class: className = '',
+  id
 } = Astro.props;
 
 // Responsive spacing: smaller on mobile, scales up on larger screens
@@ -30,6 +32,6 @@ const backgroundClasses = {
 const classes = `w-full ${spacingClasses[spacing]} ${backgroundClasses[background]} ${className}`;
 ---
 
-<section class={classes}>
+<section id={id} class={classes}>
   <slot />
 </section>
