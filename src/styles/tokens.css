@@ -155,6 +155,8 @@
   --nav-link-color: var(--color-text-tertiary);
   --nav-link-hover-color: var(--color-text-primary);
   --nav-brand-color: var(--color-text-primary);
+  /* Total nav height including Dynamic Island / status bar safe area */
+  --nav-total-height: calc(var(--nav-height) + env(safe-area-inset-top, 0px));
   
   /* Cards */
   --card-bg: var(--color-surface);

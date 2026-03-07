@@ -14,6 +14,7 @@ export interface Props {
   preloadImage?: string;
   heroImage?: string;
   project?: string;
+  noSpacer?: boolean;
 }
 
 const {
@@ -23,7 +24,8 @@ const {
   ogType = "website",
   preloadImage,
   heroImage,
-  project
+  project,
+  noSpacer = false
 } = Astro.props;
 
 const resolvedOgImage = ogImage ?? heroImage ?? "/og-image.JPG";
@@ -66,10 +68,13 @@ const resolvedOgImage = ogImage ?? heroImage ?? "/og-image.JPG";
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={resolvedOgImage} />
   </head>
-  <body class="flex flex-col min-h-screen">
+  <body class="flex flex-col min-h-[100svh]">
     <!-- Navbar Component -->
     <Navbar />
-    
+
+    <!-- Spacer pushes content below the fixed nav (opt out on full-bleed hero pages) -->
+    {!noSpacer && <div style="height: calc(4rem + env(safe-area-inset-top, 0px))"></div>}
+
     <!-- Main Content with project data attribute -->
     <main 
       class="flex-1" 

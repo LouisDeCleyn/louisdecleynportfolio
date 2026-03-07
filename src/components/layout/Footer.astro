@@ -4,14 +4,14 @@
 import Container from './Container.astro';
 ---
 
-<footer class="bg-[var(--color-background)] border-t border-[var(--color-border-light)]">
+<footer class="bg-[var(--color-background)] border-t border-[var(--color-border-light)]" style="padding-bottom: env(safe-area-inset-bottom, 0px)">
   <Container>
     <div class="py-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-4">
         
         <!-- Left: Copyright Text -->
         <p class="text-xs text-[var(--color-text-muted)] m-0 text-center md:text-left">
-          &copy; 2025 Designed and made by Louis DeCleyn. Work in progress.
+          &copy; 2025 Work in progress.
         </p>
         
         <!-- Right: Social Icons -->

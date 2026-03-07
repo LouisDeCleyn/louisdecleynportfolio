@@ -41,13 +41,19 @@ const heroImages = [
 
 ---
 
-<BaseLayout title="Louis DeCleyn - Designer">
+<BaseLayout title="Louis DeCleyn - Designer" noSpacer>
+
+  <!-- Make nav transparent immediately (before deferred scripts run) -->
+  <script is:inline>
+    var n = document.getElementById('main-nav');
+    if (n) n.classList.add('nav-transparent');
+  </script>
 
   <!-- Hero Carousel — Full Viewport -->
-  <div class="hero-carousel relative w-full overflow-hidden -mt-16" style="height: calc(100dvh + 4rem)">
+  <div class="hero-carousel hero-fullheight relative w-full overflow-hidden">
 
-    <!-- Slides -->
-    <div class="slides-container relative w-full h-full">
+    <!-- Slides — absolute so they fill regardless of min-height vs height -->
+    <div class="slides-container absolute inset-0">
       {heroImages.map((image, index) => (
         <div
           class={`hero-slide absolute inset-0 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
@@ -70,7 +76,7 @@ const heroImages = [
     <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/30 to-transparent z-10 pointer-events-none"></div>
 
     <!-- Nav dots + animated scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-4">
+    <div class="absolute left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-4" style="bottom: calc(2rem + env(safe-area-inset-bottom, 0px))">
       <div class="flex gap-2">
         {heroImages.map((_, index) => (
           <div
@@ -225,23 +231,19 @@ const heroImages = [
     const nav  = document.getElementById('main-nav');
     const hero = document.querySelector('.hero-carousel') as HTMLElement | null;
 
-    // Restore opaque nav when navigating to non-hero pages
     if (!hero) {
       nav?.classList.remove('nav-transparent');
       return;
     }
 
     function updateNav() {
-      const inHero = window.scrollY < hero!.offsetHeight - 10;
+      const inHero = window.scrollY < hero!.offsetTop + hero!.offsetHeight - 10;
       nav?.classList.toggle('nav-transparent', inHero);
     }
 
-    // Set immediately on load (page starts at top = transparent)
     updateNav();
 
-    // Snap conflicts with mobile momentum scroll — only run on pointer devices
     const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-
     if (isTouch) {
       window.addEventListener('scroll', updateNav, { passive: true });
       return;
@@ -254,19 +256,17 @@ const heroImages = [
       updateNav();
 
       const scrollY    = window.scrollY;
-      const heroHeight = hero!.offsetHeight;
+      const heroBottom = hero.offsetTop + hero.offsetHeight;
 
-      // Back at top — re-arm for the next downward scroll
       if (scrollY < 20) {
         snapEnabled = true;
         isSnapping  = false;
       }
 
-      // User has scrolled down intentionally — carry them past the hero
-      if (snapEnabled && !isSnapping && scrollY > 60 && scrollY < heroHeight * 0.5) {
+      if (snapEnabled && !isSnapping && scrollY > 60 && scrollY < heroBottom * 0.5) {
         isSnapping  = true;
         snapEnabled = false;
-        window.scrollTo({ top: heroHeight, behavior: 'smooth' });
+        window.scrollTo({ top: heroBottom, behavior: 'smooth' });
       }
     }, { passive: true });
   }
